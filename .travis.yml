@@ -1,0 +1,43 @@
+language: python
+python:
+  - "3.6"      # current default Python on Travis CI
+addons:
+  apt:
+    packages:
+    - x11-utils
+    - libxkbcommon-x11-0
+services: xvfb
+dist: xenial
+#
+branches:
+  only:
+#  - master
+  - testwtravis
+# command to install dependencies
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install pytest
+  - pip install pytest-qt
+  - pip install coverage
+env:
+  - MVMGUI_BASEDIR="." MVMGUI="./gui/"
+# command to run tests
+script:
+  - coverage run -m pytest gui/tests/
+  - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
+  - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
+
+
+# deploy to the pages
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUBTOKEN
+  keep_history: true
+  on:
+    branch: testwtravis
+  verbose: true
+
+
+    

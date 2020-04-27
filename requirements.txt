@@ -1,0 +1,4 @@
+PyQt5>=5.10,<5.14.1
+PyQtGraph
+PySerial
+PyYaml
