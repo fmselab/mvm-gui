@@ -36,6 +36,7 @@ deploy:
 # command to run tests
 script:
   - coverage run -m pytest gui/tests/
+  - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
 after_success:
   - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
 
