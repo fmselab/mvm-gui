@@ -35,8 +35,7 @@ deploy:
   verbose: false
 # command to run tests
 script:
-  - coverage run -m pytest gui/tests/test_frozenplots.py
-  - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
+  - coverage run -m pytest gui/tests/
 after_success:
   - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
 

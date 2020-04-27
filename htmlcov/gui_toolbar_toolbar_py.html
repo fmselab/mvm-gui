@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for gui/toolbar/toolbar.py: 88%</title>
+    <title>Coverage for gui/toolbar/toolbar.py: 100%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="jquery.hotkeys.js"></script>
@@ -17,13 +17,13 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>gui/toolbar/toolbar.py</b> :
-            <span class="pc_cov">88%</span>
+            <span class="pc_cov">100%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
             33 statements &nbsp;
-            <span class="run shortkey_r button_toggle_run">29 run</span>
-            <span class="mis show_mis shortkey_m button_toggle_mis">4 missing</span>
+            <span class="run shortkey_r button_toggle_run">33 run</span>
+            <span class="mis show_mis shortkey_m button_toggle_mis">0 missing</span>
             <span class="exc show_exc shortkey_x button_toggle_exc">0 excluded</span>
         </h2>
     </div>
@@ -85,8 +85,8 @@
     <p id="t32" class="pln"><span class="n"><a href="#t32">32</a></span><span class="t">                <span class="str">"QLabel { background-color : red; color: yellow;}"</span><span class="op">)</span><span class="op">;</span>&nbsp;</span><span class="r"></span></p>
     <p id="t33" class="pln"><span class="n"><a href="#t33">33</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t34" class="run"><span class="n"><a href="#t34">34</a></span><span class="t">    <span class="key">def</span> <span class="nam">set_running</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">mode_text</span><span class="op">=</span><span class="str">""</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t35" class="mis show_mis"><span class="n"><a href="#t35">35</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">label_status</span><span class="op">.</span><span class="nam">setText</span><span class="op">(</span><span class="str">"Status: Running\n"</span> <span class="op">+</span> <span class="nam">mode_text</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t36" class="mis show_mis"><span class="n"><a href="#t36">36</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">label_status</span><span class="op">.</span><span class="nam">setStyleSheet</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t35" class="run"><span class="n"><a href="#t35">35</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">label_status</span><span class="op">.</span><span class="nam">setText</span><span class="op">(</span><span class="str">"Status: Running\n"</span> <span class="op">+</span> <span class="nam">mode_text</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t36" class="run"><span class="n"><a href="#t36">36</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">label_status</span><span class="op">.</span><span class="nam">setStyleSheet</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p id="t37" class="pln"><span class="n"><a href="#t37">37</a></span><span class="t">                <span class="str">"QLabel { background-color : green;  color: yellow;}"</span><span class="op">)</span><span class="op">;</span>&nbsp;</span><span class="r"></span></p>
     <p id="t38" class="pln"><span class="n"><a href="#t38">38</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t39" class="run"><span class="n"><a href="#t39">39</a></span><span class="t">    <span class="key">def</span> <span class="nam">blink_unlock</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -95,8 +95,8 @@
     <p id="t42" class="run"><span class="n"><a href="#t42">42</a></span><span class="t">            <span class="nam">color</span> <span class="op">=</span> <span class="str">"#aaaaaa"</span>&nbsp;</span><span class="r"></span></p>
     <p id="t43" class="run"><span class="n"><a href="#t43">43</a></span><span class="t">            <span class="nam">button</span><span class="op">.</span><span class="nam">blinkstate</span> <span class="op">=</span> <span class="key">False</span>&nbsp;</span><span class="r"></span></p>
     <p id="t44" class="pln"><span class="n"><a href="#t44">44</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t45" class="mis show_mis"><span class="n"><a href="#t45">45</a></span><span class="t">            <span class="nam">color</span> <span class="op">=</span> <span class="str">"#ffffff"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t46" class="mis show_mis"><span class="n"><a href="#t46">46</a></span><span class="t">            <span class="nam">button</span><span class="op">.</span><span class="nam">blinkstate</span> <span class="op">=</span> <span class="key">True</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t45" class="run"><span class="n"><a href="#t45">45</a></span><span class="t">            <span class="nam">color</span> <span class="op">=</span> <span class="str">"#ffffff"</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t46" class="run"><span class="n"><a href="#t46">46</a></span><span class="t">            <span class="nam">button</span><span class="op">.</span><span class="nam">blinkstate</span> <span class="op">=</span> <span class="key">True</span>&nbsp;</span><span class="r"></span></p>
     <p id="t47" class="pln"><span class="n"><a href="#t47">47</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t48" class="run"><span class="n"><a href="#t48">48</a></span><span class="t">        <span class="nam">palette</span> <span class="op">=</span> <span class="nam">button</span><span class="op">.</span><span class="nam">palette</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t49" class="run"><span class="n"><a href="#t49">49</a></span><span class="t">        <span class="nam">role</span> <span class="op">=</span> <span class="nam">button</span><span class="op">.</span><span class="nam">backgroundRole</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -108,7 +108,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.1</a>,
-            created at 2020-04-27 13:47
+            created at 2020-04-27 15:59
         </p>
     </div>
 </div>
