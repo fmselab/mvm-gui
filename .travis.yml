@@ -37,9 +37,8 @@ deploy:
 script:
   - coverage run -m pytest gui/tests/
   - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
-  - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
 after_success:
-  - coveralls
+  - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
 
 
 
