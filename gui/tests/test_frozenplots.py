@@ -6,7 +6,7 @@ import pytest
 import time
 from .mvm_basics import *
 from mainwindow import MainWindow
-from gui.frozenplots.frozenplots import *
+from frozenplots.frozenplots import *
 from PyQt5.QtCore import QCoreApplication
 
 

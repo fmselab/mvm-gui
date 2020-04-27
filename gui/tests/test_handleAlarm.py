@@ -7,8 +7,9 @@ import pytest
 from .mvm_basics import *
 import time
 from mainwindow import MainWindow
-from gui.messagebox import MessageBox
-from gui.alarm_handler import AlarmHandler
+from messagebox import MessageBox
+from alarm_handler import AlarmHandler
+from alarms.alarmsbar import AlarmsBar
 from PyQt5.QtCore import QCoreApplication
 
 
@@ -25,7 +26,8 @@ def test_objectCreation(qtbot):
     qtbot.addWidget(esp32)
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
-    handler = AlarmHandler(config, esp32)
+    bar = AlarmsBar()
+    handler = AlarmHandler(config, esp32, bar)
 
     assert handler is not None
 

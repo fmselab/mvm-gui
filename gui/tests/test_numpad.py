@@ -6,7 +6,7 @@ import pytest
 import time
 from .mvm_basics import *
 from mainwindow import MainWindow
-from gui.numpad.numpad import NumPad
+from numpad.numpad import NumPad
 from PyQt5.QtCore import QCoreApplication
 
 """

@@ -4,7 +4,7 @@
 from pytestqt.qt_compat import qt_api
 import pytest
 import time
-from gui.settings.mvmtoggle import MVMToggle
+from settings.mvmtoggle import MVMToggle
 
 
 """

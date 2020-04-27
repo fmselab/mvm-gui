@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">60%</span>
+        </h1>
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+<div id="index">
+    <table class="index">
+        <thead>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>2237</td>
+                <td>889</td>
+                <td>0</td>
+                <td class="right" data-ratio="1348 2237">60%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="file">
+                <td class="name left"><a href="gui_alarm_handler_py.html">gui/alarm_handler.py</a></td>
+                <td>128</td>
+                <td>84</td>
+                <td>0</td>
+                <td class="right" data-ratio="44 128">34%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_alarms_alarms_py.html">gui/alarms/alarms.py</a></td>
+                <td>171</td>
+                <td>106</td>
+                <td>0</td>
+                <td class="right" data-ratio="65 171">38%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_alarms_alarmsbar_py.html">gui/alarms/alarmsbar.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_alarms_guialarms_py.html">gui/alarms/guialarms.py</a></td>
+                <td>90</td>
+                <td>46</td>
+                <td>0</td>
+                <td class="right" data-ratio="44 90">49%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_communication_esp32alarm_py.html">gui/communication/esp32alarm.py</a></td>
+                <td>42</td>
+                <td>28</td>
+                <td>0</td>
+                <td class="right" data-ratio="14 42">33%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_communication_esp32serial_py.html">gui/communication/esp32serial.py</a></td>
+                <td>95</td>
+                <td>74</td>
+                <td>0</td>
+                <td class="right" data-ratio="21 95">22%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_communication_fake_esp32serial_py.html">gui/communication/fake_esp32serial.py</a></td>
+                <td>170</td>
+                <td>43</td>
+                <td>0</td>
+                <td class="right" data-ratio="127 170">75%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_communication_peep_py.html">gui/communication/peep.py</a></td>
+                <td>71</td>
+                <td>21</td>
+                <td>0</td>
+                <td class="right" data-ratio="50 71">70%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_data_filler_py.html">gui/data_filler.py</a></td>
+                <td>177</td>
+                <td>40</td>
+                <td>0</td>
+                <td class="right" data-ratio="137 177">77%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_data_handler_py.html">gui/data_handler.py</a></td>
+                <td>45</td>
+                <td>11</td>
+                <td>0</td>
+                <td class="right" data-ratio="34 45">76%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_frozenplots_frozenplots_py.html">gui/frozenplots/frozenplots.py</a></td>
+                <td>182</td>
+                <td>65</td>
+                <td>0</td>
+                <td class="right" data-ratio="117 182">64%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_maindisplay_maindisplay_py.html">gui/maindisplay/maindisplay.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_mainwindow_py.html">gui/mainwindow.py</a></td>
+                <td>239</td>
+                <td>55</td>
+                <td>0</td>
+                <td class="right" data-ratio="184 239">77%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_menu_menu_py.html">gui/menu/menu.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_messagebar_messagebar_py.html">gui/messagebar/messagebar.py</a></td>
+                <td>54</td>
+                <td>21</td>
+                <td>0</td>
+                <td class="right" data-ratio="33 54">61%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_messagebox_py.html">gui/messagebox.py</a></td>
+                <td>29</td>
+                <td>21</td>
+                <td>0</td>
+                <td class="right" data-ratio="8 29">28%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_monitor_monitor_py.html">gui/monitor/monitor.py</a></td>
+                <td>102</td>
+                <td>10</td>
+                <td>0</td>
+                <td class="right" data-ratio="92 102">90%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_numpad_numpad_py.html">gui/numpad/numpad.py</a></td>
+                <td>27</td>
+                <td>8</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 27">70%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_presets_presets_py.html">gui/presets/presets.py</a></td>
+                <td>19</td>
+                <td>14</td>
+                <td>0</td>
+                <td class="right" data-ratio="5 19">26%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_settings_mvmtoggle_py.html">gui/settings/mvmtoggle.py</a></td>
+                <td>34</td>
+                <td>22</td>
+                <td>0</td>
+                <td class="right" data-ratio="12 34">35%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_settings_settings_py.html">gui/settings/settings.py</a></td>
+                <td>177</td>
+                <td>60</td>
+                <td>0</td>
+                <td class="right" data-ratio="117 177">66%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_settings_settingsbar_py.html">gui/settings/settingsbar.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_settings_settingsfile_py.html">gui/settings/settingsfile.py</a></td>
+                <td>36</td>
+                <td>14</td>
+                <td>0</td>
+                <td class="right" data-ratio="22 36">61%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_special_special_py.html">gui/special/special.py</a></td>
+                <td>77</td>
+                <td>48</td>
+                <td>0</td>
+                <td class="right" data-ratio="29 77">38%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_start_stop_worker_py.html">gui/start_stop_worker.py</a></td>
+                <td>156</td>
+                <td>93</td>
+                <td>0</td>
+                <td class="right" data-ratio="63 156">40%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_toolbar_toolbar_py.html">gui/toolbar/toolbar.py</a></td>
+                <td>33</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="29 33">88%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="gui_toolsettings_toolsettings_py.html">gui/toolsettings/toolsettings.py</a></td>
+                <td>55</td>
+                <td>1</td>
+                <td>0</td>
+                <td class="right" data-ratio="54 55">98%</td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.1</a>,
+            created at 2020-04-27 13:47
+        </p>
+    </div>
+</div>
+</body>
+</html>

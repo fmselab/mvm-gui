@@ -6,24 +6,8 @@ import pytest
 import time
 from .mvm_basics import *
 from mainwindow import MainWindow
-from gui.controller_status import ControllerStatus
 from start_stop_worker import StartStopWorker
 from PyQt5.QtCore import QCoreApplication
-
-def test_basics(qtbot):
-    '''
-    Basic test that works more like a sanity check 
-    to ensure we are setting up a QApplication properly
-    '''
-    assert qt_api.QApplication.instance() is not None
-
-    widget = qt_api.QWidget()
-    qtbot.addWidget(widget)
-    widget.setWindowTitle("W1")
-    widget.show()
-
-    assert widget.isVisible()
-    assert widget.windowTitle() == "W1"
 
 """
 TS14
@@ -44,29 +28,40 @@ def test_start_operating(qtbot):
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
-    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
-    assert window.bottombar.currentWidget() == window.menu
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
 
     work = StartStopWorker(window, config, esp32, window.button_startstop,
             window.button_autoassist, window.toolbar, window.settings)
 
-    assert "Stopped" in work.toolbar.label_status.text() and "PCV" in work.toolbar.label_status.text()
+    assert "Stopped" in work._toolbar.label_status.text() and "PCV" in work._toolbar.label_status.text()
 
-    work.start_button_pressed()
+    # Enter the menu and start
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_startstop, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.messagebar.button_confirm, QtCore.Qt.LeftButton)
 
-    qtbot.waitUntil(lambda: "Running" in work.toolbar.label_status.text() and "PCV" in work.toolbar.label_status.text(), timeout=5000)
-    assert True
-
+    qtbot.waitUntil(lambda: "Running" in work._toolbar.label_status.text() and "PCV" in work._toolbar.label_status.text(), timeout=5000)
     assert window.button_autoassist.isEnabled() == False
 
     # Change the modality
-    work.toggle_mode()
+    qtbot.waitUntil(lambda: "Stop" in window.button_startstop.text() and "PCV" in work._toolbar.label_status.text(), timeout=5000)
+    qtbot.mouseClick(window.button_startstop, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.messagebar.button_confirm, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_autoassist, QtCore.Qt.LeftButton)
 
-    assert "Stopped" in work.toolbar.label_status.text() and "PSV" in work.toolbar.label_status.text()
-    work.toggle_start_stop()
-    work.start_button_pressed()
+    qtbot.stopForInteraction()
 
-    qtbot.waitUntil(lambda: "Running" in work.toolbar.label_status.text() and "PSV" in work.toolbar.label_status.text(), timeout=5000)
+    qtbot.waitUntil(lambda: "Stopped" in work._toolbar.label_status.text() and "PSV" in work._toolbar.label_status.text(), timeout=5000)
+
+    # Start the PSV Ventilation
+    qtbot.mouseClick(window.button_startstop, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.messagebar.button_confirm, QtCore.Qt.LeftButton)
+
+    qtbot.waitUntil(lambda: "Running" in work._toolbar.label_status.text() and "PSV" in work._toolbar.label_status.text(), timeout=5000)
     assert True
 
     assert work.is_running()

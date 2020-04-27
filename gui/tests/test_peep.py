@@ -4,7 +4,7 @@
 from pytestqt.qt_compat import qt_api
 import pytest
 import time
-from gui.communication.peep import peep
+from communication.peep import peep
 
 
 """

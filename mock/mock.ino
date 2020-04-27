@@ -211,6 +211,8 @@ String get(String const& command)
     return String(alarm_status);
   } else if (name == "warning") {
     return String(warning_status);
+  } else if (name == "version") {
+    return "mock";
   }
 
   auto const it = std::find(

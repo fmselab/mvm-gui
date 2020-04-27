@@ -5,8 +5,8 @@ from pytestqt.qt_compat import qt_api
 import pytest
 import time
 from .mvm_basics import *
-from gui.monitor.monitor import Monitor
-from gui.mainwindow import MainWindow
+from monitor.monitor import Monitor
+from mainwindow import MainWindow
 from PyQt5.QtCore import QCoreApplication
 
 """

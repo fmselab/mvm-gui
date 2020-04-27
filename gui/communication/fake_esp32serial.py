@@ -27,7 +27,6 @@ class FakeMonitored(QtWidgets.QWidget):
         self.random_cb.setChecked(random)
         self.random_cb.toggled.connect(self._random_checkbox_fn)
         self._random_checkbox_fn()
-        self._lung_recruit_stop_time = 0
 
     def _random_checkbox_fn(self):
         self.value_ib.setEnabled(not self.random_cb.isChecked())
@@ -52,6 +51,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         self.warning_checkboxes = {}
         self._connect_alarm_and_warning_widgets()
         self._connect_status_widgets()
+        self._lung_recruit_stop_time = 0
 
 
         self.set_params = {
@@ -60,7 +60,19 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "backup": 0,
             "alarm": 0,
             "warning": 0,
-            "temperature": 40}
+            "temperature": 40,
+            "rate": 17.0,
+            "ratio": 2/3,
+            "ptarget": 37.7,
+            "pcv_trigger_enable": 1,
+            "pcv_trigger": 7,
+            "assist_ptrigger": 7.0,
+            "assist_flow_min": 47.0,
+            "pressure_support": 27.,
+            "backup_min_time": 17.0,
+            "backup_enable": 1,
+            "pause_lg_p": 37,
+            "pause_lg_time": 7.0}
 
         self.event_log = self.findChild(QtWidgets.QPlainTextEdit, "event_log")
         self.event_log.setReadOnly(True)
@@ -145,6 +157,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
                 "gas_leakage_alarm": 5,
                 "gas_occlusion_alarm": 6,
                 "partial_gas_occlusion_alarm": 7,
+                "apnea_alarm": 22,
                 "system_failure_alarm": 31}
 
         # HW warnings

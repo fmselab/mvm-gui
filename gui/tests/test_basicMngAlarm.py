@@ -6,7 +6,7 @@ import pytest
 import time
 import sys
 from .mvm_basics import *
-from gui.alarm_handler import AlarmHandler
+from alarm_handler import AlarmHandler
 from mainwindow import MainWindow
 from messagebox import MessageBox
 from PyQt5.QtCore import QCoreApplication
@@ -74,8 +74,6 @@ def test_single_alarm(qtbot, code, expected, message):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
-    messagebox = window.alarm_h._msg_err
-    qtbot.addWidget(messagebox)
 
     code = (1 << code)
     
@@ -83,6 +81,11 @@ def test_single_alarm(qtbot, code, expected, message):
 
     esp32._compute_and_raise_alarms()
     assert esp32.get_alarms().number == expected
+    # Click on the error button
+    qtbot.mouseClick(window.alarm_h._alarmstack,QtCore.Qt.LeftButton)
+    messagebox = window.alarm_h._alarmlabel
+
+    assert message in str(messagebox.text())
 
     handler = AlarmHandler(config, esp32)
     handler.handle_alarms()
