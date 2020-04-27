@@ -8,10 +8,9 @@ addons:
     - libxkbcommon-x11-0
 services: xvfb
 dist: xenial
-#
+# branches to be built and tested
 branches:
   only:
-#  - master
   - testwtravis
 # command to install dependencies
 install:
@@ -20,15 +19,9 @@ install:
   - pip install pytest
   - pip install pytest-qt
   - pip install coverage
+# environment variables
 env:
   - MVMGUI_BASEDIR="." MVMGUI="./gui/"
-# command to run tests
-script:
-  - coverage run -m pytest gui/tests/
-  - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
-  - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
-
-
 # deploy to the pages
 deploy:
   provider: pages
@@ -37,7 +30,15 @@ deploy:
   keep_history: true
   on:
     branch: testwtravis
-  verbose: true
+  verbose: false
+# command to run tests
+script:
+  - coverage run -m pytest gui/tests/
+  - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
+  - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
+
+
+
 
 
     
