@@ -19,6 +19,8 @@ install:
   - pip install pytest
   - pip install pytest-qt
   - pip install coverage
+  - pip install pytest-cov
+  - pip install coveralls
 # environment variables
 env:
   - MVMGUI_BASEDIR="." MVMGUI="./gui/"
@@ -36,6 +38,8 @@ script:
   - coverage run -m pytest gui/tests/
   - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
   - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
+after_success:
+  - coveralls
 
 
 
