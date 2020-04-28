@@ -50,7 +50,7 @@ def test_menu(qtbot):
 
 
 """
-TS04-TS12
+TS04-TS12 + TS23
 """
 @pytest.mark.parametrize("code, expected, message", [(0, 1, "Gas pressure too low"),
                                                      (1, 2, "Gas pressure too high"),
@@ -60,6 +60,7 @@ TS04-TS12
                                                      (5, 32, "Leakage in gas circuit"),
                                                      (6, 64, "Obstruction in idraulic circuit"),
                                                      (7, 128, "Partial obstruction in idraulic circuit"),
+                                                     (22, 4194304, "Apnea alarm"),
                                                      (31, 2147483648, "System failure")])
 def test_single_alarm(qtbot, code, expected, message):
     '''
