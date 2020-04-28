@@ -124,4 +124,57 @@ def check_FiO2_on_monitor(qtbot):
     assert window.monitors['o2'] is not None
 
 
+"""
+TH16
+"""
+def check_RR_on_monitor(qtbot):
+    '''
+    Check that the RR monitor has been initialized
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['bpm'] is not None
+
+
+"""
+TH17
+"""
+def check_MaxPInsp_on_monitor(qtbot):
+    '''
+    Check that the Max(P(insp)) monitor has been initialized
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['peak'] is not None
+
+
+"""
+TH18
+"""
+def check_VTidal_on_monitor(qtbot):
+    '''
+    Check that the VTidal monitor has been initialized
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['total_inspired_volume'] is not None
+
 
