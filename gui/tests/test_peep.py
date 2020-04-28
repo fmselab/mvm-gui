@@ -3,9 +3,9 @@
 # from pytestqt import qt_compat
 from pytestqt.qt_compat import qt_api
 import pytest
-import time
 from communication.peep import peep
-
+from mainwindow import MainWindow
+from communication.fake_esp32serial import FakeESP32Serial
 
 """
 TH11
@@ -28,3 +28,21 @@ def test_peepReset(qtbot):
     assert p.t0 != t0
 
     p.t5 = t5
+
+
+"""
+TH13
+"""
+def check_peep_on_monitor(qtbot):
+    '''
+    Check that the peep monitor has been initialized
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['peep'] is not None
