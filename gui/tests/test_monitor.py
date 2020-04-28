@@ -107,4 +107,21 @@ def test_showSpecialOperations(qtbot):
     assert window.rightbar.currentWidget() == window.monitors_bar
 
 
+"""
+TH14
+"""
+def check_FiO2_on_monitor(qtbot):
+    '''
+    Check that the peep monitor has been initialized
+    '''
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['o2'] is not None
+
+
 
