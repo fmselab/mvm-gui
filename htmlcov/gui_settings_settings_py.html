@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for gui/settings/settings.py: 67%</title>
+    <title>Coverage for gui/settings/settings.py: 71%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="jquery.hotkeys.js"></script>
@@ -17,13 +17,13 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>gui/settings/settings.py</b> :
-            <span class="pc_cov">67%</span>
+            <span class="pc_cov">71%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
             177 statements &nbsp;
-            <span class="run shortkey_r button_toggle_run">119 run</span>
-            <span class="mis show_mis shortkey_m button_toggle_mis">58 missing</span>
+            <span class="run shortkey_r button_toggle_run">125 run</span>
+            <span class="mis show_mis shortkey_m button_toggle_mis">52 missing</span>
             <span class="exc show_exc shortkey_x button_toggle_exc">0 excluded</span>
         </h2>
     </div>
@@ -293,17 +293,17 @@
     <p id="t240" class="run"><span class="n"><a href="#t240">240</a></span><span class="t">    <span class="key">def</span> <span class="nam">update_spinbox_value</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">param</span><span class="op">,</span> <span class="nam">value</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t241" class="pln"><span class="n"><a href="#t241">241</a></span><span class="t">        <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
     <p id="t242" class="pln"><span class="n"><a href="#t242">242</a></span><span class="t"><span class="str">        '''</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t243" class="mis show_mis"><span class="n"><a href="#t243">243</a></span><span class="t">        <span class="key">if</span> <span class="nam">param</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_all_spinboxes</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t244" class="mis show_mis"><span class="n"><a href="#t244">244</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_all_spinboxes</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span><span class="op">.</span><span class="nam">setValue</span><span class="op">(</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t245" class="mis show_mis"><span class="n"><a href="#t245">245</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_current_values</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span> <span class="op">=</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t243" class="run"><span class="n"><a href="#t243">243</a></span><span class="t">        <span class="key">if</span> <span class="nam">param</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_all_spinboxes</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t244" class="run"><span class="n"><a href="#t244">244</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_all_spinboxes</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span><span class="op">.</span><span class="nam">setValue</span><span class="op">(</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t245" class="run"><span class="n"><a href="#t245">245</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_current_values</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span> <span class="op">=</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
     <p id="t246" class="pln"><span class="n"><a href="#t246">246</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t247" class="mis show_mis"><span class="n"><a href="#t247">247</a></span><span class="t">            <span class="key">raise</span> <span class="nam">Exception</span><span class="op">(</span><span class="str">'Cannot set value to SpinBox with name'</span><span class="op">,</span> <span class="nam">param</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t248" class="pln"><span class="n"><a href="#t248">248</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t249" class="mis show_mis"><span class="n"><a href="#t249">249</a></span><span class="t">        <span class="key">if</span> <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t249" class="run"><span class="n"><a href="#t249">249</a></span><span class="t">        <span class="key">if</span> <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t250" class="mis show_mis"><span class="n"><a href="#t250">250</a></span><span class="t">            <span class="key">raise</span> <span class="nam">Exception</span><span class="op">(</span><span class="str">'Trying to update SpinBox values but toolsettings_lookup was not set!'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t251" class="pln"><span class="n"><a href="#t251">251</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t252" class="mis show_mis"><span class="n"><a href="#t252">252</a></span><span class="t">        <span class="key">if</span> <span class="nam">param</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t253" class="mis show_mis"><span class="n"><a href="#t253">253</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t252" class="run"><span class="n"><a href="#t252">252</a></span><span class="t">        <span class="key">if</span> <span class="nam">param</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t253" class="run"><span class="n"><a href="#t253">253</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">toolsettings_lookup</span><span class="op">[</span><span class="nam">param</span><span class="op">]</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="nam">value</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t254" class="pln"><span class="n"><a href="#t254">254</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t255" class="pln"><span class="n"><a href="#t255">255</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t256" class="pln"><span class="n"><a href="#t256">256</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -433,7 +433,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.1</a>,
-            created at 2020-04-28 13:25
+            created at 2020-04-28 14:50
         </p>
     </div>
 </div>
