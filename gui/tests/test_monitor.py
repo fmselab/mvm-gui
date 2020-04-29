@@ -234,7 +234,7 @@ def check_plots_on_monitor(qtbot):
 
 
 """
-TS04-TS12 + TS23
+TS32-TS45
 """
 @pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "", False),
                                                      (9,1 << 9, "Pressure to patient mouth too high", "", True),
