@@ -99,12 +99,13 @@ def test_showSpecialOperations(qtbot):
 
     # Click on the freeze button
     qtbot.mouseClick(window.button_freeze, QtCore.Qt.LeftButton)
+    assert window.data_filler._frozen == True
     assert window.rightbar.currentWidget() == window.frozen_right
     assert window.bottombar.currentWidget() == window.frozen_bot
 
-    # Unfreeze the plots
+    # Unfreeze plots
     qtbot.mouseClick(window.button_unfreeze, QtCore.Qt.LeftButton)
-    assert window.rightbar.currentWidget() == window.monitors_bar
+    assert window.data_filler._frozen == False
 
 
 """

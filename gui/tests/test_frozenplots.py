@@ -73,3 +73,104 @@ def test_cursorDrawLabel(qtbot):
     for num, plot in enumerate(cursor.plots):
         assert str(cursor._y[num]) in cursor.cursor_label[num].textItem.toPlainText()
 
+
+"""
+TS29
+"""
+def test_frozenPlotY(qtbot):
+    '''
+    Test the alteration of the frozen plot on the Y axis
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+
+    # Special Operations
+    qtbot.mouseClick(window.button_specialops, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.specialbar
+
+    # Freeze plots
+    qtbot.mouseClick(window.specialbar.button_freeze, QtCore.Qt.LeftButton)
+    assert window.data_filler._frozen == True
+    assert window.rightbar.currentWidget() == window.frozen_right
+    assert window.bottombar.currentWidget() == window.frozen_bot
+
+    # Try to zoom the plot on the y axis
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_right.yzoom_top.button_plus, QtCore.Qt.LeftButton)
+    assert range < window.plots['plot_top'].getViewBox().viewRange()
+
+    # Try to unzoom the plot on the y axis
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_right.yzoom_top.button_minus, QtCore.Qt.LeftButton)
+    assert range > window.plots['plot_top'].getViewBox().viewRange()
+
+    # Move the plot in the UP direction
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_right.yzoom_top.button_up, QtCore.Qt.LeftButton)
+    assert range < window.plots['plot_top'].getViewBox().viewRange()
+
+    # Move the plot in the DOWN direction
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_right.yzoom_top.button_down, QtCore.Qt.LeftButton)
+    assert range > window.plots['plot_top'].getViewBox().viewRange()
+
+
+"""
+TS30
+"""
+def test_frozenPlotX(qtbot):
+    '''
+    Test the alteration of the frozen plot on the X axis
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+
+    # Special Operations
+    qtbot.mouseClick(window.button_specialops, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.specialbar
+
+    # Freeze plots
+    qtbot.mouseClick(window.specialbar.button_freeze, QtCore.Qt.LeftButton)
+    assert window.data_filler._frozen == True
+    assert window.rightbar.currentWidget() == window.frozen_right
+    assert window.bottombar.currentWidget() == window.frozen_bot
+
+    # Try to zoom the plot on the x axis
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_bot.xzoom.button_plus, QtCore.Qt.LeftButton)
+    assert range < window.plots['plot_top'].getViewBox().viewRange()
+
+    # Try to unzoom the plot on the y axis
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_bot.xzoom.button_minus, QtCore.Qt.LeftButton)
+    assert range > window.plots['plot_top'].getViewBox().viewRange()
+
+    # Move the plot in the RIGHT direction
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_bot.xzoom.button_right, QtCore.Qt.LeftButton)
+    assert range < window.plots['plot_top'].getViewBox().viewRange()
+
+    # Move the plot in the LEFT direction
+    range = window.plots['plot_top'].getViewBox().viewRange()
+    qtbot.mouseClick(window.frozen_bot.xzoom.button_left, QtCore.Qt.LeftButton)
+    assert range > window.plots['plot_top'].getViewBox().viewRange()
