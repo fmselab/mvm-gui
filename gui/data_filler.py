@@ -1,10 +1,17 @@
-from PyQt5 import QtGui, QtCore
+'''
+Module containing the DataFiller class,
+which is responsible for filling data
+to plots and monitors
+'''
+from copy import copy
+from ast import literal_eval  # to convert a string to list
 import numpy as np
+from PyQt5 import QtGui, QtCore
 import pyqtgraph as pg
-from ast import literal_eval # to convert a string to list
-from copy import copy 
+
 
 class DataFiller():
+    #pylint: disable=too-many-instance-attributes
     '''
     This class fills the data for all the
     displayed plots on the screen, and
@@ -38,6 +45,12 @@ class DataFiller():
     '''
 
     def __init__(self, config):
+        '''
+        Constructor
+
+        arguments:
+        - config: the config dictionary
+        '''
         self._qtgraphs = {}
         self._plots = {}
         self._data = {}
@@ -49,21 +62,25 @@ class DataFiller():
         self._config = config
         self._n_samples = self._config['nsamples']
         self._n_historic_samples = self._config.get('historic_nsamples',
-                200)
+                                                    200)
         self._sampling = self._config['sampling_interval']
-        self._time_window = self._n_samples * self._sampling # seconds
+        self._time_window = self._n_samples * self._sampling  # seconds
         self._xdata = np.linspace(-self._time_window, 0, self._n_samples)
         self._frozen = False
         self._first_plot = None
         self._looping = self._config['use_looping_plots']
         self._looping_data_idx = {}
         self._looping_lines = {}
-        return
+        self._x_label = None
 
     def connect_plot(self, plotname, plot):
         '''
         Connects a plot to this class by
         storing it in a dictionary
+
+        arguments:
+        - plotname: the name of the plot
+        - plot: the PlotItem from the ui file
         '''
         plot_config = self._config['plots'][plotname]
         name = plot_config['observable']
@@ -90,7 +107,7 @@ class DataFiller():
         plot.setLabel(axis='left', text=y_axis_label)
 
         # Set the X axis
-        if self._config['show_x_axis_labels'] and 'bot' in plot_config['name'] and not self._looping:
+        if self._config['show_x_axis_labels'] and 'bot' in plotname and not self._looping:
             self.add_x_axis_label(plot)
 
         # Remove x ticks, if selected
@@ -100,8 +117,10 @@ class DataFiller():
 
         # Customize the axis color
         color = self.parse_color(self._config['axis_line_color'])
-        plot.getAxis('bottom').setPen(pg.mkPen(color, width=self._config['axis_line_width']))
-        plot.getAxis('left').setPen(pg.mkPen(color, width=self._config['axis_line_width']))
+        plot.getAxis('bottom').setPen(
+            pg.mkPen(color, width=self._config['axis_line_width']))
+        plot.getAxis('left').setPen(
+            pg.mkPen(color, width=self._config['axis_line_width']))
 
         if self._looping:
             self.add_looping_lines(name, plot)
@@ -112,8 +131,8 @@ class DataFiller():
         # Fix the y axis range
         value_min = plot_config['min']
         value_max = plot_config['max']
-        ymin = value_min - (value_max-value_min)*0.1
-        ymax = value_max + (value_max-value_min)*0.1
+        ymin = value_min - (value_max - value_min) * 0.1
+        ymax = value_max + (value_max - value_min) * 0.1
         self._default_yrange[name] = [ymin, ymax]
         self.set_default_y_range(name)
 
@@ -121,32 +140,44 @@ class DataFiller():
         plot.setMouseEnabled(x=False, y=False)
         plot.setMenuEnabled(False)
 
-        print('NORMAL: Connected plot', plot_config['name'], 'with variable', name)
+        print('NORMAL: Connected plot',
+              plot_config['name'], 'with variable', name)
 
     def set_default_y_range(self, name):
         '''
         Set the Y axis range of the plot to the defaults
         specified in the config file.
+
+        arguments:
+        - name: the plot name to set the y range
         '''
         if name not in self._qtgraphs:
-            raise Exception('Cannot set y range for graph', name, 'as it doesn\'t exist.')
+            raise Exception('Cannot set y range for graph',
+                            name, 'as it doesn\'t exist.')
 
         # Save the range for future use
-        self._yrange[name] = (self._default_yrange[name][0], self._default_yrange[name][1])
+        self._yrange[name] = (self._default_yrange[name]
+                              [0], self._default_yrange[name][1])
 
         # Set the range to the graph
         self._qtgraphs[name].setYRange(*self._default_yrange[name])
-        
-        # Also set the width (space) on the left of the Y axis (for the label and ticks)
-        self._qtgraphs[name].getAxis('left').setWidth(self._config['left_ax_label_space'])
+
+        # Also set the width (space) on the left of the Y axis (for the label
+        # and ticks)
+        self._qtgraphs[name].getAxis('left').setWidth(
+            self._config['left_ax_label_space'])
 
     def set_y_range(self, name):
         '''
         Set the Y axis range of the plot to the max and min
         from the historic data set.
+
+        arguments:
+        - name: the plot name to set the y range
         '''
         if name not in self._historic_data or name not in self._qtgraphs:
-            raise Exception('Cannot set y range for graph', name, 'as it doesn\'t exist.')
+            raise Exception('Cannot set y range for graph',
+                            name, 'as it doesn\'t exist.')
 
         # Calculate the max and min using the larger historical data sample
         ymax = np.max(self._historic_data[name])
@@ -172,29 +203,38 @@ class DataFiller():
         Restores a previously set y range.
         If the y range was not previously set,
         this method calls set_y_range()
+
+        arguments:
+        - name: the plot name to restore the y range
         '''
         if self._yrange[name] is None:
-            self.set_y_range()
+            self.set_y_range(name)
             return
 
         self._qtgraphs[name].setYRange(*self._yrange[name])
 
     def updateTicks(self, name, yrange=None):
+        #pylint: disable=invalid-name
         '''
         Updates the major and minor ticks
-        in the graphs 
+        in the graphs
+
+        arguments:
+        - name: the plot name to update tickes
+        - yrange: (optinal) the yrange to use (otherwise Pyqtgraph default)
         '''
 
         if name not in self._qtgraphs:
-            raise Exception('Cannot set ticks for graph', name, 'as it doesn\'t exist.')
+            raise Exception('Cannot set ticks for graph',
+                            name, 'as it doesn\'t exist.')
 
         ax = self._qtgraphs[name].getAxis('left')
 
-        if yrange is None:  
+        if yrange is None:
             ax.setTickSpacing()
         else:
-            # Sligthly reduce the yrange so 
-            # the tick labels don't get 
+            # Sligthly reduce the yrange so
+            # the tick labels don't get
             # cropped on the top
             yrange -= yrange * 0.2
 
@@ -206,31 +246,39 @@ class DataFiller():
             else:
                 ax.setTickSpacing(major=major_step, minor=minor_step)
 
-
     def set_default_x_range(self, name):
         '''
         Set the X axis range of the plot to the defaults
         specified in the config file.
+
+        arguments:
+        - name: the plot name to set the x range
         '''
         self._qtgraphs[name].setXRange(-self._time_window, 0)
 
     def add_x_axis_label(self, plot):
+        #pylint: disable=invalid-name
+        #pylint: disable=c-extension-no-member
         '''
         Adds the x axis label 'Time [s]' in the form
         of a QGraphicsTextItem. This is done because it
         is hard to customize the PyQtGraph label.
+
+        arguments:
+        - plot: the PlotDataItem to add the label
         '''
         self._x_label = QtGui.QGraphicsTextItem()
         self._x_label.setVisible(True)
-        self._x_label.setHtml('<p style="color: %s">Time [s]:</p>' % self._config["axis_line_color"])
+        self._x_label.setHtml(
+            '<p style="color: %s">Time [s]:</p>' %
+            self._config["axis_line_color"])
 
         # Find the position of the label
         br = self._x_label.boundingRect()
         p = QtCore.QPointF(0, 0)
-        axis = plot.getAxis('bottom')
-        x = plot.size().width()/2. - br.width()/2.
+        # x = plot.size().width() / 2. - br.width() / 2.
         y = plot.size().height() - br.height()
-        p.setX(0) # Leave it on the left, so it doesn't cover labels.
+        p.setX(0)  # Leave it on the left, so it doesn't cover labels.
         p.setY(y)
         self._x_label.setPos(p)
         plot.getAxis('bottom').scene().addItem(self._x_label)
@@ -239,15 +287,21 @@ class DataFiller():
         '''
         Add line corresponding to where the
         data is being updated when in "looping" mode.
+
+        arguments:
+        - name: the plot name to add the lines
+        - plot: the PlotItem to add the lines
         '''
 
-        self._looping_lines[name] = pg.InfiniteLine(pos=0,
-                                         angle=90,
-                                         movable=False,
-                                         pen=pg.mkPen(cosmetic=False,
-                                                      width=self._time_window / 25,
-                                                      color='k',
-                                                      style=QtCore.Qt.SolidLine))
+        self._looping_lines[name] = pg.InfiniteLine(
+            pos=0,
+            angle=90,
+            movable=False,
+            pen=pg.mkPen(
+                cosmetic=False,
+                width=self._time_window / 25,
+                color='k',
+                style=QtCore.Qt.SolidLine))
 
         plot.addItem(self._looping_lines[name])
 
@@ -255,6 +309,9 @@ class DataFiller():
         '''
         Connect a monitor to this class by
         storing it in a dictionary
+
+        arguments:
+        - monitor: the monitor to connect
         '''
         name = monitor.observable
         self._monitors[name] = monitor
@@ -263,16 +320,20 @@ class DataFiller():
 
         self._looping_data_idx[name] = 0
 
-
         if name not in self._data:
             self._data[name] = np.linspace(0, 0, self._n_samples)
 
-        print('NORMAL: Connected monitor', monitor.configname , 'with variable', name)
+        print('NORMAL: Connected monitor',
+              monitor.configname, 'with variable', name)
 
     def add_data_point(self, name, data_point):
         '''
         Adds a data point to the plot with
         name 'name'
+
+        arguments:
+        - name: the name of the plots (and monitor if available)
+        - data_point: (float) the data point to add
         '''
 
         # print('NORMAL: Received data for monitor', name)
@@ -307,6 +368,9 @@ class DataFiller():
     def update_plot(self, name):
         '''
         Send new data from self._data to the actual pyqtgraph plot.
+
+        arguments:
+        - name: the name of the plot to update
         '''
 
         if not self._frozen:
@@ -315,17 +379,17 @@ class DataFiller():
             color = self._colors[name]
             color = color.replace('rgb', '')
             color = literal_eval(color)
-            self._plots[name].setData(copy(self._xdata),
-                                      copy(self._data[name]),
-                                      pen=pg.mkPen(color, width=self._config['line_width']))
+            self._plots[name].setData(
+                copy(self._xdata),
+                copy(self._data[name]),
+                pen=pg.mkPen(color, width=self._config['line_width']))
             self.set_default_x_range(name)
             self.set_y_range(name)
 
             if self._looping:
-                x_val = self._xdata[self._looping_data_idx[name]] - self._sampling * 0.1
+                x_val = self._xdata[self._looping_data_idx[name]
+                                    ] - self._sampling * 0.1
                 self._looping_lines[name].setValue(x_val)
-
-
 
     def freeze(self):
         '''
@@ -344,7 +408,7 @@ class DataFiller():
         '''
         self._frozen = False
 
-        for name in self._plots.keys():
+        for name in self._plots:
             self.update_plot(name)
 
         for plot in self._qtgraphs.values():
@@ -358,7 +422,7 @@ class DataFiller():
         autoRange() used to set X range, then
         custom values used for Y range.
         '''
-        for name, plot in self._qtgraphs.items():
+        for name in self._qtgraphs:
             self.set_default_x_range(name)
             self.restore_y_range(name)
 
@@ -366,17 +430,28 @@ class DataFiller():
         '''
         Updates the values in a monitor,
         if a monitor exists with this name
+
+        arguments:
+        - name: the name of the monitor to update
         '''
 
         if name in self._monitors:
-            last_data_idx = self._looping_data_idx[name] - 1 if self._looping else -1
+            last_data_idx = self._looping_data_idx[name] - \
+                1 if self._looping else -1
             self._monitors[name].update_value(self._data[name][last_data_idx])
         else:
             return
 
     def parse_color(self, rgb_string):
+        #pylint: disable=no-self-use
+        '''
+        Given a color string in format
+        'rgb(X,Y,Z)', it returns a list
+        (X,Y,Z)
+
+        arguments:
+        - rgb_string: (str) the rgb string 'rgb(X,Y,Z)'
+        '''
 
         color = rgb_string.replace('rgb', '')
         return literal_eval(color)
-
-

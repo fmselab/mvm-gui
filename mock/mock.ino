@@ -191,19 +191,19 @@ String get(String const& command)
 
   if (name == "all") {
     return
-        String(random(20, 70))     + "," // pressure
-      + String(random(3, 21))      + "," // flow
-      + String(random(30, 100))    + "," // o2
-      + String(random(6, 8))       + "," // bpm
-      + String(random(1000, 1500)) + "," // tidal
-      + String(random(4, 20))      + "," // peep
-      + String(random(10, 50))     + "," // temperature
-      + String(random(0, 1))       + "," // power_mode
-      + String(random(20, 100))    + "," // battery
-      + String(random(70, 80))     + "," // peak
-      + String(random(1000, 2000)) + "," // total_inspired_volume
-      + String(random(1000, 2000)) + "," // total_expired_volume
-      + String(random(10, 100));         // volume_minute
+        String(float(random(20, 70)))     + "," // pressure
+      + String(float(random(3, 21)))      + "," // flow
+      + String(float(random(30, 100)))    + "," // o2
+      + String(float(random(6, 8)))       + "," // bpm
+      + String(float(random(1000, 1500))) + "," // tidal
+      + String(float(random(4, 20)))      + "," // peep
+      + String(float(random(10, 50)))     + "," // temperature
+      + String(bool(random(0, 1)))        + "," // power_mode
+      + String(float(random(20, 100)))    + "," // battery
+      + String(float(random(70, 80)))     + "," // peak
+      + String(float(random(1000, 2000))) + "," // total_inspired_volume
+      + String(float(random(1000, 2000))) + "," // total_expired_volume
+      + String(float(random(10, 100)));         // volume_minute
   } else if (name == "pause_lg_time") {
     auto const now = mvm::now<mvm::Seconds>();
     return now > pause_lg_expiration ? "0" : String(pause_lg_expiration - now);

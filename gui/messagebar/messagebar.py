@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
-from PyQt5 import QtWidgets, uic
-from PyQt5 import QtGui, QtCore
+"""
+Bottom message bar that asks for user confirmation.
+"""
+
 import os
+from PyQt5 import QtWidgets, uic
+from PyQt5 import QtCore
+
 
 class MessageBar(QtWidgets.QWidget):
+    #pylint: disable=too-many-instance-attributes
+    """
+    The MessageBar widget.
+    """
+
     def __init__(self, parent, *args):
         """
         Initialize the MessageBar widget.
@@ -16,14 +26,16 @@ class MessageBar(QtWidgets.QWidget):
         self.mainparent = parent
         self.bottombar = self.mainparent.bottombar
 
-        self.button_confirm = self.findChild(QtWidgets.QPushButton, "button_confirm")
-        self.button_cancel  = self.findChild(QtWidgets.QPushButton, "button_cancel")
-        self.confirm_msg    = self.findChild(QtWidgets.QLabel, "confirm_msg")
+        self.button_confirm = self.findChild(
+            QtWidgets.QPushButton, "button_confirm")
+        self.button_cancel = self.findChild(
+            QtWidgets.QPushButton, "button_cancel")
+        self.confirm_msg = self.findChild(QtWidgets.QLabel, "confirm_msg")
 
         self.confirm_msg.blinkstate = False
         self.confirm_msg.bordercolor = "#ffffff"
         self.blinktimer = QtCore.QTimer(self)
-        self.blinktimer.setInterval(500) #.5 seconds
+        self.blinktimer.setInterval(500)  # .5 seconds
         self.blinktimer.timeout.connect(self.blink_confirm)
         self.blinktimer.start()
 
@@ -31,8 +43,11 @@ class MessageBar(QtWidgets.QWidget):
         self.func_cancel = None
         self.button_confirm.pressed.connect(self.confirmed)
         self.button_cancel.pressed.connect(self.cancelled)
+        self.prev_menu = None
 
-    def get_confirmation(self, title, message, func_confirm=None, func_cancel=None, color="red"):
+    def get_confirmation(self, title, message,
+                         func_confirm=None, func_cancel=None, color="red"):
+        #pylint: disable=too-many-arguments
         """
         Shows the confirmation in the bottom bar.
 
@@ -98,4 +113,8 @@ class MessageBar(QtWidgets.QWidget):
         self.func_confirm = None
 
     def return_menu(self):
+        """
+        Go back to the previously shown menu, hiding the MessageMenu.
+        """
+
         self.bottombar.setCurrentWidget(self.prev_menu)
