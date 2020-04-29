@@ -30,8 +30,8 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUBTOKEN
   keep_history: true
-  #on:
-  #  branch: testwtravis
+  on:
+    branch: testwtravis
   verbose: false
 # command to run tests
 script:
