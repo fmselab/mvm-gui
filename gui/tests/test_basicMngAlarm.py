@@ -58,8 +58,8 @@ TS04-TS12 + TS23
                                                      (3, 8, "Internal pressure too high"),
                                                      (4, 16, "Out of battery power"),
                                                      (5, 32, "Leakage in gas circuit"),
-                                                     (6, 64, "Obstruction in idraulic circuit"),
-                                                     (7, 128, "Partial obstruction in idraulic circuit"),
+                                                     (6, 64, "Obstruction in hydraulic circuit"),
+                                                     (7, 128, "Partial obstruction in hydraulic circuit"),
                                                      (22, 4194304, "Apnea alarm"),
                                                      (31, 2147483648, "System failure")])
 def test_single_alarm(qtbot, code, expected, message):
@@ -86,13 +86,8 @@ def test_single_alarm(qtbot, code, expected, message):
     handler = AlarmHandler(config, esp32, window.alarmbar)
     handler.handle_alarms()
 
-    # # Click on the error button
-    # alarm_codes = esp32.get_alarms().get_alarm_codes()
-    #
-    # for alarm_code in zip(alarm_codes):
-    #     qtbot.mouseClick(window.alarm_h._err_buttons[alarm_code], QtCore.Qt.LeftButton)
-    #     messagebox = window.alarm_h._alarmlabel
-    #     assert message in str(messagebox.text())
+    # Check the alarm message
+    assert esp32.get_alarms().alarm_to_string[expected] == message
 
     esp32.reset_alarms()
 

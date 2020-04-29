@@ -122,7 +122,7 @@ def check_FiO2_on_monitor(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
 
-    assert window.monitors['o2'] is not None
+    assert window.monitors['o2'].label_name == "FiO<sub>2</sub>"
 
 
 """
@@ -140,7 +140,7 @@ def check_RR_on_monitor(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
 
-    assert window.monitors['bpm'] is not None
+    assert window.monitors['bpm'].label_name == "Meas. RR"
 
 
 """
@@ -158,17 +158,13 @@ def check_MaxPInsp_on_monitor(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
 
-    assert window.monitors['peak'] is not None
+    assert window.monitors['peak'].label_name == "Max P<sub>insp</sub>"
 
 
 """
 TH18
 """
 def check_VTidal_on_monitor(qtbot):
-    '''
-    Check that the VTidal monitor has been initialized
-    '''
-
     assert qt_api.QApplication.instance() is not None
 
     esp32 = FakeESP32Serial(config)
@@ -176,6 +172,118 @@ def check_VTidal_on_monitor(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
 
-    assert window.monitors['total_inspired_volume'] is not None
+    assert window.monitors['total_inspired_volume'].label_name == "V<sub>tidal</sub>"
 
 
+"""
+TH19
+"""
+def check_Battery_on_monitor(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['battery_charge'].label_name == "Battery [%]"
+
+
+"""
+TH20
+"""
+def check_PowerSource_on_monitor(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['battery_powered'].label_name == "Power Source"
+
+
+"""
+TH21
+"""
+def check_Temperature_on_monitor(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['temperature'].label_name == "Temperature"
+
+
+"""
+TH22
+"""
+def check_plots_on_monitor(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.plots['plot_top'].name == "PAW"
+    assert window.plots['plot_mid'].name == "V<sub>tidal</sub>"
+    assert window.plots['plot_bot'].name == "Flow"
+
+
+"""
+TS04-TS12 + TS23
+"""
+@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "", False),
+                                                     (9,1 << 9, "Pressure to patient mouth too high", "", True),
+                                                     (10,1 << 10, "Inpiratory flux too low", "", False),
+                                                     (11,1 << 11, "Inpiratory flux too high", "", True),
+                                                     (12,1 << 12, "Expiratory flux too low", "", False),
+                                                     (13,1 << 13, "Expiratory flux too high", "", True),
+                                                     (14,1 << 14, "Tidal volume too low", "total_inspired_volume", False),
+                                                     (15,1 << 15, "Tidal volume too high", "total_inspired_volume", True),
+                                                     (16,1 << 16, "O2 too low", "oxygen_concentration", False),
+                                                     (17,1 << 17, "O2 too high", "oxygen_concentration", True),
+                                                     (18,1 << 18, "PEEP too low", "peep", False),
+                                                     (19,1 << 19, "PEEP too high", "peep", True),
+                                                     (20,1 << 20, "Respiratory rate too low", "beats_per_minute", False),
+                                                     (21,1 << 21, "Respiratory rate too high", "beats_per_minute", True)])
+def test_gui_alarm(qtbot, code, expected, message, monitorName,overMax):
+    assert qt_api.QApplication.instance() is not None
+
+    if monitorName == "":
+        pass
+    else:
+        esp32 = FakeESP32Serial(config)
+        qtbot.addWidget(esp32)
+
+        window = MainWindow(config, esp32)
+        window.show()
+        qtbot.addWidget(window)
+        qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+
+        minValue = float(window.monitors[monitorName].label_min.text())
+        maxValue = float(window.monitors[monitorName].label_max.text())
+
+        if overMax:
+            newValue = maxValue + 1
+        else:
+            newValue = minValue - 1
+
+        window.monitors[monitorName].update_value(newValue)
+        window.monitors[monitorName].set_alarm_state(True)
+
+        # Check the background color of the monitor
+        esp32.raise_gui_alarm()
+        palette = window.monitors[monitorName].palette()
+        role = window.monitors[monitorName].backgroundRole()
+        palette.setColor(role, QtGui.QColor(window.monitors[monitorName].alarmcolor))
+        assert window.monitors[monitorName].palette() == palette
+
+        # Select the monitor and check if the alarm has been snoozed
+        window.monitors[monitorName].update_value(maxValue)
+        qtbot.mouseClick(window.monitors[monitorName], QtCore.Qt.LeftButton)
+
+        assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor("#000000")
