@@ -4,7 +4,7 @@
 from pytestqt.qt_compat import qt_api
 import pytest
 import time
-from communication.peep import peep
+from communication.peep import PEEP
 
 
 """
@@ -15,7 +15,7 @@ def test_peepReset(qtbot):
     Test the reset of the Peep
     '''
 
-    p = peep()
+    p = PEEP()
 
     # Set a negative value for the t5 parameter, so the time t is obiously greater than t5
     t5 = p.t5

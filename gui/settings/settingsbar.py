@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-from PyQt5 import QtWidgets, uic
-from PyQt5 import QtGui
+"""
+Settings bar helper
+"""
+
 import os
+from PyQt5 import QtWidgets, uic
+
 
 class SettingsBar(QtWidgets.QWidget):
+    """
+    Settings bar class
+    """
+
     def __init__(self, *args):
         """
         Initialize the SettingsBar container widget.
@@ -12,4 +20,3 @@ class SettingsBar(QtWidgets.QWidget):
         """
         super(SettingsBar, self).__init__(*args)
         uic.loadUi(os.environ['MVMGUI'] + "settings/settingsbar.ui", self)
-

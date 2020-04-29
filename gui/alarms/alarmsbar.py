@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-from PyQt5 import QtWidgets, uic
-from PyQt5 import QtGui
+"""
+Alarm bar helper
+"""
+
 import os
+from PyQt5 import QtWidgets, uic
+
 
 class AlarmsBar(QtWidgets.QWidget):
+    """
+    Alarm bar class
+    """
+
     def __init__(self, *args):
         """
         Initialize the AlarmsBar widget.
