@@ -38,3 +38,25 @@ def test_defaultConfiguration(qtbot):
     assert config['insp_pressure']['step'] == 1
     assert config['insp_pressure']['min'] == 2
     assert config['insp_pressure']['max'] == 40
+
+
+# """
+# TH22
+# """
+# def test_defaultAlarmThreshold(qtbot):
+#     '''
+#     Check the default values for the parameters loaded at startup
+#     '''
+#
+#     assert qt_api.QApplication.instance() is not None
+#
+#     esp32 = FakeESP32Serial(config)
+#     qtbot.addWidget(esp32)
+#
+#     assert config is not None
+#
+#     # Check the values of the alarm threshold P_insp
+#     assert config['alarms']['peak']['min'] == 12
+#     assert config['alarms']['peak']['max'] == 1
+#     assert config['alarms']['peak'] == 4
+
