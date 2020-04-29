@@ -3,16 +3,29 @@ A dummy class that can be used for testing the GUI when a real
 ESP32 chip isn't available.
 """
 
+import os
 import random
 import time
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QTextCursor
-from .peep import peep
-import os
+from communication.peep import PEEP
 from . import ESP32Alarm, ESP32Warning
 
+
 class FakeMonitored(QtWidgets.QWidget):
-    def __init__(self, name, generator, value=0, random=True):
+    """
+    A class widget for generating fake monitored MVM data.
+    """
+    def __init__(self, name, generator, value=0, is_random=True):
+        """
+        A constructor for the class.
+
+        arguments:
+        - name: The displayed text.
+        - generator: The function for generating fake data.
+        - value: The initiazlized Spin Box value.
+        - is_random: Boolean to indicate using randomized data.
+        """
         super(FakeMonitored, self).__init__()
         uic.loadUi(os.environ['MVMGUI'] + 'communication/input_monitor_widget.ui', self)
 
@@ -24,7 +37,7 @@ class FakeMonitored(QtWidgets.QWidget):
         self.value_ib.setValue(value)
 
         self.random_cb = self.findChild(QtWidgets.QCheckBox, "random_checkbox")
-        self.random_cb.setChecked(random)
+        self.random_cb.setChecked(is_random)
         self.random_cb.toggled.connect(self._random_checkbox_fn)
         self._random_checkbox_fn()
 
@@ -32,13 +45,24 @@ class FakeMonitored(QtWidgets.QWidget):
         self.value_ib.setEnabled(not self.random_cb.isChecked())
 
     def generate(self):
+        """
+        Generate Fake data
+
+        returns: An array of fake generated data
+        """
         if self.random_cb.isChecked():
             return self.generator()
-        else:
-            return self.value_ib.value()
+        return self.value_ib.value()
+
 
 class FakeESP32Serial(QtWidgets.QMainWindow):
-    peep = peep()
+    # pylint: disable=too-many-instance-attributes
+    # These are appropriate instances for initialization of dictionaries
+    """
+    A widget class to emulate ESP32 functionality when not connected to hardware.
+    """
+    peep = PEEP()
+
     def __init__(self, config):
         super(FakeESP32Serial, self).__init__()
 
@@ -53,7 +77,6 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         self._connect_status_widgets()
         self._lung_recruit_stop_time = 0
 
-
         self.set_params = {
             "run": 0,
             "mode": 0,
@@ -62,7 +85,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "warning": 0,
             "temperature": 40,
             "rate": 17.0,
-            "ratio": 2/3,
+            "ratio": 2 / 3,
             "ptarget": 37.7,
             "pcv_trigger_enable": 1,
             "pcv_trigger": 7,
@@ -78,9 +101,11 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         self.event_log.setReadOnly(True)
         self.show()
 
+    # pylint: disable=too-many-branches
+    # The number of branches is appropriate given the different types of generators.
     def _arrange_fields(self):
-        max_colums = 3 # you eventually need to edit the
-                       # input_monitor_widget.ui file to put more
+        max_colums = 3  # you eventually need to edit the
+        # input_monitor_widget.ui file to put more
 
         monitors_grid = self.findChild(QtWidgets.QGridLayout, "monitors_grid")
 
@@ -141,49 +166,51 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         self.set("warning", number)
 
     def _connect_alarm_and_warning_widgets(self):
-        def get_checkbox(wname, alarm_code):
-            return (1 << alarm_code, self.findChild(QtWidgets.QCheckBox, wname))
+        get_checkbox = lambda wname, alarm_code: (
+            1 << alarm_code, self.findChild(QtWidgets.QCheckBox, wname))
 
         # for simplicity here the bit number is used. It will be converted
         # few lines below.
 
         # HW alarms
         alarm_check_boxes = {
-                "low_input_pressure_alarm": 0,
-                "high_input_pressure_alarm": 1,
-                "low_inner_pressure_alarm": 2,
-                "high_inner_pressure_alarm": 3,
-                "battery_low_alarm": 4,
-                "gas_leakage_alarm": 5,
-                "gas_occlusion_alarm": 6,
-                "partial_gas_occlusion_alarm": 7,
-                "apnea_alarm": 22,
-                "system_failure_alarm": 31}
+            "low_input_pressure_alarm": 0,
+            "high_input_pressure_alarm": 1,
+            "low_inner_pressure_alarm": 2,
+            "high_inner_pressure_alarm": 3,
+            "battery_low_alarm": 4,
+            "gas_leakage_alarm": 5,
+            "gas_occlusion_alarm": 6,
+            "partial_gas_occlusion_alarm": 7,
+            "apnea_alarm": 22,
+            "system_failure_alarm": 31}
 
         # HW warnings
         warning_check_boxes = {
-                "o2_warning": 0,
-                "power_warning": 1}
+            "o2_warning": 0,
+            "power_warning": 1}
 
         for name in alarm_check_boxes:
             code, widget = get_checkbox(name, alarm_check_boxes[name])
             self.alarms_checkboxes[code] = widget
 
         self.raise_alarms_button = self.findChild(
-                QtWidgets.QPushButton,
-                "raise_alarm_btn")
+            QtWidgets.QPushButton,
+            "raise_alarm_btn")
 
-        self.raise_alarms_button.pressed.connect(self._compute_and_raise_alarms)
+        self.raise_alarms_button.pressed.connect(
+            self._compute_and_raise_alarms)
 
         for name in warning_check_boxes:
             code, widget = get_checkbox(name, warning_check_boxes[name])
             self.warning_checkboxes[code] = widget
 
         self.raise_warnings_button = self.findChild(
-                QtWidgets.QPushButton,
-                "raise_warning_btn")
+            QtWidgets.QPushButton,
+            "raise_warning_btn")
 
-        self.raise_warnings_button.pressed.connect(self._compute_and_raise_warnings)
+        self.raise_warnings_button.pressed.connect(
+            self._compute_and_raise_warnings)
 
     def _connect_status_widgets(self):
         '''
@@ -196,14 +223,20 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         '''
         Changes the run,mode,backup variables in the ESP
         '''
-        self.set('run',    int(self.status_run.isChecked()))
-        self.set('mode',   int(self.status_mode.isChecked()))
+        self.set('run', int(self.status_run.isChecked()))
+        self.set('mode', int(self.status_mode.isChecked()))
         self.set('backup', int(self.status_backup.isChecked()))
 
     def log(self, message):
+        """
+        Logs a given message.
+
+        arguments:
+        -message: The message to be logged
+        """
         self.event_log.appendPlainText(message)
-        c = self.event_log.textCursor();
-        c.movePosition(QTextCursor.End);
+        cursor = self.event_log.textCursor()
+        cursor.movePosition(QTextCursor.End)
 
     def set(self, name, value):
         """
@@ -220,7 +253,8 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         print("FakeESP32Serial-DEBUG: set %s %s" % (name, value))
 
         if name == 'pause_lg' and int(value) == 1:
-            self._lung_recruit_stop_time = time.time() + self.set_params["pause_lg_time"]
+            self._lung_recruit_stop_time = time.time(
+            ) + self.set_params["pause_lg_time"]
 
         self.set_params[name] = value
         return "OK"
@@ -341,10 +375,6 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
 
         returns: an "OK" string in case of success.
         """
-
-        bitmap = { 1 << x: x for x in range(32)}
-
-        pos = bitmap[alarm_type]
 
         self.log("Snooze HW alarm %d" % alarm_type)
         current_alarm = self.set_params["alarm"]

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+"""
+Data management and dispatching back and forth the ESP32
+"""
+
 import sys
-import datetime
 from PyQt5.QtCore import QTimer
 from messagebox import MessageBox
+from communication import ESP32Exception
 
 class DataHandler():
     '''
@@ -17,7 +21,7 @@ class DataHandler():
         arguments:
         - config: the config dictionary
         - esp32: the esp32serial instance
-        - data_filler: the instance to the DataFiller class 
+        - data_filler: the instance to the DataFiller class
         - gui_alarm: the alarm class
         '''
 
@@ -30,7 +34,6 @@ class DataHandler():
         self._timer.timeout.connect(self.esp32_io)
         self._start_timer()
 
-
     def __del__(self):
         '''
         Destructor
@@ -38,7 +41,6 @@ class DataHandler():
         '''
 
         self._stop_timer()
-
 
     def esp32_io(self):
         '''
@@ -51,20 +53,18 @@ class DataHandler():
             current_values = self._esp32.get_all()
 
             # Converting from str to float
-            for p, v in current_values.items():
-                current_values[p] = float(v)
+            for name, value in current_values.items():
+                current_values[name] = float(value)
 
             current_values = self._convert_values(current_values)
 
             self._gui_alarm.set_data(current_values)
 
             # finally, send values to the DataFiller
-            for p, v in current_values.items():
+            for name, value in current_values.items():
+                self._data_f.add_data_point(name, value)
 
-                # print('Got data at time', datetime.datetime.now(), '=>', parameter, data)
-                self._data_f.add_data_point(p, v)
-
-        except Exception as error:
+        except ESP32Exception as error:
             self.open_comm_error(str(error))
 
     def _convert_values(self, values):
@@ -72,11 +72,9 @@ class DataHandler():
         '''
 
         conv = self._config['conversions']
-        return {k:v * conv.get(k, 1.) for (k, v) in values.items()}
+        return {k: v * conv.get(k, 1.) for (k, v) in values.items()}
         # for n, v in values.items():
         #     values[n] = v * conv['pressure'] if 'pressure' in conv else v
-
-
 
     def open_comm_error(self, error):
         '''
@@ -88,13 +86,11 @@ class DataHandler():
         callbacks = {msg.Retry: self._restart_timer,
                      msg.Abort: lambda: sys.exit(-1)}
 
-        fn = msg.critical("COMMUNICATION ERROR",
-                          "CANNOT COMMUNICATE WITH THE HARDWARE",
-                          "Check cable connections then click retry.\n"+error,
-                          "COMMUNICATION ERROR",
-                          callbacks)
-        fn()
-
+        msg.critical("COMMUNICATION ERROR",
+                     "CANNOT COMMUNICATE WITH THE HARDWARE",
+                     "Check cable connections then click retry.\n" + error,
+                     "COMMUNICATION ERROR",
+                     callbacks)()
 
     def _start_timer(self):
         '''
@@ -126,4 +122,3 @@ class DataHandler():
         result = self._esp32.set(param, value)
 
         return result == self._config['return_success_code']
-

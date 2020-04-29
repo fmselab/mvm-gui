@@ -1,9 +1,13 @@
+"""
+Module to handle an external settings file and its checksum.
+"""
+
 import json
 from hashlib import md5
 from os import path as os_path
 
 
-__all__=('SettingsFile',)
+__all__ = ('SettingsFile',)
 
 
 def _check_file(filename):
@@ -53,13 +57,12 @@ class SettingsFile:
         md5_path = self.path + ".md5"
 
         if _check_file(self.path) and _check_file(md5_path):
-            with open(md5_path, "r") as f:
-                challenge = f.read().rstrip()
+            with open(md5_path, "r") as md5file:
+                challenge = md5file.read().rstrip()
             with open(self.path, "rb") as configfile:
                 value = md5(configfile.read()).hexdigest()
             return value == challenge
         return False
-
 
     def store(self, data):
         """
@@ -77,7 +80,7 @@ class SettingsFile:
                 json.dump(data, configfile)
             self._write_md5()
             return True
-        except:
+        except: # pylint: disable=W0702
             return False
 
     def load(self):
@@ -92,6 +95,6 @@ class SettingsFile:
 
         if not self._check_md5():
             return {}
-        else:
-            with open(self.path) as configfile:
-                return json.load(configfile)
+
+        with open(self.path) as configfile:
+            return json.load(configfile)

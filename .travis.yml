@@ -9,9 +9,9 @@ addons:
 services: xvfb
 dist: xenial
 # branches to be built and tested
-branches:
-  only:
-  - testwtravis
+#branches:
+#  only:
+#  - testwtravis
 # command to install dependencies
 install:
   - pip install --upgrade pip
@@ -39,9 +39,3 @@ script:
   - coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
 after_success:
   - coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
-
-
-
-
-
-    
