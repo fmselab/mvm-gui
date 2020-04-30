@@ -188,3 +188,24 @@ def test_settingsWileRunning(qtbot):
     assert window.bottombar.currentWidget() == window.settingsfork
     qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
     assert window.toppane.currentWidget() == window.settings
+
+
+"""
+TH26
+"""
+def test_settingsWhileStarting(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    # Open the settings page
+    qtbot.mouseClick(window.button_start_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
