@@ -101,3 +101,41 @@ def test_lungRecruitment(qtbot):
     qtbot.mouseClick(window.specialbar._messagebar.button_confirm, QtCore.Qt.LeftButton)
     qtbot.waitUntil(
         lambda: "Lung Recruitment" in window.specialbar.button_lung_recruit.text(), timeout=3000)
+
+
+"""
+TS47
+"""
+def test_lungRecruitment(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Special Operations section
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_specialops, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.specialbar
+
+    # Click on the Country Specific Procedures button
+    qtbot.mouseClick(window.specialbar.button_lung_recruit, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.specialbar._messagebar.button_confirm, QtCore.Qt.LeftButton)
+    qtbot.waitUntil(
+        lambda: "Lung Recruitment" in window.specialbar.button_lung_recruit.text(), timeout=3000)
+
+    # Stop the procedure
+    qtbot.mouseClick(window.specialbar.button_lung_recruit, QtCore.Qt.LeftButton)
+    qtbot.waitUntil(
+        lambda: "Country" in window.specialbar.button_lung_recruit.text(), timeout=3000)
