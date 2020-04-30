@@ -284,9 +284,14 @@ def test_gui_alarm(qtbot, code, expected, message, monitorName,overMax):
 
         # Select the monitor and check if the alarm has been snoozed
         window.monitors[monitorName].update_value(maxValue)
+        # Reset the alarm
+        window.gui_alarm.clear_alarm(monitorName)
         qtbot.mouseClick(window.monitors[monitorName], QtCore.Qt.LeftButton)
 
         assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor("#000000")
+
+
+
 
 
 """
