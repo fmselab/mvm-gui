@@ -236,8 +236,8 @@ def check_plots_on_monitor(qtbot):
 """
 TS32-TS45
 """
-@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "", False),
-                                                     (9,1 << 9, "Pressure to patient mouth too high", "", True),
+@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "peak", False),
+                                                     (9,1 << 9, "Pressure to patient mouth too high", "peak", True),
                                                      (10,1 << 10, "Inpiratory flux too low", "", False),
                                                      (11,1 << 11, "Inpiratory flux too high", "", True),
                                                      (12,1 << 12, "Expiratory flux too low", "", False),
@@ -287,3 +287,17 @@ def test_gui_alarm(qtbot, code, expected, message, monitorName,overMax):
         qtbot.mouseClick(window.monitors[monitorName], QtCore.Qt.LeftButton)
 
         assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor("#000000")
+
+
+"""
+TH23
+"""
+def check_Ve_on_monitor(qtbot):
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['volume_minute'].label_name == "V<sub>E</sub>"
