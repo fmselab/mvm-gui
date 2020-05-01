@@ -6,6 +6,7 @@ import pytest
 import time
 from .mvm_basics import *
 from mainwindow import MainWindow
+from messagebox import MessageBox
 from start_stop_worker import StartStopWorker
 from PyQt5.QtCore import QCoreApplication
 
@@ -247,3 +248,66 @@ def test_from_PSV_to_PCV(qtbot):
     qtbot.waitUntil(
         lambda: "Stopped" in window._start_stop_worker._toolbar.label_status.text() and "PCV" in window._start_stop_worker._toolbar.label_status.text(),
         timeout=3000)
+
+
+"""
+TH29
+"""
+def test_MessageBox_Warning(qtbot):
+    msg = MessageBox()
+
+    def foo():
+        pass
+
+    callbacks = {msg.Ok: foo}
+
+    msg.warning("CHANGE OF MODE",
+                "The ventilator changed from PSV to PCV mode.",
+                "The microcontroller raised the backup flag.",
+                "",
+                callbacks,
+                True)
+
+    assert msg is not None
+
+
+"""
+TH30
+"""
+def test_MessageBox_Critical(qtbot):
+    msg = MessageBox()
+
+    def foo():
+        pass
+
+    callbacks = {msg.Ok: foo}
+
+    msg.critical("CHANGE OF MODE",
+                "The ventilator changed from PSV to PCV mode.",
+                "The microcontroller raised the backup flag.",
+                "",
+                callbacks,
+                True)
+
+    assert msg is not None
+
+
+"""
+TH31
+"""
+def test_MessageBox_Question(qtbot):
+    msg = MessageBox()
+
+    def foo():
+        pass
+
+    callbacks = {msg.Ok: foo}
+
+    msg.question("CHANGE OF MODE",
+                "The ventilator changed from PSV to PCV mode.",
+                "The microcontroller raised the backup flag.",
+                "",
+                callbacks,
+                True)
+
+    assert msg is not None
