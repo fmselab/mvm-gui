@@ -236,8 +236,8 @@ def check_plots_on_monitor(qtbot):
 """
 TS32-TS45
 """
-@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "peak", False),
-                                                     (9,1 << 9, "Pressure to patient mouth too high", "peak", True),
+@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "", False),
+                                                     (9,1 << 9, "Pressure to patient mouth too high", "", True),
                                                      (10,1 << 10, "Inpiratory flux too low", "", False),
                                                      (11,1 << 11, "Inpiratory flux too high", "", True),
                                                      (12,1 << 12, "Expiratory flux too low", "", False),
@@ -291,7 +291,36 @@ def test_gui_alarm(qtbot, code, expected, message, monitorName,overMax):
         assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor("#000000")
 
 
+"""
+TS49
+"""
+def test_gui_temperatureAlarm(qtbot):
+    """
+    assert qt_api.QApplication.instance() is not None
 
+    monitorName = "temperature"
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    window.show()
+    qtbot.addWidget(window)
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+
+    # New out-ranged value
+
+    newValue = 76
+
+    window.monitors[monitorName].update_value(newValue)
+    window.monitors[monitorName].set_alarm_state(True)
+
+    # Check the background color of the monitor
+    esp32.raise_gui_alarm()
+    qtbot.stopForInteraction()
+    assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor(
+        "red")
+    """
+    pass
 
 
 """
