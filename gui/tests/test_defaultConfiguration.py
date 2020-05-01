@@ -38,6 +38,15 @@ def test_defaultConfiguration(qtbot):
     assert config['insp_pressure']['step'] == 1
     assert config['insp_pressure']['min'] == 2
     assert config['insp_pressure']['max'] == 40
+    assert config['lung_recruit_time']['default'] == 10
+    assert config['lung_recruit_time']['step'] == 1
+    assert config['lung_recruit_time']['min'] == 1
+    assert config['lung_recruit_time']['max'] == 30
+    assert config['lung_recruit_pres']['default'] == 20
+    assert config['lung_recruit_pres']['step'] == 1
+    assert config['lung_recruit_pres']['min'] == 0
+    assert config['lung_recruit_pres']['max'] == 40
+
 
 
 # """
