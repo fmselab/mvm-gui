@@ -186,3 +186,113 @@ def test_changePSV_RR(qtbot):
     assert window.bottombar.currentWidget() == window.settingsfork
     qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
     assert window.toppane.currentWidget() == window.settings
+
+
+"""
+TS50
+"""
+def test_changePRM(qtbot):
+    '''
+    Test the change of the Pressure for Lung Recruitment
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['lung_recruit_pres'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['lung_recruit_pres']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('lung_recruit_pres', i)
+        oldValue = i
+        i = i + int(config['lung_recruit_pres']['step'])
+        assert window.settings._all_spinboxes['lung_recruit_pres'].value() <= config['lung_recruit_pres']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('lung_recruit_pres', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['lung_recruit_pres']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('lung_recruit_pres', i)
+        oldValue = i
+        i = i - int(config['lung_recruit_pres']['step'])
+        assert window.settings._all_spinboxes['lung_recruit_pres'].value() >= config['lung_recruit_pres']['min']
+
+
+"""
+TS51
+"""
+def test_changeTRM(qtbot):
+    '''
+    Test the change of the Time for Lung Recruitment
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['lung_recruit_time'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['lung_recruit_time']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('lung_recruit_time', i)
+        oldValue = i
+        i = i + int(config['lung_recruit_time']['step'])
+        assert window.settings._all_spinboxes['lung_recruit_time'].value() <= config['lung_recruit_time']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('lung_recruit_time', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['lung_recruit_time']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('lung_recruit_time', i)
+        oldValue = i
+        i = i - int(config['lung_recruit_time']['step'])
+        assert window.settings._all_spinboxes['lung_recruit_time'].value() >= config['lung_recruit_time']['min']
