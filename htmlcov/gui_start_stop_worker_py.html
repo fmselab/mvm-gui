@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for gui/start_stop_worker.py: 77%</title>
+    <title>Coverage for gui/start_stop_worker.py: 81%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="jquery.hotkeys.js"></script>
@@ -17,13 +17,13 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>gui/start_stop_worker.py</b> :
-            <span class="pc_cov">77%</span>
+            <span class="pc_cov">81%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
             157 statements &nbsp;
-            <span class="run shortkey_r button_toggle_run">121 run</span>
-            <span class="mis show_mis shortkey_m button_toggle_mis">36 missing</span>
+            <span class="run shortkey_r button_toggle_run">127 run</span>
+            <span class="mis show_mis shortkey_m button_toggle_mis">30 missing</span>
             <span class="exc show_exc shortkey_x button_toggle_exc">0 excluded</span>
         </h2>
     </div>
@@ -242,13 +242,13 @@
     <p id="t189" class="mis show_mis"><span class="n"><a href="#t189">189</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_raise_comm_error</span><span class="op">(</span><span class="str">'Cannot set PSV mode.'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t190" class="pln"><span class="n"><a href="#t190">190</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t191" class="pln"><span class="n"><a href="#t191">191</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t192" class="mis show_mis"><span class="n"><a href="#t192">192</a></span><span class="t">            <span class="nam">result</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_esp32</span><span class="op">.</span><span class="nam">set</span><span class="op">(</span><span class="str">'mode'</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">MODE_PCV</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t192" class="run"><span class="n"><a href="#t192">192</a></span><span class="t">            <span class="nam">result</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_esp32</span><span class="op">.</span><span class="nam">set</span><span class="op">(</span><span class="str">'mode'</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">MODE_PCV</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t193" class="pln"><span class="n"><a href="#t193">193</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t194" class="mis show_mis"><span class="n"><a href="#t194">194</a></span><span class="t">            <span class="key">if</span> <span class="nam">result</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t195" class="mis show_mis"><span class="n"><a href="#t195">195</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_mode_text</span> <span class="op">=</span> <span class="str">"PCV"</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t196" class="mis show_mis"><span class="n"><a href="#t196">196</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_button_mode</span><span class="op">.</span><span class="nam">setText</span><span class="op">(</span><span class="str">"Set\nPSV"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t197" class="mis show_mis"><span class="n"><a href="#t197">197</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">update_startstop_text</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t198" class="mis show_mis"><span class="n"><a href="#t198">198</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_mode</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">MODE_PCV</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t194" class="run"><span class="n"><a href="#t194">194</a></span><span class="t">            <span class="key">if</span> <span class="nam">result</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t195" class="run"><span class="n"><a href="#t195">195</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_mode_text</span> <span class="op">=</span> <span class="str">"PCV"</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t196" class="run"><span class="n"><a href="#t196">196</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_button_mode</span><span class="op">.</span><span class="nam">setText</span><span class="op">(</span><span class="str">"Set\nPSV"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t197" class="run"><span class="n"><a href="#t197">197</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">update_startstop_text</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t198" class="run"><span class="n"><a href="#t198">198</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_mode</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">MODE_PCV</span>&nbsp;</span><span class="r"></span></p>
     <p id="t199" class="pln"><span class="n"><a href="#t199">199</a></span><span class="t">            <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t200" class="mis show_mis"><span class="n"><a href="#t200">200</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">_raise_comm_error</span><span class="op">(</span><span class="str">'Cannot set PCV mode.'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t201" class="pln"><span class="n"><a href="#t201">201</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -437,7 +437,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.1</a>,
-            created at 2020-04-30 17:15
+            created at 2020-05-01 08:18
         </p>
     </div>
 </div>

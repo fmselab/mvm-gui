@@ -209,3 +209,41 @@ def test_settingsWhileStarting(qtbot):
     # Open the settings page
     qtbot.mouseClick(window.button_start_settings, QtCore.Qt.LeftButton)
     assert window.toppane.currentWidget() == window.settings
+
+
+"""
+TS48
+"""
+def test_from_PSV_to_PCV(qtbot):
+    assert qt_api.QApplication.instance() is not None
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    assert "Stopped" in window._start_stop_worker._toolbar.label_status.text() and "PCV" in window._start_stop_worker._toolbar.label_status.text()
+
+    # Enter the menu and change to PSV
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_autoassist, QtCore.Qt.LeftButton)
+
+    qtbot.waitUntil(
+        lambda: "Stopped" in window._start_stop_worker._toolbar.label_status.text() and "PSV" in window._start_stop_worker._toolbar.label_status.text(),
+        timeout=3000)
+
+    # Change to PCV
+    qtbot.mouseClick(window.button_autoassist, QtCore.Qt.LeftButton)
+
+    qtbot.waitUntil(
+        lambda: "Stopped" in window._start_stop_worker._toolbar.label_status.text() and "PCV" in window._start_stop_worker._toolbar.label_status.text(),
+        timeout=3000)

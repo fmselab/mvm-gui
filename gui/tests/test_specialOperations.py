@@ -4,6 +4,7 @@
 from pytestqt.qt_compat import qt_api
 import pytest
 import time
+import re
 from .mvm_basics import *
 from mainwindow import MainWindow
 from start_stop_worker import StartStopWorker
@@ -73,7 +74,7 @@ def test_inspiratoryPause(qtbot):
 """
 TS46
 """
-def test_lungRecruitment(qtbot):
+def test_lungRecruitment_1(qtbot):
     assert qt_api.QApplication.instance() is not None
 
     esp32 = FakeESP32Serial(config)
@@ -106,7 +107,7 @@ def test_lungRecruitment(qtbot):
 """
 TS47
 """
-def test_lungRecruitment(qtbot):
+def test_lungRecruitment_2(qtbot):
     assert qt_api.QApplication.instance() is not None
 
     esp32 = FakeESP32Serial(config)
@@ -134,6 +135,8 @@ def test_lungRecruitment(qtbot):
     qtbot.mouseClick(window.specialbar._messagebar.button_confirm, QtCore.Qt.LeftButton)
     qtbot.waitUntil(
         lambda: "Lung Recruitment" in window.specialbar.button_lung_recruit.text(), timeout=3000)
+    qtbot.waitUntil(
+        lambda: re.search("[0-9]$",window.specialbar.button_lung_recruit.text()) != None, timeout=3000)
 
     # Stop the procedure
     qtbot.mouseClick(window.specialbar.button_lung_recruit, QtCore.Qt.LeftButton)
