@@ -274,3 +274,80 @@ class ESP32Serial:
         """
 
         return self.set("alarm_snooze", 29)
+
+    def venturi_calibration(self):
+        """
+        Generator function to retrieve data for spirometer calibration.
+
+        returns a helper class instance.
+        """
+
+        class VenturiRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the Venturi Calibration
+            data.
+            """
+
+            def __init__(self, esp32):
+                """
+                Constructor
+
+                arguments:
+                - esp32: an istance of ESP32Serial
+                """
+
+                self._esp32 = esp32
+
+                self._esp32.set("flush_pipe", 1)
+
+                # from this point, the class effectively OWNS the
+                # connection...
+
+                self._esp32.lock.acquire()
+
+                self._previous_timeout = self._esp32.connection.timeout
+                self._esp32.connection.timeout = 2
+                self._esp32.connection.write("get venturi_scan".encode())
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats
+                """
+
+                bresult = self._esp32.connection.read_until(
+                    terminator=self._esp32.term)
+
+                result = bresult.decode()
+                if result.strip() == 'valore=OK':
+                    return
+                yield [float(datum) for datum in result.split(',')]
+
+            def __del__(self):
+                """
+                Destructor
+
+                this puts the connection back in normal operation
+                """
+
+                # read any possibly remaining data.
+                # For example if the generator has not been called till
+                # the end of the procedure.
+                while self._esp32.connection.read():
+                    pass
+                # restore the timeout to the previously using value
+                self._esp32.connection.timeout = self._previous_timeout
+                self._esp32.lock.release()
+                # ...and from here it finally releases its ownership
+
+        return VenturiRetriever(self)
