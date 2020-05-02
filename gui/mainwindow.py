@@ -194,6 +194,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button_new_patient.pressed.connect(self.goto_new_patient)
         self.button_start_vent.pressed.connect(self.goto_main)
         self.button_start_test.pressed.connect(self.goto_selftest)
+        self.button_spiro_calib.pressed.connect(self.goto_spiro_calibration)
         self.button_start_settings.pressed.connect(self.goto_settings)
 
         # Connect back and menu buttons to toolbar and menu
@@ -410,6 +411,14 @@ class MainWindow(QtWidgets.QMainWindow):
         elif self._start_stop_worker.mode() == self._start_stop_worker.MODE_PCV:
             self.settings.tabs.setCurrentWidget(self.settings.tab_pcv)
 
+    def goto_spiro_calibration(self):
+        """
+        Open the sprimeter calibration pane.
+        """
+
+        self.show_spiro_calib()
+        self.show_blank_bottom()
+
     def goto_selftest(self):
         """
         Open the self-test pane
@@ -521,6 +530,13 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.toppane.setCurrentWidget(self.main)
+
+    def show_spiro_calib(self):
+        """
+        Show the spirometer calibration pane.
+        """
+
+        self.toppane.setCurrentWidget(self.spiro_calib)
 
     def show_selftest(self):
         """
