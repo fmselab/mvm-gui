@@ -405,3 +405,49 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
 
         self.log("Snooze gui alarms")
         return self.snooze_hw_alarm(1 << 29)
+
+    def venturi_calibration(self):
+        """
+        Generator function to simulate data for spirometer calibration.
+
+        returns a helper class instance.
+        """
+
+        class VenturiRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the Venturi Calibration
+            data.
+            """
+
+            def __init__(self):
+                """
+                Constructor
+                """
+
+                self._coefficients = [1, 1, 1, 1, 1]
+
+            def _flow(self, delta_p):
+                return self._coefficients[0] + self._coefficients[1] * delta_p + self._coefficients[2] * delta_p**2 + self._coefficients[3] * delta_p**3 + self._coefficients[4] * delta_p**4
+
+            def data(self):
+                """
+                This function is a generator. It yields a value every
+                second.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats
+                """
+
+                for time_point in range(100):
+                    time.sleep(1)
+                    delta_p = time_point+30
+                    yield (time_point, self._flow(delta_p), delta_p)
+
+        return VenturiRetriever()
