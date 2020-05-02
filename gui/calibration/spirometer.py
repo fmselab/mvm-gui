@@ -5,7 +5,6 @@ user through it.
 '''
 
 import os
-import numpy
 from PyQt5 import QtWidgets, uic
 
 
