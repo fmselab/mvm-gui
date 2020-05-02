@@ -5,8 +5,8 @@ user through it.
 '''
 
 import os
-from PyQt5 import QtWidgets, uic
 import numpy as np
+from PyQt5 import QtWidgets, uic
 
 
 class SpirometerCalibration(QtWidgets.QWidget):
@@ -76,12 +76,12 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 flows.append(flow)
                 delta_ps.append(delta_p)
 
-            # TODO call the function to do the regression
-            self._coefficients, chi_sq, p_value = self._data_regression(flows, delta_ps)
+            self._coefficients, chi_sq = self._data_regression(delta_ps, flows)
             if self._coefficients == []:
                 raise Exception("invalid data points")
-            if p_value < 0.5:
-                raise Exception("Fit has a p_value too low")
+            if chi_sq < 1e6:
+                # TODO put right chi2 cut
+                raise Exception("Fit has a chi 2 too large")
             self.endstatus_label.setText("Succeeded")
         except: #pylint: disable=W0702
             self.start_calibration.setEnabled(True)
@@ -91,7 +91,7 @@ class SpirometerCalibration(QtWidgets.QWidget):
             self.back_button.setEnabled(True)
             del calibrator
 
-    def _check_data(x, y, cov_th=10):
+    def _check_data(self, x, y, cov_th=10):
         '''
         Checks if the data has a covariance 
         bigger than cov_th, and returns the 
@@ -103,19 +103,18 @@ class SpirometerCalibration(QtWidgets.QWidget):
         - cov_th: threshold to use for the covariance
         
         returns:
-        a list with data x and y if the covariance
-        condition is satisfied, else it returns 
-        an empty list
+        True if the covariance condition is satisfied
         '''
         
         cov = np.cov(x,y)
+
         
         if np.abs(cov[1,1]) > cov_th and np.abs(cov[0,1]) > cov_th:
-            return [x, y]    
+            return True  
 
-        return []
+        return False
 
-    def _data_regression(x, y, deg=4, full=True):
+    def _data_regression(self, x, y, deg=4, full=True):
         '''
         Performs the data regression with a 
         polynomial of order deg.
@@ -126,19 +125,17 @@ class SpirometerCalibration(QtWidgets.QWidget):
         - deg: the order of the polynomial
         
         returns:
-        - a list with the plynomial coefficients
+        - a list with the polynomial coefficients
         - the chi squared
         - the p-value
         '''
 
-        data = self._check_data(x, y)
-
-        if data:
+        if self._check_data(x, y):
             coeff = np.polyfit(x, y, deg=deg)
             chi_squared = np.sum((np.polyval(coeff, x) - y) ** 2)
-            p_value = 1 - stats.chi2.cdf(chi_squared, len(x)-deg)
+            # p_value = 1 - stats.chi2.cdf(chi_squared, len(x)-deg)
 
-            if full: return np.flip(coeff), chi_squared, p_value
+            if full: return np.flip(coeff), chi_squared
             else:    return np.flip(coeff)
         else:
             return []
