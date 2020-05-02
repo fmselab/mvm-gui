@@ -90,7 +90,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Succeeded</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="back_button">
