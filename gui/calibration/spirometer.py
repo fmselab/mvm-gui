@@ -5,7 +5,7 @@ user through it.
 '''
 
 import os
-import numpy as np
+from .regression_tools import data_regression
 from PyQt5 import QtWidgets, uic
 
 
@@ -76,7 +76,8 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 flows.append(flow)
                 delta_ps.append(delta_p)
 
-            self._coefficients, chi_sq = self._data_regression(delta_ps, flows)
+            self._coefficients, chi_sq = data_regression(delta_ps, flows)
+            print('Fit coefficients', self._coefficients)
             if self._coefficients == []:
                 raise Exception("invalid data points")
             if chi_sq < 1e6:
@@ -90,52 +91,3 @@ class SpirometerCalibration(QtWidgets.QWidget):
         finally:
             self.back_button.setEnabled(True)
             del calibrator
-
-    def _check_data(self, x, y, cov_th=10):
-        '''
-        Checks if the data has a covariance 
-        bigger than cov_th, and returns the 
-        data split in x and y
-        
-        arguments:
-        - x: a list with the data x values
-        - y: a list with the data y values
-        - cov_th: threshold to use for the covariance
-        
-        returns:
-        True if the covariance condition is satisfied
-        '''
-        
-        cov = np.cov(x,y)
-
-        
-        if np.abs(cov[1,1]) > cov_th and np.abs(cov[0,1]) > cov_th:
-            return True  
-
-        return False
-
-    def _data_regression(self, x, y, deg=4, full=True):
-        '''
-        Performs the data regression with a 
-        polynomial of order deg.
-        
-        arguments:
-        - x: a list with the data x values
-        - y: a list with the data y values
-        - deg: the order of the polynomial
-        
-        returns:
-        - a list with the polynomial coefficients
-        - the chi squared
-        - the p-value
-        '''
-
-        if self._check_data(x, y):
-            coeff = np.polyfit(x, y, deg=deg)
-            chi_squared = np.sum((np.polyval(coeff, x) - y) ** 2)
-            # p_value = 1 - stats.chi2.cdf(chi_squared, len(x)-deg)
-
-            if full: return np.flip(coeff), chi_squared
-            else:    return np.flip(coeff)
-        else:
-            return []
