@@ -24,11 +24,14 @@ class SpirometerCalibration(QtWidgets.QWidget):
             "spirometer.ui")
 
         uic.loadUi(uifile, self)
-        self._esp32 = None
 
-    def connect_esp32(self, esp32):
+        self._esp32 = None
+        self._mainwindow = None
+
+    def connect_mainwindow_esp32(self, mainwindow, esp32):
         """
         Connect the ESP32Serial istance.
         """
 
         self._esp32 = esp32
+        self._mainwindow = mainwindow
