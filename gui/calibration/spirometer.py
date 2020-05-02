@@ -19,8 +19,8 @@ class SpirometerCalibration(QtWidgets.QWidget):
         """
 
         super(SpirometerCalibration, self).__init__(*args)
-        uifile = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)),
+        uifile = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
             "spirometer.ui")
 
         uic.loadUi(uifile, self)
