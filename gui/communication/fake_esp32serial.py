@@ -446,7 +446,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
                 """
 
                 for time_point in range(100):
-                    time.sleep(1)
+                    time.sleep(0.1)
                     delta_p = time_point+30
                     yield (time_point, self._flow(delta_p), delta_p)
 
