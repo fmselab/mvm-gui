@@ -6,6 +6,7 @@ user through it.
 
 import os
 from PyQt5 import QtWidgets, uic
+import numpy as np
 
 
 class SpirometerCalibration(QtWidgets.QWidget):
@@ -76,9 +77,11 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 delta_ps.append(delta_p)
 
             # TODO call the function to do the regression
-            # self._coefficients =
-            # if self._coefficients == []:
-            #     raise Exception("invalid data points")
+            self._coefficients, chi_sq, p_value = self._data_regression(flows, delta_ps)
+            if self._coefficients == []:
+                raise Exception("invalid data points")
+            if p_value < 0.5:
+                raise Exception("Fit has a p_value too low")
             self.endstatus_label.setText("Succeeded")
         except: #pylint: disable=W0702
             self.start_calibration.setEnabled(True)
@@ -87,3 +90,55 @@ class SpirometerCalibration(QtWidgets.QWidget):
         finally:
             self.back_button.setEnabled(True)
             del calibrator
+
+    def _check_data(x, y, cov_th=10):
+        '''
+        Checks if the data has a covariance 
+        bigger than cov_th, and returns the 
+        data split in x and y
+        
+        arguments:
+        - x: a list with the data x values
+        - y: a list with the data y values
+        - cov_th: threshold to use for the covariance
+        
+        returns:
+        a list with data x and y if the covariance
+        condition is satisfied, else it returns 
+        an empty list
+        '''
+        
+        cov = np.cov(x,y)
+        
+        if np.abs(cov[1,1]) > cov_th and np.abs(cov[0,1]) > cov_th:
+            return [x, y]    
+
+        return []
+
+    def _data_regression(x, y, deg=4, full=True):
+        '''
+        Performs the data regression with a 
+        polynomial of order deg.
+        
+        arguments:
+        - x: a list with the data x values
+        - y: a list with the data y values
+        - deg: the order of the polynomial
+        
+        returns:
+        - a list with the plynomial coefficients
+        - the chi squared
+        - the p-value
+        '''
+
+        data = self._check_data(x, y)
+
+        if data:
+            coeff = np.polyfit(x, y, deg=deg)
+            chi_squared = np.sum((np.polyval(coeff, x) - y) ** 2)
+            p_value = 1 - stats.chi2.cdf(chi_squared, len(x)-deg)
+
+            if full: return np.flip(coeff), chi_squared, p_value
+            else:    return np.flip(coeff)
+        else:
+            return []
