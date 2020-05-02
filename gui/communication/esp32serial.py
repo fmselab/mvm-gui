@@ -32,6 +32,24 @@ class ESP32Exception(Exception):
             "ERROR in %s: line: '%s'; output: %s" % (verb, line, output))
 
 
+def _parse(result):
+    """
+    Parses the message from ESP32
+
+    arguments:
+    - result         what the ESP replied as a binary buffer
+
+    returns the requested value as a string
+    """
+
+    check_str, value = result.decode().split('=')
+    check_str = check_str.strip()
+
+    if check_str != 'valore':
+        raise ESP32Exception("", "", "protocol error: 'valore=' expected")
+    return value.strip()
+
+
 class ESP32Serial:
     """
     Main class for interfacing with the ESP32 via a serial connection.
@@ -80,23 +98,6 @@ class ESP32Serial:
             if hasattr(self, "connection"):
                 self.connection.close()
 
-    def _parse(self, result):
-        """
-        Parses the message from ESP32
-
-        arguments:
-        - result         what the ESP replied as a binary buffer
-
-        returns the requested value as a string
-        """
-
-        check_str, value = result.decode().split('=')
-        check_str = check_str.strip()
-
-        if check_str != 'valore':
-            raise Exception("protocol error: 'valore=' expected")
-        return value.strip()
-
     def set(self, name, value):
         """
         Set command wrapper
@@ -124,7 +125,7 @@ class ESP32Serial:
                 retry -= 1
                 try:
                     result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
+                    return _parse(result)
                 except Exception as exc: # pylint: disable=W0703
                     print("ERROR: set failing: %s %s" %
                           (result.decode(), str(exc)))
@@ -161,7 +162,7 @@ class ESP32Serial:
                 retry -= 1
                 try:
                     result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
+                    return _parse(result)
                 except Exception as exc: # pylint: disable=W0703
                     print("ERROR: get failing: %s %s" %
                           (result.decode(), str(exc)))
@@ -187,7 +188,7 @@ class ESP32Serial:
                 retry -= 1
                 try:
                     result = self.connection.read_until(terminator=self.term)
-                    values = self._parse(result).split(',')
+                    values = _parse(result).split(',')
 
                     if len(values) != len(self.get_all_fields):
                         raise Exception("get_all answer mismatch: expected: %s, got %s" % (
