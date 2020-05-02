@@ -27,6 +27,9 @@ class SpirometerCalibration(QtWidgets.QWidget):
 
         self._esp32 = None
         self._mainwindow = None
+        self._coefficients = []
+
+        self.back_button.clicked.connect(self._accept_values)
 
     def connect_mainwindow_esp32(self, mainwindow, esp32):
         """
@@ -35,3 +38,14 @@ class SpirometerCalibration(QtWidgets.QWidget):
 
         self._esp32 = esp32
         self._mainwindow = mainwindow
+
+    def _accept_values(self):
+        """
+        Send coefficients to ESP32 and quit the procedure
+        """
+
+        for index in range(5):
+            self._esp32.set("venturi_coefficient_%d" % index,
+                            self._coefficients[index])
+
+            self._mainwindow.show_startup()
