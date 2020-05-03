@@ -4,6 +4,7 @@ This module implements the self-test procedure and its user wizard.
 '''
 
 import os
+import time
 from PyQt5 import QtWidgets, uic
 
 
@@ -153,9 +154,43 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the spirometer direction test
         '''
-        # TODO: to be implemented
-        print('Running run_spiro_dir')
-        return
+        self.btn_run_spiro_dir.setEnabled(False)
+        self._enable_bar_buttons(False)
+        self.endstatus_label_fdc.setText("")
+
+        try:
+            # get the current mode and respiratory rate
+            mode = self._esp32.get("mode")
+            rate = self._esp32.get("rate")
+
+            # set test rate, mode and run
+            self._esp32.set("rate", 20)
+            self._esp32.set("mode", 0)
+            self._esp32.set("run", 1)
+
+            now = time.time()
+            test_start = now
+            test_stop = now + 20
+
+            while now < test_stop:
+                completion = 100. * (now - test_start) / 20
+                self.completion_bar_fdc.setValue(completion)
+                time.sleep(1)
+                now = time.time()
+
+            self._esp32.set("run", 0)
+            self._esp32.set("mode", mode)
+            self._esp32.set("rate", rate)
+
+            if (1 << 23) in self._esp32.get_alarms().get_alarm_codes():
+                self.endstatus_label_fdc.setText("Failed")
+            else:
+                self.endstatus_label_fdc.setText("Succeeded")
+        except:
+            self.endstatus_label_fdc.setText("Failed")
+
+        self._enable_bar_buttons()
+        self.btn_run_spiro_dir.setEnabled(True)
 
     def run_backup_battery(self):
         '''
