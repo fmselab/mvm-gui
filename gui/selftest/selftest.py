@@ -37,7 +37,7 @@ class SelfTest(QtWidgets.QWidget):
         self._selftestbar = None
         self._btn_continue = None
         self._btn_back = None
-        self._btn_abort = None
+        self._btn_cancel = None
 
     def go_to_next_page(self):
         '''
@@ -98,7 +98,7 @@ class SelfTest(QtWidgets.QWidget):
 
         self._btn_continue = self._selftestbar.button_continue
         self._btn_back = self._selftestbar.button_back
-        self._btn_abort = self._selftestbar.button_abort
+        self._btn_cancel = self._selftestbar.button_cancel
 
         self._btn_continue.clicked.connect(self.go_to_next_page)
         self._btn_back.clicked.connect(self.go_to_previous_page)
@@ -116,7 +116,7 @@ class SelfTest(QtWidgets.QWidget):
     def _enable_bar_buttons(self, enabled=True):
         self._btn_back.setEnabled(enabled)
         self._btn_continue.setEnabled(enabled)
-        self._btn_abort.setEnabled(enabled)
+        self._btn_cancel.setEnabled(enabled)
         if enabled:
             self.update_enabled_buttons()
 
