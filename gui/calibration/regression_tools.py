@@ -48,10 +48,11 @@ def data_regression(x, y, deg=4, full=True):
     if check_data(x, y):
         coeff = np.polyfit(x, y, deg=deg)
         chi_squared = np.sum((np.polyval(coeff, x) - y) ** 2)
+        ndf = len(x) - deg
         # p_value = 1 - stats.chi2.cdf(chi_squared, len(x)-deg)
 
         if full:
-            return np.flip(coeff), chi_squared
+            return np.flip(coeff), chi_squared, ndf
         return np.flip(coeff)
 
     return []

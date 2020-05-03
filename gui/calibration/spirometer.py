@@ -5,9 +5,8 @@ user through it.
 '''
 
 import os
-from .regression_tools import data_regression
 from PyQt5 import QtWidgets, uic
-
+from calibration.regression_tools import data_regression
 
 class SpirometerCalibration(QtWidgets.QWidget):
     '''
@@ -76,12 +75,11 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 flows.append(flow)
                 delta_ps.append(delta_p)
 
-            self._coefficients, chi_sq = data_regression(delta_ps, flows)
+            self._coefficients, chi_sq, ndf = data_regression(delta_ps, flows)
             print('Fit coefficients', self._coefficients)
             if self._coefficients == []:
                 raise Exception("invalid data points")
-            if chi_sq < 1e6:
-                # TODO put right chi2 cut
+            if chi_sq/ndf > 10:
                 raise Exception("Fit has a chi 2 too large")
             self.endstatus_label.setText("Succeeded")
         except: #pylint: disable=W0702
