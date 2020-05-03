@@ -295,3 +295,72 @@ class AlarmHandler:
         self._alarmlabel.setText('')
         self._alarmlabel.setStyleSheet('QLabel { background-color: black; }')
         self._alarmsnooze.hide()
+
+class CriticalAlarmHandler:
+    """
+    Handles severe communication and hardware malfunction errors.
+    These errors have a low chance of recovery, but this class handles irrecoverable as well as
+    potentially recoverable errors (with options to retry).
+    """
+    def __init__(self, mainparent, esp32):
+        """
+        Main constructor. Grabs necessary widgets from the main window
+
+        Arguments:
+        - mainparent: Reference to the mainwindow widget.
+        - esp32: Reference to the ESP32 interface.
+        """
+
+        self._esp32 = esp32
+        self._toppane = mainparent.toppane
+        self._criticalerrorpage = mainparent.criticalerrorpage
+        self._bottombar = mainparent.bottombar
+        self._criticalerrorbar = mainparent.criticalerrorbar
+        self.nretry = 0
+
+        self._label_criticalerror = mainparent.findChild(QtWidgets.QLabel, "label_criticalerror")
+        self._button_retrycmd = mainparent.findChild(QtWidgets.QPushButton, "button_retrycmd")
+
+        self._button_retrycmd.pressed.connect(self._retry_cmd)
+
+    def show_critical_error(self, text):
+        """
+        Shows the critical error in the mainwindow.
+        This includes changing the screen to red and displaying a big message to this effect.
+        """
+        self._label_criticalerror.setText(text)
+        self._toppane.setCurrentWidget(self._criticalerrorpage)
+        self._bottombar.setCurrentWidget(self._criticalerrorbar)
+
+    def call_system_failure(self):
+        """
+        Calls a system failure and sets the mainwindow into a state that is irrecoverable without
+        maintenance support.
+        """
+        self._button_retrycmd.hide()
+        self.show_critical_error("*** SYSTEM FAILURE ***\nCall the Maintenance Service")
+
+    def call_communication_failure(self, nretry=3):
+        """
+        Calls a severe communications failure and sets the mainwindow into a state that is
+        recoverable if communication can be re-established after n tries.
+        If not, the system is irrecoverable.
+
+        Arguments:
+        - nretry: Number of communication retries before system failure (default: 3)
+        """
+        self.nretry = nretry
+
+        if self.nretry <= 0:
+            self.call_system_failure()
+        else:
+            self._button_retrycmd.show()
+            self._button_retrycmd.setText("Retry (%d)" % self.nretry)
+            self.show_critical_error("Severe Communication Error")
+
+    def _retry_cmd(self):
+        """
+        Re-issues the last (and presumably failed) command to the ESP32.
+        """
+        self.nretry -= 1
+        self.call_communication_failure(self.nretry)
