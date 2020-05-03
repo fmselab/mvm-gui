@@ -86,7 +86,7 @@ class SpirometerCalibration(QtWidgets.QWidget):
         except: #pylint: disable=W0702
             self.start_calibration.setEnabled(True)
             self.retry_button.setEnabled(True)
-            self.endstatus_label.setText("Failed")
+            self.endstatus_label.setText("Venturi spirometer\npressure probes inverted")
         finally:
             self.back_button.setEnabled(True)
             del calibrator
