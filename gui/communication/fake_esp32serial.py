@@ -425,7 +425,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
                 Constructor
                 """
 
-                self._coefficients = [1, 1, 1, 1, 1]
+                self._coefficients = [10, 1e-1, 1e-2, 1e-3, 1e-4]
 
             def _flow(self, delta_p):
                 return self._coefficients[0] + self._coefficients[1] * delta_p + self._coefficients[2] * delta_p**2 + self._coefficients[3] * delta_p**3 + self._coefficients[4] * delta_p**4
@@ -446,7 +446,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
                 """
 
                 for time_point in range(100):
-                    time.sleep(1)
+                    time.sleep(0.1)
                     delta_p = time_point+30
                     yield (time_point, self._flow(delta_p), delta_p)
 
