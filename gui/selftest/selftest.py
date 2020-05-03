@@ -34,7 +34,7 @@ class SelfTest(QtWidgets.QWidget):
         self._esp32 = None
         self._mainwindow = None
         self._selftestbar = None
-        self._btn_continue = self._selftestbar.button_continue
+        self._btn_continue = None
         self._btn_back = None
         self._btn_abort = None
 
