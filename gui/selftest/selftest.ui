@@ -37,6 +37,7 @@
      </property>
      <property name="font">
       <font>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -48,19 +49,60 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QPushButton" name="btn_run_leakcheck">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>240</y>
+       <width>241</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Run Leak Check</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>70</y>
+       <width>201</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Follow these steps:
+- Do something
+- Do something</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="page_spiro_dir">
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>300</x>
        <y>20</y>
-       <width>151</width>
+       <width>191</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -70,6 +112,46 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_run_spiro_dir">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>240</y>
+       <width>241</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Run Spirometer Direction Test</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>80</y>
+       <width>201</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Follow these steps:
+- Do something
+- Do something</string>
      </property>
     </widget>
    </widget>
@@ -85,6 +167,7 @@
      </property>
      <property name="font">
       <font>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -94,6 +177,47 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_run_backup_battery">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>240</y>
+       <width>241</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Ackowledege Power Cable
+Unplugged</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>80</y>
+       <width>441</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Follow these steps:
+- Unplug the cable from the power outlet
+- Click the button below when the cable has been unplugged</string>
      </property>
     </widget>
    </widget>
@@ -109,6 +233,7 @@
      </property>
      <property name="font">
       <font>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -118,6 +243,46 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_run_alarmsystem">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>240</y>
+       <width>241</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Run Alarm System</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>90</y>
+       <width>201</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Follow these steps:
+- Do something
+- Do something</string>
      </property>
     </widget>
    </widget>

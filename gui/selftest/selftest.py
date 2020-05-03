@@ -88,3 +88,24 @@ class SelfTest(QtWidgets.QWidget):
         self._current_page = -1
         self.go_to_next_page()
 
+        self.btn_run_leakcheck.clicked.connect(self.run_leak_check)
+        self.btn_run_spiro_dir.clicked.connect(self.run_spiro_dir)
+        self.btn_run_backup_battery.clicked.connect(self.run_backup_battery)
+        self.btn_run_alarmsystem.clicked.connect(self.run_alarmsystem)
+
+    def run_leak_check(self):
+        print('Running run_leak_check')
+        return
+
+    def run_spiro_dir(self):
+        print('Running run_spiro_dir')
+        return
+
+    def run_backup_battery(self):
+        print('Running run_backup_battery')
+        return
+
+    def run_alarmsystem(self):
+        print('Running run_alarmsystem')
+        return
+
