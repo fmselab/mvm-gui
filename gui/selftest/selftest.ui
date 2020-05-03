@@ -392,8 +392,8 @@ Check</string>
       <rect>
        <x>20</x>
        <y>70</y>
-       <width>200</width>
-       <height>80</height>
+       <width>500</width>
+       <height>200</height>
       </rect>
      </property>
      <property name="font">
@@ -405,9 +405,7 @@ Check</string>
       </font>
      </property>
      <property name="text">
-      <string>Actions required:
-- Do something
-- Do something</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Click on &amp;quot;Alarm-System Check 1&amp;quot; button&lt;/p&gt;&lt;p&gt;2. Confirm the buzzer sounds and the LED flashes&lt;/p&gt;&lt;p&gt;3. Click on &amp;quot;Alarm-System Check 2&amp;quot; button&lt;/p&gt;&lt;p&gt;4. Confirm the buzzer sounds and the LED flashes&lt;/p&gt;&lt;p&gt;5. Click on &amp;quot;Alarm-System Check 3&amp;quot; button&lt;/p&gt;&lt;p&gt;6. Confirm the buzzer sounds and the LED flashes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
