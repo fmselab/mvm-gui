@@ -308,7 +308,7 @@ class ESP32Serial:
 
                 self._previous_timeout = self._esp32.connection.timeout
                 self._esp32.connection.timeout = 2
-                self._esp32.connection.write("get venturi_scan".encode())
+                self._esp32.connection.write("get venturi_scan\r\n".encode())
 
             def data(self):
                 """
