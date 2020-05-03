@@ -38,6 +38,7 @@ class Settings(QtWidgets.QMainWindow):
         self._config = self.mainparent.config
         self._data_h = self.mainparent._data_h
         self._toolsettings = self.mainparent.toolsettings
+        self._messagebar = self.mainparent.messagebar
         # self._start_stop_worker = self.mainparent._start_stop_worker
 
         # This contains all the default params
@@ -231,14 +232,20 @@ class Settings(QtWidgets.QMainWindow):
                 btn.valueChanged.connect(self.worker)
 
         # Special operations
-        # TODO: implement the function to associate to buttons
         self.label_warning.setVisible(False)
-        self.btn_sw_update.clicked.connect(lambda: print(
-            'Sw update button clicked, but not implemented.'))
-        self.btn_restart_os.clicked.connect(lambda: print(
-            'OS restart button clicked, but not implemented.'))
-        self.btn_shut_down_os.clicked.connect(lambda: print(
-            'OS shut down button clicked, but not implemented.'))
+        self.btn_sw_update.clicked.connect(lambda: self._messagebar.get_confirmation(
+            "Confirm SOFTWARE UPDATE AND CLOSE",
+            "Are you sure you want to request and execute a SOFTWARE UPDATE and CLOSE?",
+            func_confirm=self.upgrade_and_exit,
+            color="red"))
+
+    def upgrade_and_exit(self):
+        cmd = self._config['upgrade_script']
+
+        print("Running \"%s\"..." % cmd) 
+        os.system(cmd)
+        print("Complete. Closing GUI.")
+        sys.exit(0)
 
     def load_presets(self):
         '''
