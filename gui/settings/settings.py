@@ -231,14 +231,9 @@ class Settings(QtWidgets.QMainWindow):
                 btn.valueChanged.connect(self.worker)
 
         # Special operations
-        # TODO: implement the function to associate to buttons
         self.label_warning.setVisible(False)
         self.btn_sw_update.clicked.connect(lambda: print(
             'Sw update button clicked, but not implemented.'))
-        self.btn_restart_os.clicked.connect(lambda: print(
-            'OS restart button clicked, but not implemented.'))
-        self.btn_shut_down_os.clicked.connect(lambda: print(
-            'OS shut down button clicked, but not implemented.'))
 
     def load_presets(self):
         '''
