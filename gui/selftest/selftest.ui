@@ -93,7 +93,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect a test lung to the system&lt;/p&gt;&lt;p&gt;2. Press on the &amp;quot;Leak Check&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect a test bag lung to the system&lt;/p&gt;&lt;p&gt;2. Press the &amp;quot;Leak Check&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
