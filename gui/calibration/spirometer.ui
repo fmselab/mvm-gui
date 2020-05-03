@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>400</width>
-     <height>140</height>
+     <height>181</height>
     </rect>
    </property>
    <property name="font">
@@ -30,16 +30,16 @@
     </font>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;- Disconnect the patient&lt;/p&gt;&lt;p&gt;- Disconnect the tube&lt;/p&gt;&lt;p&gt;- Press the Start Calibration button&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Disconnect the patient&lt;/p&gt;&lt;p&gt;2. Disconnect the tube&lt;/p&gt;&lt;p&gt;3. Press the Start Calibration button&lt;/p&gt;&lt;p&gt;4. Wait for completion &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="start_calibration">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>90</y>
-     <width>160</width>
-     <height>40</height>
+     <x>440</x>
+     <y>120</y>
+     <width>170</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
