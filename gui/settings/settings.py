@@ -6,7 +6,7 @@ Settings ui helper
 import os
 import sys
 import copy
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets, QtCore, uic
 from presets.presets import Presets
 from messagebox import MessageBox
 from communication import ESP32Exception
@@ -38,6 +38,7 @@ class Settings(QtWidgets.QMainWindow):
         self._config = self.mainparent.config
         self._data_h = self.mainparent._data_h
         self._toolsettings = self.mainparent.toolsettings
+        self._messagebar = self.mainparent.messagebar
         # self._start_stop_worker = self.mainparent._start_stop_worker
 
         # This contains all the default params
@@ -232,8 +233,23 @@ class Settings(QtWidgets.QMainWindow):
 
         # Special operations
         self.label_warning.setVisible(False)
-        self.btn_sw_update.clicked.connect(lambda: print(
-            'Sw update button clicked, but not implemented.'))
+        self.btn_sw_update.clicked.connect(lambda: self._messagebar.get_confirmation(
+            "Confirm SOFTWARE UPDATE AND CLOSE",
+            "Are you sure you want to request and execute a SOFTWARE UPDATE and CLOSE?",
+            func_confirm=self.upgrade_and_exit,
+            color="red"))
+
+    def upgrade_and_exit(self):
+        upgrade = QtCore.QProcess()
+        cmd = self._config['upgrade_script']
+
+        print("Running \"%s\"..." % cmd) 
+        upgrade.start(cmd)
+        upgrade.setProcessChannelMode(QtCore.QProcess.ForwardedChannels);
+        upgrade.waitForFinished()
+        upgrade.close()
+        print("Complete. Closing GUI.")
+        sys.exit(0)
 
     def load_presets(self):
         '''
