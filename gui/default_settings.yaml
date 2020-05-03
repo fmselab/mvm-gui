@@ -50,6 +50,7 @@ historic_nsamples: 200
 # The parameters that can be set on the ESP
 # The values below must match those used in the ESP
 esp_settable_param:
+    leak_compensation: 'leak_compensation'
     respiratory_rate:  'rate'
     insp_expir_ratio:  'ratio'
     insp_pressure:     'ptarget'
@@ -335,6 +336,22 @@ plots:
 # PCV Mode
 #
 # Note: can only have max 6 presets for now.
+
+# General 
+
+leak_compensation:
+    name: "Leak-compensed PEEP"
+    default:  5
+    min: 0
+    max: 10
+    current: None
+    units: "[cmH<sub>2</sub>O]"
+    conversion: 0.980665 # From cmH2O to mbar
+    presets:
+        - [2, '']
+        - [5, '']
+        - [7.5, '']
+        - [10, '']
 
 # Respiration Rate (breaths per minute)
 respiratory_rate:

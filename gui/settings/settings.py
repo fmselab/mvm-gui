@@ -45,6 +45,8 @@ class Settings(QtWidgets.QMainWindow):
         self._current_values_temp = {}
 
         self._all_spinboxes = {
+            # General
+            'leak_compensation': self.spinBox_leak_compensation,
             # Auto
             'respiratory_rate': self.spinBox_rr,
             'insp_expir_ratio': self.spinBox_insp_expir_ratio,
@@ -65,6 +67,8 @@ class Settings(QtWidgets.QMainWindow):
         }
 
         self._all_fakebtn = {
+            # General
+            'leak_compensation': self.fake_btn_leak_compensation,
             # Auto
             'respiratory_rate': self.fake_btn_rr,
             'insp_expir_ratio': self.fake_btn_ie,
@@ -185,6 +189,10 @@ class Settings(QtWidgets.QMainWindow):
         self._button_apply.clicked.connect(self.apply_worker)
         self._button_loadpreset.clicked.connect(self.load_presets)
         self._button_close.clicked.connect(self.close_settings_worker)
+
+        # General
+        self._all_fakebtn['leak_compensation'].clicked.connect(
+            lambda: self.spawn_presets_window('leak_compensation'))
 
         # Auto
         self._all_fakebtn['respiratory_rate'].clicked.connect(

@@ -35,7 +35,7 @@
        <x>10</x>
        <y>10</y>
        <width>461</width>
-       <height>133</height>
+       <height>111</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -106,6 +106,20 @@
        <widget class="QCheckBox" name="system_failure_alarm">
         <property name="text">
          <string>System failure</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="inverted_venturi_alarm">
+        <property name="text">
+         <string>Inverted Venturi</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="no_venturi_alarm">
+        <property name="text">
+         <string>No Venturi</string>
         </property>
        </widget>
       </item>

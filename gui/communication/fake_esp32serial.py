@@ -92,6 +92,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "alarm": 0,
             "warning": 0,
             "temperature": 40,
+            "leak_compensation": 7,
             "rate": 17.0,
             "ratio": 2 / 3,
             "ptarget": 37.7,
@@ -193,6 +194,8 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "gas_occlusion_alarm": 6,
             "partial_gas_occlusion_alarm": 7,
             "apnea_alarm": 22,
+            "inverted_venturi_alarm": 23,
+            "no_venturi_alarm": 24,
             "system_failure_alarm": 31}
 
         # HW warnings
