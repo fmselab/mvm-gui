@@ -117,6 +117,8 @@ class SelfTest(QtWidgets.QWidget):
         self._btn_back.setEnabled(enabled)
         self._btn_continue.setEnabled(enabled)
         self._btn_abort.setEnabled(enabled)
+        if enabled:
+            self.update_enabled_buttons()
 
     def run_leak_check(self):
         '''
