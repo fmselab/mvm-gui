@@ -133,7 +133,7 @@ class SelfTest(QtWidgets.QWidget):
             patient_ps = []
             internal_ps = []
 
-            for competion, internal_p, patient_p in retriever.data():
+            for completion, internal_p, patient_p in retriever.data():
                 self.completion_bar_lc.setValue(completion)
                 patient_ps.append(patient_p)
                 internal_ps.append(internal_p)
