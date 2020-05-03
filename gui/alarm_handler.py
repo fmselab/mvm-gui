@@ -363,4 +363,4 @@ class CriticalAlarmHandler:
         Re-issues the last (and presumably failed) command to the ESP32.
         """
         self.nretry -= 1
-        self.call_communication_failure(self.nretry)
+        self.call_communication_failure(self.nretry) 

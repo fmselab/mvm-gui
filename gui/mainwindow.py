@@ -23,7 +23,7 @@ from monitor.monitor import Monitor
 from data_filler import DataFiller
 from data_handler import DataHandler
 from start_stop_worker import StartStopWorker
-from alarm_handler import AlarmHandler
+from alarm_handler import AlarmHandler, CriticalAlarmHandler
 from numpad.numpad import NumPad
 from frozenplots.frozenplots import Cursor
 from messagebar.messagebar import MessageBar
@@ -68,6 +68,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main = self.findChild(QtWidgets.QWidget, "main")
         self.initial = self.findChild(QtWidgets.QWidget, "initial")
         self.startup = self.findChild(QtWidgets.QWidget, "startup")
+        self.criticalerrorpage = self.findChild(QtWidgets.QWidget, "criticalerrorpage")
 
         '''
         Get the center pane (plots) widgets
@@ -95,6 +96,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QWidget, "settingsforkbar")
         self.alarmsbar = self.findChild(QtWidgets.QWidget, "alarmsbar")
         self.numpadbar = self.findChild(QtWidgets.QWidget, "numpadbar")
+        self.criticalerrorbar = self.findChild(QtWidgets.QWidget, "criticalerrorbar")
 
         '''
         Get the stackable bits on the right
@@ -349,6 +351,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button_autoassist.released.connect(
             self._start_stop_worker.toggle_mode)
         self.gui_alarm.connect_workers(self._start_stop_worker)
+
+
+        # Instantiate the critical alarm handler meant for severe communications and hardware error
+        self.critical_alarm_handler = CriticalAlarmHandler(self, esp32)
 
     def lock_screen(self):
         """
