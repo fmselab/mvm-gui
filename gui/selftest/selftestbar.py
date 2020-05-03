@@ -21,6 +21,6 @@ class SelfTestBar(QtWidgets.QWidget):
         super(SelfTestBar, self).__init__(*args)
         uifile = os.path.join(os.path.dirname(
             os.path.realpath(__file__)),
-            "selftestbar.ui")
+                              "selftestbar.ui")
 
         uic.loadUi(uifile, self)
