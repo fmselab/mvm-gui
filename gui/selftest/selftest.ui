@@ -278,8 +278,8 @@ Direction Check</string>
     <widget class="QPushButton" name="btn_run_backup_battery">
      <property name="geometry">
       <rect>
-       <x>460</x>
-       <y>140</y>
+       <x>30</x>
+       <y>250</y>
        <width>180</width>
        <height>60</height>
       </rect>
