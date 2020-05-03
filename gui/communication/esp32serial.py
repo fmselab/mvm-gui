@@ -328,8 +328,8 @@ class ESP32Serial:
                 bresult = self._esp32.connection.read_until(
                     terminator=self._esp32.term)
 
-                result = bresult.decode()
-                if result.strip() == 'valore=OK':
+                result = bresult.decode().strip()
+                if result == 'valore=OK':
                     return
                 yield [float(datum) for datum in result.split(',')]
 
