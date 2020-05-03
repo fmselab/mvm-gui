@@ -118,6 +118,7 @@ void setup()
   parameters["pcv_trigger"]        = String(5);
   parameters["pcv_trigger_enable"] = String(0);
 
+  parameters["leak_compensation"]= String(5);
   parameters["rate"]             = String(12);
   parameters["ratio"]            = String(2);
   parameters["ptarget"]          = String(15);

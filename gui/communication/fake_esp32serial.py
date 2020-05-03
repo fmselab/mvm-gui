@@ -92,6 +92,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "alarm": 0,
             "warning": 0,
             "temperature": 40,
+            "leak_compensation": 7,
             "rate": 17.0,
             "ratio": 2 / 3,
             "ptarget": 37.7,
