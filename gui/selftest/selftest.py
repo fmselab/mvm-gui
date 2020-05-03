@@ -112,6 +112,11 @@ class SelfTest(QtWidgets.QWidget):
         self.btn_run_alarmsystem_2.clicked.connect(self.run_alarmsystem_2)
         self.btn_run_alarmsystem_3.clicked.connect(self.run_alarmsystem_3)
 
+    def _enable_bar_buttons(self, enabled=True):
+        self._btn_back.setEnabled(enabled)
+        self._btn_continue.setEnabled(enabled)
+        self._btn_abort.setEnabled(enabled)
+
     def run_leak_check(self):
         '''
         Runs the leak check test
