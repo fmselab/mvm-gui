@@ -145,9 +145,9 @@ class SelfTest(QtWidgets.QWidget):
             if abs(patient_ps[0] - patient_ps[-1]) < 10:
                 raise Exception("Check failed")
 
-            self.endstatus_label_lc.setText("Succeeded")
+            self.endstatus_label_lc.setText("Success")
         except:
-            self.endstatus_label_lc.setText("Failed")
+            self.endstatus_label_lc.setText("Failure")
         finally:
             self._enable_bar_buttons()
             self.btn_run_leakcheck.setEnabled(True)
@@ -186,11 +186,11 @@ class SelfTest(QtWidgets.QWidget):
             self._esp32.set("rate", rate)
 
             if (1 << 23) in self._esp32.get_alarms().get_alarm_codes():
-                self.endstatus_label_fdc.setText("Failed")
+                self.endstatus_label_fdc.setText("Failure")
             else:
-                self.endstatus_label_fdc.setText("Succeeded")
+                self.endstatus_label_fdc.setText("Success")
         except:
-            self.endstatus_label_fdc.setText("Failed")
+            self.endstatus_label_fdc.setText("Failure")
 
         self._enable_bar_buttons()
         self.btn_run_spiro_dir.setEnabled(True)

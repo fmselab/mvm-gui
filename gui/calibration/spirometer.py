@@ -82,7 +82,7 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 raise Exception("invalid data points")
             if chi_sq/ndf > 10:
                 raise Exception("Fit has a chi 2 too large")
-            self.endstatus_label.setText("Succeeded")
+            self.endstatus_label.setText("Success")
         except: #pylint: disable=W0702
             self.start_calibration.setEnabled(True)
             self.retry_button.setEnabled(True)
