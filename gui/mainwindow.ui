@@ -795,6 +795,7 @@
         </layout>
        </widget>
       </widget>
+      <widget class="SelfTestBar" name="selftestbar"/>
       <widget class="Toolbar" name="toolbar"/>
       <widget class="SpecialBar" name="specialbar"/>
       <widget class="Menu" name="menu"/>
@@ -1962,6 +1963,12 @@ Screen</string>
    <class>SelfTest</class>
    <extends>QWidget</extends>
    <header>selftest/selftest</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SelfTestBar</class>
+   <extends>QWidget</extends>
+   <header>selftest/selftestbar</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

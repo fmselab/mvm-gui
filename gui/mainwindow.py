@@ -224,6 +224,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.bottombar.insertWidget(self.bottombar.count(), self.messagebar)
         # Spirometer Calibration
         self.spiro_calib.connect_mainwindow_esp32(self, self.esp32)
+        # Self Test
+        self.self_test.connect_mainwindow_esp32_selftestbar(self, self.esp32, self.selftestbar)
 
         # Assign unlock screen button and setup state
         self.unlockscreen_interval = self.config['unlockscreen_interval']
@@ -427,7 +429,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.show_selftest()
-        self.show_blank_bottom()
+        self.show_selftestbar()
 
     def goto_main(self):
         """
@@ -497,6 +499,12 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.bottombar.setCurrentWidget(self.blank)
+
+    def show_selftestbar(self):
+        """
+        Shows the numeric pad in the bottom of the home pane.
+        """
+        self.bottombar.setCurrentWidget(self.selftestbar)
 
     def show_toolbar(self, locked_state=False):
         """
