@@ -55,4 +55,6 @@ def data_regression(x, y, deg=4, full=True):
             return np.flip(coeff), chi_squared, ndf
         return np.flip(coeff)
 
+    if full:
+        return [], -1, -1
     return []
