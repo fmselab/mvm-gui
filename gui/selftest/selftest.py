@@ -121,9 +121,33 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the leak check test
         '''
-        # TODO: to be implemented
-        print('Running run_leak_check')
-        return
+
+        self._enable_bar_buttons(False)
+        self.btn_run_leakcheck.setEnabled(False)
+        self.endstatus_label.setText("")
+        self.completion_bar.setValue(0)
+
+        try:
+            retriever = self._esp32.leakage_test()
+
+            patient_ps = []
+            internal_ps = []
+
+            for competion, internal_p, patient_p in retriever.data():
+                self.completion_bar.setValue(completion)
+                patient_ps.append(patient_p)
+                internal_ps.append(internal_p)
+
+            if abs(patient_ps[0] - patient_ps[-1]) < 10:
+                raise Exception("Check failed")
+
+            self.endstatus_label.setText("Succeeded")
+        except:
+            self.endstatus_label.setText("Failed")
+        finally:
+            self._enable_bar_buttons()
+            self.btn_run_leakcheck.setEnabled(True)
+            del retriever
 
     def run_spiro_dir(self):
         '''
