@@ -30,7 +30,7 @@
     </font>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Disconnect the patient&lt;/p&gt;&lt;p&gt;2. Connect the pipe to the Spirometer&lt;/p&gt;&lt;p&gt;3. Press the Start Calibration button&lt;/p&gt;&lt;p&gt;4. Wait for completion &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect the patient circuit to the Venturi spirometer&lt;/p&gt;&lt;p&gt;2. Press the &amp;quot;Start Calibration&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="start_calibration">
@@ -77,14 +77,14 @@
    <property name="geometry">
     <rect>
      <x>590</x>
-     <y>220</y>
+     <y>210</y>
      <width>200</width>
-     <height>50</height>
+     <height>70</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
