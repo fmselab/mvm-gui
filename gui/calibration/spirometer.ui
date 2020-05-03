@@ -30,7 +30,7 @@
     </font>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Disconnect the patient&lt;/p&gt;&lt;p&gt;2. Disconnect the tube&lt;/p&gt;&lt;p&gt;3. Press the Start Calibration button&lt;/p&gt;&lt;p&gt;4. Wait for completion &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Disconnect the patient&lt;/p&gt;&lt;p&gt;2. Connect the pipe to the Spirometer&lt;/p&gt;&lt;p&gt;3. Press the Start Calibration button&lt;/p&gt;&lt;p&gt;4. Wait for completion &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="start_calibration">
