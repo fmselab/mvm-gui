@@ -33,6 +33,9 @@ class SelfTest(QtWidgets.QWidget):
         self._current_page = None
 
     def go_to_next_page(self):
+        '''
+        Goes to the next page
+        '''
 
         self._current_page += 1
         
@@ -44,6 +47,9 @@ class SelfTest(QtWidgets.QWidget):
         self.update_enabled_buttons()
 
     def go_to_previous_page(self):
+        '''
+        Goes to the previous page
+        '''
 
         self._current_page -= 1
         
@@ -55,6 +61,11 @@ class SelfTest(QtWidgets.QWidget):
         self.update_enabled_buttons()
 
     def update_enabled_buttons(self):
+        '''
+        Check if we can go next of back,
+        and if we cannot it disable either 
+        the continue of the back buttons
+        '''
 
         if self._current_page == 0:
             self._btn_back.setEnabled(False)
@@ -94,18 +105,30 @@ class SelfTest(QtWidgets.QWidget):
         self.btn_run_alarmsystem.clicked.connect(self.run_alarmsystem)
 
     def run_leak_check(self):
+        '''
+        Runs the leak check test
+        '''
         print('Running run_leak_check')
         return
 
     def run_spiro_dir(self):
+        '''
+        Runs the spirometer direction test
+        '''
         print('Running run_spiro_dir')
         return
 
     def run_backup_battery(self):
+        '''
+        Runs the backup battery test
+        '''
         print('Running run_backup_battery')
         return
 
     def run_alarmsystem(self):
+        '''
+        Runs the alarm system test
+        '''
         print('Running run_alarmsystem')
         return
 
