@@ -119,6 +119,26 @@
       <number>0</number>
      </property>
     </widget>
+    <widget class="QLabel" name="endstatus_label">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>220</y>
+       <width>170</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="page_spiro_dir">
     <widget class="QLabel" name="label_2">
