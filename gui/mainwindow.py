@@ -393,6 +393,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.show_startup()
+        self.show_blank_bottom()
 
     def goto_resume_patient(self):
         """
