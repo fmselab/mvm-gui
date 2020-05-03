@@ -19,7 +19,7 @@ class SelfTest(QtWidgets.QWidget):
         super(SelfTest, self).__init__(*args)
         uifile = os.path.join(os.path.dirname(
             os.path.realpath(__file__)),
-            "selftest.ui")
+                              "selftest.ui")
 
         uic.loadUi(uifile, self)
 
@@ -31,6 +31,12 @@ class SelfTest(QtWidgets.QWidget):
         ]
 
         self._current_page = None
+        self._esp32 = None
+        self._mainwindow = None
+        self._selftestbar = None
+        self._btn_continue = self._selftestbar.button_continue
+        self._btn_back = None
+        self._btn_abort = None
 
     def go_to_next_page(self):
         '''
@@ -38,10 +44,10 @@ class SelfTest(QtWidgets.QWidget):
         '''
 
         self._current_page += 1
-        
+
         if self._current_page >= len(self._all_pages):
             raise Exception('Can\t go to next page.')
-        
+
         self.stack.setCurrentWidget(self._all_pages[self._current_page])
 
         self.update_enabled_buttons()
@@ -52,10 +58,10 @@ class SelfTest(QtWidgets.QWidget):
         '''
 
         self._current_page -= 1
-        
+
         if self._current_page < 0:
             raise Exception('Can\t go to previous page.')
-        
+
         self.stack.setCurrentWidget(self._all_pages[self._current_page])
 
         self.update_enabled_buttons()
@@ -63,7 +69,7 @@ class SelfTest(QtWidgets.QWidget):
     def update_enabled_buttons(self):
         '''
         Check if we can go next of back,
-        and if we cannot it disable either 
+        and if we cannot it disable either
         the continue of the back buttons
         '''
 
@@ -108,6 +114,7 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the leak check test
         '''
+        # TODO: to be implemented
         print('Running run_leak_check')
         return
 
@@ -115,6 +122,7 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the spirometer direction test
         '''
+        # TODO: to be implemented
         print('Running run_spiro_dir')
         return
 
@@ -122,6 +130,7 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the backup battery test
         '''
+        # TODO: to be implemented
         print('Running run_backup_battery')
         return
 
@@ -129,6 +138,6 @@ class SelfTest(QtWidgets.QWidget):
         '''
         Runs the alarm system test
         '''
+        # TODO: to be implemented
         print('Running run_alarmsystem')
         return
-
