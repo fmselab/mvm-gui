@@ -344,7 +344,7 @@ plots:
 
 leak_compensation:
     name: "Leak-compensed PEEP"
-    default:  5
+    default:  0
     min: 0
     max: 10
     current: None
