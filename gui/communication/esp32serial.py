@@ -322,7 +322,10 @@ class ESP32Serial:
                     #work on a chunk of data
                 ```
 
-                yields a list of (3) floats
+                yields a list of (3) floats:
+                1. measure index (percentage)
+                2. raw measured flow (spirometer)
+                3. pressure variation (Sinsirion)
                 """
 
                 while True:
