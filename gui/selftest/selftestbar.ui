@@ -37,9 +37,15 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
-       <width>114</width>
+       <width>133</width>
        <height>16777215</height>
       </size>
      </property>
@@ -175,6 +181,15 @@
         <colorrole role="ToolTipText">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
            <red>0</red>
            <green>0</green>
            <blue>0</blue>
@@ -318,6 +333,15 @@
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
        </inactive>
        <disabled>
         <colorrole role="WindowText">
@@ -455,6 +479,15 @@
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
        </disabled>
       </palette>
      </property>
@@ -493,7 +526,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>113</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
