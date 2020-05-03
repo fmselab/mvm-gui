@@ -355,6 +355,7 @@ class ESP32Serial:
                 self._esp32.connection.timeout = self._previous_timeout
                 self._esp32.lock.release()
                 # ...and from here it finally releases its ownership
+                self._esp32.set("flush_pipe", 0)
 
         return VenturiRetriever(self)
 
