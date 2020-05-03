@@ -6,7 +6,7 @@ Settings ui helper
 import os
 import sys
 import copy
-from PyQt5 import QtWidgets, QtCore, uic
+from PyQt5 import QtWidgets, uic
 from presets.presets import Presets
 from messagebox import MessageBox
 from communication import ESP32Exception
@@ -240,14 +240,10 @@ class Settings(QtWidgets.QMainWindow):
             color="red"))
 
     def upgrade_and_exit(self):
-        upgrade = QtCore.QProcess()
         cmd = self._config['upgrade_script']
 
         print("Running \"%s\"..." % cmd) 
-        upgrade.start(cmd)
-        upgrade.setProcessChannelMode(QtCore.QProcess.ForwardedChannels);
-        upgrade.waitForFinished()
-        upgrade.close()
+        os.system(cmd)
         print("Complete. Closing GUI.")
         sys.exit(0)
 
