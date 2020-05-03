@@ -308,7 +308,7 @@ class ESP32Serial:
 
                 self._previous_timeout = self._esp32.connection.timeout
                 self._esp32.connection.timeout = 2
-                self._esp32.connection.write("get venturi_scan".encode())
+                self._esp32.connection.write("get venturi_scan\r\n".encode())
 
             def data(self):
                 """
@@ -325,13 +325,16 @@ class ESP32Serial:
                 yields a list of (3) floats
                 """
 
-                bresult = self._esp32.connection.read_until(
-                    terminator=self._esp32.term)
+                while True:
+                    bresult = self._esp32.connection.read_until(
+                        terminator=self._esp32.term)
 
-                result = bresult.decode()
-                if result.strip() == 'valore=OK':
-                    return
-                yield [float(datum) for datum in result.split(',')]
+                    result = bresult.decode().strip()
+                    if result == '':
+                        raise ESP32Exception("get", "get venturi_scan", "timeout")
+                    elif result == 'valore=OK':
+                        return
+                    yield [float(datum) for datum in result.split(',')]
 
             def __del__(self):
                 """

@@ -1,8 +1,7 @@
-#include <StandardCplusplus.h>
+#include <ArduinoSTL.h>
 
-// If this fails, install ArduinoSTL from the Arduino library
-// and use the following instead:
-// #include <ArduinoSTL.h>
+// You may still have or prefer the StandardCplusplus library
+// #include <StandardCplusplus.h>
 
 #include <map>
 #include <vector>
@@ -99,6 +98,22 @@ mvm::alarm_t warning_status = 0;
 
 unsigned long pause_lg_expiration = mvm::now<mvm::Seconds>() + 10;
 unsigned long gui_watchdog_expr = mvm::now<mvm::Seconds>() + 5;
+
+float venturi_flow(float delta_p)
+{
+  float const coefficients[] = { 10, 1, 0.1, 0.01, 0.001 };
+
+  float flow = coefficients[0];
+  float running_power = 1.;
+
+  for (auto i = 1; i != 5; ++i) {
+    running_power *= delta_p;
+    flow += coefficients[i] * running_power;
+  }
+
+  return flow;
+}
+
 
 void setup()
 {
@@ -215,6 +230,16 @@ String get(String const& command)
     return String(warning_status);
   } else if (name == "version") {
     return "mock";
+  } else if (name == "venturi_scan") {
+    for (int i = 30; i != 100; ++i) {
+      auto const delta_p = 30 + i;
+      Serial.print(i); Serial.print(",");
+      Serial.print(venturi_flow(delta_p)); Serial.print(",");
+      Serial.println(delta_p);
+      delay(1000);
+    }
+
+    return "OK";
   }
 
   auto const it = std::find(
