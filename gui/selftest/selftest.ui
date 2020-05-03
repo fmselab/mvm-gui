@@ -72,7 +72,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Run Leak Check</string>
+      <string>Leak Check</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_6">
@@ -93,7 +93,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect a test lung to the system&lt;/p&gt;&lt;p&gt;2. Press on the &amp;quot;Run Leak Check&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect a test lung to the system&lt;/p&gt;&lt;p&gt;2. Press on the &amp;quot;Leak Check&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -127,10 +127,10 @@
     <widget class="QPushButton" name="btn_run_spiro_dir">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>240</y>
-       <width>241</width>
-       <height>71</height>
+       <x>460</x>
+       <y>140</y>
+       <width>180</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="font">
@@ -142,7 +142,8 @@
       </font>
      </property>
      <property name="text">
-      <string>Run Spirometer Direction Test</string>
+      <string>Spirometer Flow
+Direction Check</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
@@ -197,10 +198,10 @@
     <widget class="QPushButton" name="btn_run_backup_battery">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>240</y>
-       <width>241</width>
-       <height>71</height>
+       <x>460</x>
+       <y>140</y>
+       <width>180</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="font">
@@ -212,8 +213,8 @@
       </font>
      </property>
      <property name="text">
-      <string>Ackowledege Power Cable
-Unplugged</string>
+      <string>Battery-Switch
+Check</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
@@ -259,7 +260,7 @@ Unplugged</string>
       </font>
      </property>
      <property name="text">
-      <string>Alarm System Checks</string>
+      <string>Alarm-System Checks</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -268,10 +269,10 @@ Unplugged</string>
     <widget class="QPushButton" name="btn_run_alarmsystem">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>240</y>
-       <width>241</width>
-       <height>71</height>
+       <x>540</x>
+       <y>50</y>
+       <width>191</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="font">
@@ -283,7 +284,7 @@ Unplugged</string>
       </font>
      </property>
      <property name="text">
-      <string>Run Alarm System</string>
+      <string>Alarm-System Check 1</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_8">
@@ -310,6 +311,48 @@ Unplugged</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_run_alarmsystem_2">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>120</y>
+       <width>191</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Alarm-System Check 2</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_run_alarmsystem_3">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>190</y>
+       <width>191</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Cantarell</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Alarm-System Check 3</string>
      </property>
     </widget>
    </widget>
