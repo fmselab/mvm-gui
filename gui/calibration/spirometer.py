@@ -52,7 +52,7 @@ class SpirometerCalibration(QtWidgets.QWidget):
                 self._esp32.set("venturi_coefficient_%d" % index,
                                 self._coefficients[index])
 
-            self._mainwindow.show_startup()
+        self._mainwindow.goto_new_patient()
 
     def _start_calibration(self):
         """

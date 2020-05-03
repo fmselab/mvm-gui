@@ -102,6 +102,7 @@ class SelfTest(QtWidgets.QWidget):
 
         self._btn_continue.clicked.connect(self.go_to_next_page)
         self._btn_back.clicked.connect(self.go_to_previous_page)
+        self._btn_cancel.clicked.connect(self._mainwindow.goto_new_patient)
 
         self._current_page = -1
         self.go_to_next_page()
