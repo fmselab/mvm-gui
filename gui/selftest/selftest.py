@@ -109,6 +109,8 @@ class SelfTest(QtWidgets.QWidget):
         self.btn_run_spiro_dir.clicked.connect(self.run_spiro_dir)
         self.btn_run_backup_battery.clicked.connect(self.run_backup_battery)
         self.btn_run_alarmsystem_1.clicked.connect(self.run_alarmsystem_1)
+        self.btn_run_alarmsystem_2.clicked.connect(self.run_alarmsystem_2)
+        self.btn_run_alarmsystem_3.clicked.connect(self.run_alarmsystem_3)
 
     def run_leak_check(self):
         '''
@@ -135,6 +137,22 @@ class SelfTest(QtWidgets.QWidget):
         return
 
     def run_alarmsystem_1(self):
+        '''
+        Runs the alarm system test
+        '''
+        # TODO: to be implemented
+        print('Running run_alarmsystem')
+        return
+
+    def run_alarmsystem_2(self):
+        '''
+        Runs the alarm system test
+        '''
+        # TODO: to be implemented
+        print('Running run_alarmsystem')
+        return
+
+    def run_alarmsystem_3(self):
         '''
         Runs the alarm system test
         '''
