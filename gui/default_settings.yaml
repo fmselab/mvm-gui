@@ -20,7 +20,7 @@ get_all_fields:
   - volume_minute
 
 # Path to upgrade script
-upgrade_script: "cd /home/pi/upgrade.gui/gui/; python mvm_update.py"
+upgrade_script: "cd /home/pi/upgrade.gui/gui/; python3 mvm_update.py"
 
 # Conversion factors to apply to the values from the get_all
 conversions:
