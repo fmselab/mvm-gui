@@ -124,8 +124,8 @@ class SelfTest(QtWidgets.QWidget):
 
         self._enable_bar_buttons(False)
         self.btn_run_leakcheck.setEnabled(False)
-        self.endstatus_label.setText("")
-        self.completion_bar.setValue(0)
+        self.endstatus_label_lc.setText("")
+        self.completion_bar_lc.setValue(0)
 
         try:
             retriever = self._esp32.leakage_test()
@@ -134,16 +134,16 @@ class SelfTest(QtWidgets.QWidget):
             internal_ps = []
 
             for competion, internal_p, patient_p in retriever.data():
-                self.completion_bar.setValue(completion)
+                self.completion_bar_lc.setValue(completion)
                 patient_ps.append(patient_p)
                 internal_ps.append(internal_p)
 
             if abs(patient_ps[0] - patient_ps[-1]) < 10:
                 raise Exception("Check failed")
 
-            self.endstatus_label.setText("Succeeded")
+            self.endstatus_label_lc.setText("Succeeded")
         except:
-            self.endstatus_label.setText("Failed")
+            self.endstatus_label_lc.setText("Failed")
         finally:
             self._enable_bar_buttons()
             self.btn_run_leakcheck.setEnabled(True)

@@ -99,7 +99,7 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
-    <widget class="QProgressBar" name="completion_bar">
+    <widget class="QProgressBar" name="completion_bar_lc">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -119,7 +119,7 @@
       <number>0</number>
      </property>
     </widget>
-    <widget class="QLabel" name="endstatus_label">
+    <widget class="QLabel" name="endstatus_label_lc">
      <property name="geometry">
       <rect>
        <x>600</x>
