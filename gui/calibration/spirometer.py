@@ -47,7 +47,7 @@ class SpirometerCalibration(QtWidgets.QWidget):
         Send coefficients to ESP32 and quit the procedure
         """
 
-        if index != []:
+        if self._coefficients != []:
             for index in range(5):
                 self._esp32.set("venturi_coefficient_%d" % index,
                                 self._coefficients[index])
