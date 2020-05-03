@@ -315,7 +315,7 @@ Check</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Press on the &amp;quot;Run Battery-Switch Check&amp;quot; button&lt;/p&gt;&lt;p&gt;2. Unplug the power cable from the power outlet&lt;/p&gt;&lt;p&gt;3. Plug back the power cable to the power outlet&lt;/p&gt;&lt;p&gt;4. Confirm that the buzzer sounded and that the LED flashed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Press on the &amp;quot;Battery-Switch Check&amp;quot; button&lt;/p&gt;&lt;p&gt;2. Unplug the power cable from the power outlet&lt;/p&gt;&lt;p&gt;3. Plug back the power cable to the power outlet&lt;/p&gt;&lt;p&gt;4. Confirm that the buzzer sounded and that the LED flashed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
