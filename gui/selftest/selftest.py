@@ -195,13 +195,42 @@ class SelfTest(QtWidgets.QWidget):
         self._enable_bar_buttons()
         self.btn_run_spiro_dir.setEnabled(True)
 
+    def _confirm_battery_warning(self, success):
+        self._enable_bar_buttons()
+        self.btn_run_backup_battery.setEnabled(True)
+        if success:
+            self.endstatus_label_bc.setText("Success")
+        else:
+            self.endstatus_label_bc.setText("Failure")
+
     def run_backup_battery(self):
         '''
         Runs the backup battery test
         '''
-        # TODO: to be implemented
-        print('Running run_backup_battery')
-        return
+        self.btn_run_backup_battery.setEnabled(False)
+        self._enable_bar_buttons(False)
+        self.endstatus_label_bc.setText("")
+
+        counter = 0
+        while counter != 10*20:
+            counter += 1
+            warnings = self._esp32.get_warnings().get_alarm_codes()
+            if (1 << 1) in warnings:
+                break
+            self.repaint()
+            time.sleep(0.05)
+
+        if counter == 200:
+            self._confirm_battery_warning(False)
+            return
+
+        self._mainwindow.messagebar.get_confirmation(
+                "Confirm the warning worked or not",
+                "Is the buzzer sounding and the LED flashing?",
+                color="white",
+                func_confirm=lambda: self._confirm_battery_warning(True),
+                func_cancel=lambda: self._confirm_battery_warning(False))
+
 
     def run_alarmsystem_1(self):
         '''
