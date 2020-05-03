@@ -23,3 +23,68 @@ class SelfTest(QtWidgets.QWidget):
 
         uic.loadUi(uifile, self)
 
+        self._all_pages = [
+            self.page_leakcheck,
+            self.page_spiro_dir,
+            self.page_backupbattery,
+            self.page_alarmsystem
+        ]
+
+        self._current_page = None
+
+    def go_to_next_page(self):
+
+        self._current_page += 1
+        
+        if self._current_page >= len(self._all_pages):
+            raise Exception('Can\t go to next page.')
+        
+        self.stack.setCurrentWidget(self._all_pages[self._current_page])
+
+        self.update_enabled_buttons()
+
+    def go_to_previous_page(self):
+
+        self._current_page -= 1
+        
+        if self._current_page < 0:
+            raise Exception('Can\t go to previous page.')
+        
+        self.stack.setCurrentWidget(self._all_pages[self._current_page])
+
+        self.update_enabled_buttons()
+
+    def update_enabled_buttons(self):
+
+        if self._current_page == 0:
+            self._btn_back.setEnabled(False)
+        else:
+            self._btn_back.setEnabled(True)
+
+        if self._current_page == len(self._all_pages)-1:
+            self._btn_continue.setEnabled(False)
+        else:
+            self._btn_continue.setEnabled(True)
+
+        self._btn_continue.repaint()
+        self._btn_back.repaint()
+
+    def connect_mainwindow_esp32_selftestbar(self, mainwindow, esp32, selftestbar):
+        """
+        Connect the ESP32Serial istance.
+        """
+
+        self._esp32 = esp32
+        self._mainwindow = mainwindow
+        self._selftestbar = selftestbar
+
+        self._btn_continue = self._selftestbar.button_continue
+        self._btn_back = self._selftestbar.button_back
+        self._btn_abort = self._selftestbar.button_abort
+
+        self._btn_continue.clicked.connect(self.go_to_next_page)
+        self._btn_back.clicked.connect(self.go_to_previous_page)
+
+        self._current_page = -1
+        self.go_to_next_page()
+
