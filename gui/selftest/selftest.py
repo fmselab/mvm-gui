@@ -234,6 +234,15 @@ class SelfTest(QtWidgets.QWidget):
                 func_cancel=lambda: self._confirm_battery_warning(False))
 
 
+    def _enable_alarm_test_buttons(self, enabled=True):
+        """
+        Allows to enable or disable alarm system buttons at once
+        """
+
+        self.btn_run_alarmsystem_1.setEnabled(enabled)
+        self.btn_run_alarmsystem_2.setEnabled(enabled)
+        self.btn_run_alarmsystem_3.setEnabled(enabled)
+
     def run_alarmsystem_1(self):
         '''
         Runs the alarm system test
