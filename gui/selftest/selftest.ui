@@ -369,9 +369,9 @@ Check</string>
     <widget class="QPushButton" name="btn_run_alarmsystem_1">
      <property name="geometry">
       <rect>
-       <x>540</x>
+       <x>450</x>
        <y>50</y>
-       <width>191</width>
+       <width>190</width>
        <height>60</height>
       </rect>
      </property>
@@ -414,9 +414,9 @@ Check</string>
     <widget class="QPushButton" name="btn_run_alarmsystem_2">
      <property name="geometry">
       <rect>
-       <x>540</x>
+       <x>450</x>
        <y>120</y>
-       <width>191</width>
+       <width>190</width>
        <height>60</height>
       </rect>
      </property>
@@ -435,7 +435,7 @@ Check</string>
     <widget class="QPushButton" name="btn_run_alarmsystem_3">
      <property name="geometry">
       <rect>
-       <x>540</x>
+       <x>450</x>
        <y>190</y>
        <width>191</width>
        <height>60</height>
@@ -451,6 +451,66 @@ Check</string>
      </property>
      <property name="text">
       <string>Alarm-System Check 3</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="endstatus_label_asc_1">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>50</y>
+       <width>110</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="endstatus_label_asc_2">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>120</y>
+       <width>110</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="endstatus_label_asc_3">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>190</y>
+       <width>110</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
