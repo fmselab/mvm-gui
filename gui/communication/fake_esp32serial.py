@@ -454,3 +454,51 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
                     yield (time_point, self._flow(delta_p), delta_p)
 
         return VenturiRetriever()
+
+    def leakage_test(self):
+        """
+        Generator function to retrieve data for leakage test.
+
+        returns a helper class instance.
+        """
+
+        class LeakTestRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the leakage test data.
+            """
+
+
+            def __init__(self):
+                """
+                Constructor
+                """
+
+                self._is_leaking = True
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. completed percentage
+                2. internal pressure
+                3. pressure at the patient mouth
+                """
+
+                for time_point in range(100):
+                    time.sleep(0.1)
+                    internal_pressure = time_point+30
+                    patient_pressure = 5 if self._is_leaking else internal_pressure
+                    yield (time_point, internal_pressure, patient_pressure)
+
+        return LeakTestRetriever()
+
