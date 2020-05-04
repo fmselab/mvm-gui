@@ -234,6 +234,12 @@ monitors:
         alarmcolor: "red"
         observable: peak
 
+# Up to 3 settings may be shown in the bottom bar.
+# Which are shown varies based on the current mode.
+displayed_toolsettings:
+    psv: ['support_pressure']
+    pcv: ['respiratory_rate', 'insp_expir_ratio', 'insp_pressure']
+
 displayed_monitors:
     - battery_charge
     - battery_powered

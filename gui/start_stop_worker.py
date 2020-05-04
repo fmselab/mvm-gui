@@ -60,6 +60,9 @@ class StartStopWorker():
         self._timer = QTimer()
         self._timer.timeout.connect(self._esp32_io)
         self._start_timer()
+        
+        # Tell the Settings widget what the current mode is.
+        self._settings.mode_changed(self._mode == self.MODE_PSV)
 
     def _init_settings_panel(self):
         '''
@@ -185,6 +188,7 @@ class StartStopWorker():
                 self._button_mode.setText("Set\nPCV")
                 self.update_startstop_text()
                 self._mode = self.MODE_PSV
+                self._settings.mode_changed(True)
             else:
                 self._raise_comm_error('Cannot set PSV mode.')
 
@@ -196,6 +200,7 @@ class StartStopWorker():
                 self._button_mode.setText("Set\nPSV")
                 self.update_startstop_text()
                 self._mode = self.MODE_PCV
+                self._settings.mode_changed(False)
             else:
                 self._raise_comm_error('Cannot set PCV mode.')
 

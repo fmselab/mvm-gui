@@ -92,7 +92,7 @@ class Settings(QtWidgets.QMainWindow):
         self._all_spinboxes['insp_expir_ratio'].valueChanged.connect(
             self._recalculate_inspiratory_time)
 
-        self.toolsettings_lookup = None
+        self.toolsettings_lookup = {}
 
         # Connect all widgets
         self.connect_workers()
@@ -101,6 +101,8 @@ class Settings(QtWidgets.QMainWindow):
         self._current_preset = None
         self._current_preset_name = None
 
+        # Default to PCV setup; will be updated by start_stop_worker.
+        self.mode_changed(False)
         self.load_presets()
 
     def _recalculate_inspiratory_time(self):
@@ -262,23 +264,38 @@ class Settings(QtWidgets.QMainWindow):
             btn.setValue(value_config['default'])
             self._current_values[param] = value_config['default']
 
-        # assign an easy lookup for toolsettings
-        self.toolsettings_lookup = {}
-        self.toolsettings_lookup["respiratory_rate"] = self._toolsettings["toolsettings_1"]
-        self.toolsettings_lookup["insp_expir_ratio"] = self._toolsettings["toolsettings_2"]
-        self.toolsettings_lookup["insp_pressure"] = self._toolsettings["toolsettings_3"]
-
-        # setup the toolsettings with preset values
-        self.toolsettings_lookup["respiratory_rate"].load_presets(
-            "respiratory_rate")
-        self.toolsettings_lookup["insp_expir_ratio"].load_presets(
-            "insp_expir_ratio")
-        self.toolsettings_lookup["insp_pressure"].load_presets("insp_pressure")
 
         self._current_values_temp = copy.copy(self._current_values)
 
         self.repaint()
 
+    def mode_changed(self, is_psv):
+        """
+        When the mode changes between PSV/PCV, we need to change which toolsettings
+        are shown in the bottom bar.
+        
+        Arguments:
+        - is_psv (bool): Whether PSV or PCV is now active
+        """
+        self.toolsettings_lookup = {}
+        
+        mode = 'psv' if is_psv else 'pcv'
+        tool_list = self._config["displayed_toolsettings"][mode]
+        
+        self.toolsettings_lookup = {}
+        
+        # At most 3 tools can be shown
+        for idx in range(3):
+            widget = self._toolsettings["toolsettings_%d" % (idx + 1)]
+            
+            if len(tool_list) > idx:
+                # Show the widget and assign an easy lookup
+                widget.load_presets(tool_list[idx])
+                self.toolsettings_lookup[tool_list[idx]] = widget
+            else:
+                # Hide the widget
+                widget.load_presets(None)
+        
     def close_settings_worker(self):
         '''
         Closes the settings window, w/o applying
@@ -309,13 +326,6 @@ class Settings(QtWidgets.QMainWindow):
         else:
             raise Exception('Cannot set value to SpinBox with name', param)
 
-        if self.toolsettings_lookup is None:
-            raise Exception(
-                'Trying to update SpinBox values but toolsettings_lookup was not set!')
-
-        if param in self.toolsettings_lookup:
-            self.toolsettings_lookup[param].update(value)
-
     def update_config(self, external_config):
         '''
         Loads the presets from the config file
@@ -329,20 +339,6 @@ class Settings(QtWidgets.QMainWindow):
 
             btn.setValue(value)
             self._current_values[param] = value
-
-        # assign an easy lookup for toolsettings
-        self.toolsettings_lookup = {}
-        self.toolsettings_lookup["respiratory_rate"] = self._toolsettings["toolsettings_1"]
-        self.toolsettings_lookup["insp_expir_ratio"] = self._toolsettings["toolsettings_2"]
-        self.toolsettings_lookup["insp_pressure"] = self._toolsettings["toolsettings_3"]
-
-        # setup the toolsettings with preset values
-        self.toolsettings_lookup["respiratory_rate"].update(
-            external_config["respiratory_rate"])
-        self.toolsettings_lookup["insp_expir_ratio"].update(
-            external_config["insp_expir_ratio"])
-        self.toolsettings_lookup["insp_pressure"].update(
-            external_config["insp_pressure"])
 
         self.send_values_to_hardware()
 
@@ -405,13 +401,8 @@ class Settings(QtWidgets.QMainWindow):
                              {msg.Retry: lambda: self.send_values_to_hardware,
                               msg.Abort: lambda: sys.exit(-1)})()
 
-            if param == 'respiratory_rate':
-                self.toolsettings_lookup["respiratory_rate"].update(value)
-            elif param == 'insp_expir_ratio':
-                self.toolsettings_lookup["insp_expir_ratio"].update(
-                    self._current_values[param])
-            elif param == 'insp_pressure':
-                self.toolsettings_lookup["insp_pressure"].update(value)
+            if param in self.toolsettings_lookup:
+                self.toolsettings_lookup[param].update(self._current_values[param])
 
         settings_file = SettingsFile(self._config["settings_file_path"])
         settings_file.store(settings_to_file)

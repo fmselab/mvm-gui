@@ -137,15 +137,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.label_status = self.toolbar.findChild(
             QtWidgets.QLabel, "label_status")
 
-        toolsettings_names = {"toolsettings_1",
-                              "toolsettings_2", "toolsettings_3"}
-        self.toolsettings = {}
-
-        for name in toolsettings_names:
-            toolsettings = self.toolbar.findChild(QtWidgets.QWidget, name)
-            toolsettings.connect_config(config)
-            self.toolsettings[name] = toolsettings
-
         # Get menu widgets and connect settings for the menu widget
         self.button_back = self.menu.findChild(
             QtWidgets.QPushButton, "button_back")
