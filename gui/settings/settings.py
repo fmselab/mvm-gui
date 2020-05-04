@@ -258,6 +258,7 @@ class Settings(QtWidgets.QMainWindow):
             if param not in ['enable_backup', 'pcv_trigger_enable']:
                 btn.setMinimum(value_config['min'])
                 btn.setMaximum(value_config['max'])
+                btn.setSingleStep(value_config.get('step', 0.1))
 
             btn.setValue(value_config['default'])
             self._current_values[param] = value_config['default']
