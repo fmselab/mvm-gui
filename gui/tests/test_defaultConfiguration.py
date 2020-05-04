@@ -46,6 +46,10 @@ def test_defaultConfiguration(qtbot):
     assert config['lung_recruit_pres']['step'] == 1
     assert config['lung_recruit_pres']['min'] == 0
     assert config['lung_recruit_pres']['max'] == 40
+    # assert config['max_apnea_time']['default'] == 30
+    assert config['max_apnea_time']['step'] == 1
+    # assert config['max_apnea_time']['min'] == 10
+    # assert config['max_apnea_time']['max'] == 60
 
 
 

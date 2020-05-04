@@ -296,3 +296,115 @@ def test_changeTRM(qtbot):
         oldValue = i
         i = i - int(config['lung_recruit_time']['step'])
         assert window.settings._all_spinboxes['lung_recruit_time'].value() >= config['lung_recruit_time']['min']
+
+
+"""
+TS52
+"""
+def test_change_ETS(qtbot):
+    '''
+    Test the change of the ETS Parameter
+
+    At the current situation, the test cannot be executed, since the ETS parameter is not loaded from the default values
+    '''
+
+    # assert qt_api.QApplication.instance() is not None
+    #
+    # esp32 = FakeESP32Serial(config)
+    # qtbot.addWidget(esp32)
+    #
+    # assert config is not None
+    #
+    # print(esp32)
+    #
+    # window = MainWindow(config, esp32)
+    # qtbot.addWidget(window)
+    # window.show()
+    # qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    # qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    # assert window.bottombar.currentWidget() == window.toolbar
+    #
+    # # Enter the menu and the Mode Settings tab
+    # qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    # assert window.bottombar.currentWidget() == window.menu
+    # qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    # assert window.bottombar.currentWidget() == window.settingsfork
+    # qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    # assert window.toppane.currentWidget() == window.settings
+    #
+    # # Try to increase the value
+    # startingValue = window.settings._all_spinboxes['ETS'].value()
+    #
+    # i = startingValue
+    # oldValue = 0
+    # while i <= int(config['ETS']['max'] + 1) or i == oldValue:
+    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
+    #     oldValue = i
+    #     i = i + int(config['ETS']['step'])
+    #     assert window.settings._all_spinboxes['ETS'].value() <= config['ETS']['max']
+    #
+    # # Try to decrease the value
+    # window._start_stop_worker._settings.update_spinbox_value('ETS', startingValue)
+    #
+    # i = startingValue
+    # oldValue = 0
+    # while i >= int(config['ETS']['min'] - 1) or i == oldValue:
+    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
+    #     oldValue = i
+    #     i = i - int(config['ETS']['step'])
+    #     assert window.settings._all_spinboxes['ETS'].value() >= config['ETS']['min']
+
+
+"""
+TS53
+"""
+def test_change_ApneaLag(qtbot):
+    '''
+    Test the change of the Apnea Lag Parameter
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['max_apnea_time'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['max_apnea_time']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('max_apnea_time', i)
+        oldValue = i
+        i = i + int(config['max_apnea_time']['step'])
+        assert window.settings._all_spinboxes['max_apnea_time'].value() <= config['max_apnea_time']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('max_apnea_time', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['max_apnea_time']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('max_apnea_time', i)
+        oldValue = i
+        i = i - int(config['max_apnea_time']['step'])
+        assert window.settings._all_spinboxes['max_apnea_time'].value() >= config['max_apnea_time']['min']
