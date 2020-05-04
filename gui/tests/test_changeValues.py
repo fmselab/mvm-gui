@@ -408,3 +408,58 @@ def test_change_ApneaLag(qtbot):
         oldValue = i
         i = i - int(config['max_apnea_time']['step'])
         assert window.settings._all_spinboxes['max_apnea_time'].value() >= config['max_apnea_time']['min']
+
+
+"""
+TS54
+"""
+def test_changePCV_IE(qtbot):
+    '''
+    Test the change of the I:E
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the PSV Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['insp_expir_ratio'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= float(config['insp_expir_ratio']['max'] + float(config['insp_expir_ratio']['step'])) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('insp_expir_ratio', i)
+        oldValue = i
+        i = i + float(config['insp_expir_ratio']['step'])
+        assert window.settings._all_spinboxes['insp_expir_ratio'].value() <= config['insp_expir_ratio']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('insp_expir_ratio', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= float(config['insp_expir_ratio']['min'] - float(config['insp_expir_ratio']['step'])) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('insp_expir_ratio', i)
+        oldValue = i
+        i = i - float(config['insp_expir_ratio']['step'])
+        assert window.settings._all_spinboxes['insp_expir_ratio'].value() >= config['insp_expir_ratio']['min']

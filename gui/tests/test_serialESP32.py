@@ -16,15 +16,18 @@ def test_newException(qtbot):
     exception = ESP32Exception("Get", "1", "Prova")
     assert exception.line == "1"
 
+    try:
+        raise exception
+    except ESP32Exception:
+        pass
 
 """
 TH25
 """
-def test_newException(qtbot):
+def test_newSerial(qtbot):
     try:
         seriale = ESP32Serial(config)
         assert seriale.get_all_fields == config["get_all_fields"]
     except serial.SerialException:
         pass
-
 
