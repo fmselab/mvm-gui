@@ -190,6 +190,9 @@ def test_settingsWileRunning(qtbot):
     qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
     assert window.toppane.currentWidget() == window.settings
 
+    # Go back
+    qtbot.mouseClick(window.settings._button_close, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.main
 
 """
 TH26
