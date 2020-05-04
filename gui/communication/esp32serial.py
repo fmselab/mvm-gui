@@ -56,6 +56,7 @@ class ESP32Serial:
         """
 
         self.lock = Lock()
+        self._last_cmd = None
 
         baudrate = kwargs["baudrate"] if "baudrate" in kwargs else 115200
         timeout = kwargs["timeout"] if "timeout" in kwargs else 1
@@ -97,6 +98,24 @@ class ESP32Serial:
             raise Exception("protocol error: 'valore=' expected")
         return value.strip()
 
+    def _write(self, cmd, func):
+        """
+        Writes the un-encoded message to the ESP32.
+        The command is stored as the last cmd.
+
+        arguments:
+        - cmd           the unencoded command
+        """
+        self._last_cmd = func
+        self.connection.write(cmd.encode())
+
+    def exec_last_cmd(self):
+        """
+        Re-executes the last command, if there had been one.
+        """
+        if self._last_cmd is not None:
+            self._last_cmd()
+
     def set(self, name, value):
         """
         Set command wrapper
@@ -116,7 +135,7 @@ class ESP32Serial:
             # but I don't really remember now the version running on
             # Raspbian
             command = 'set ' + name + ' ' + str(value) + '\r\n'
-            self.connection.write(command.encode())
+            self._write(command, lambda: self.set(name, value))
 
             result = b""
             retry = 10
@@ -153,7 +172,7 @@ class ESP32Serial:
 
         with self.lock:
             command = 'get ' + name + '\r\n'
-            self.connection.write(command.encode())
+            self._write(command, lambda: self.get(name))
 
             result = b""
             retry = 10
@@ -179,7 +198,7 @@ class ESP32Serial:
         print("ESP32Serial-DEBUG: get all")
 
         with self.lock:
-            self.connection.write(b"get all\r\n")
+            self._write("get all\r\n", lambda: self.get_all())
 
             result = b""
             retry = 10
