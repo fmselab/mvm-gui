@@ -5,6 +5,7 @@ This module implements the self-test procedure and its user wizard.
 
 import os
 import time
+from communication.rpi import start_alarm_system, stop_alarm_system
 from PyQt5 import QtWidgets, uic
 
 
@@ -261,6 +262,15 @@ class SelfTest(QtWidgets.QWidget):
         else:
             self.endstatus_label_asc_2.setText("Failure")
 
+    def _confirm_alarm_test_3(self, success):
+        stop_alarm_system()
+        self._enable_bar_buttons()
+        self._enable_alarm_test_buttons()
+        if success:
+            self.endstatus_label_asc_3.setText("Success")
+        else:
+            self.endstatus_label_asc_3.setText("Failure")
+
     def run_alarmsystem_1(self):
         '''
         Runs the alarm system test number 1
@@ -309,8 +319,17 @@ class SelfTest(QtWidgets.QWidget):
 
     def run_alarmsystem_3(self):
         '''
-        Runs the alarm system test
+        Runs the alarm system test number 3
         '''
-        # TODO: to be implemented
-        print('Running run_alarmsystem')
-        return
+        self._enable_alarm_test_buttons(False)
+        self._enable_bar_buttons(False)
+        self.endstatus_label_asc_3.setText("")
+
+        start_alarm_system()
+
+        self._mainwindow.messagebar.get_confirmation(
+                "Confirm the warning worked or not",
+                "Is the buzzer sounding and the LED flashing?",
+                color="white",
+                func_confirm=lambda: self._confirm_alarm_test_3(True),
+                func_cancel=lambda: self._confirm_alarm_test_3(False))
