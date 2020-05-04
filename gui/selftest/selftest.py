@@ -243,13 +243,43 @@ class SelfTest(QtWidgets.QWidget):
         self.btn_run_alarmsystem_2.setEnabled(enabled)
         self.btn_run_alarmsystem_3.setEnabled(enabled)
 
+    def _confirm_alarm_test_1(self, success):
+        self._esp32.set("alarm_test", 0)
+        self._enable_bar_buttons()
+        self._enable_alarm_test_buttons()
+        if success:
+            self.endstatus_label_asc_1.setText("Success")
+        else:
+            self.endstatus_label_asc_1.setText("Failure")
+
     def run_alarmsystem_1(self):
         '''
-        Runs the alarm system test
+        Runs the alarm system test number 1
         '''
-        # TODO: to be implemented
-        print('Running run_alarmsystem')
-        return
+        self._enable_alarm_test_buttons(False)
+        self._enable_bar_buttons(False)
+        self.endstatus_label_asc_1.setText("")
+
+        self._esp32.set("alarm_test", 1)
+        counter = 0
+        while counter != 2*20:
+            counter += 1
+            alarms = self._esp32.get_alarms().get_alarm_codes()
+            if (1 << 28) in alarms:
+                break
+            self.repaint()
+            time.sleep(0.05)
+
+        if counter == 40:
+            self._confirm_alarm_test_1(False)
+            return
+
+        self._mainwindow.messagebar.get_confirmation(
+                "Confirm the warning worked or not",
+                "Is the buzzer sounding and the LED flashing?",
+                color="white",
+                func_confirm=lambda: self._confirm_alarm_test_1(True),
+                func_cancel=lambda: self._confirm_alarm_test_1(False))
 
     def run_alarmsystem_2(self):
         '''
