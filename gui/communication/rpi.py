@@ -29,7 +29,7 @@ try:
         GPIO.setmode(GPIO.BOARD)
         GPIO.output(17, GPIO.LOW)
 
-except ImportError:
+except (ImportError, RuntimeError):
     def configure():
         """
         Configures the pins.
