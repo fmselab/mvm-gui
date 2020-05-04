@@ -58,6 +58,10 @@ def test_showAlarmsSettings(qtbot):
     qtbot.mouseClick(window.button_alarms, QtCore.Qt.LeftButton)
     assert window.centerpane.currentWidget() == window.alarms_settings
 
+    # Go Back
+    qtbot.mouseClick(window.button_backalarms, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+
 
 """
 TS18

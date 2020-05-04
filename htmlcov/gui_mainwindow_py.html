@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for gui/mainwindow.py: 93%</title>
+    <title>Coverage for gui/mainwindow.py: 95%</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="jquery.hotkeys.js"></script>
@@ -17,13 +17,13 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>gui/mainwindow.py</b> :
-            <span class="pc_cov">93%</span>
+            <span class="pc_cov">95%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
             229 statements &nbsp;
-            <span class="run shortkey_r button_toggle_run">212 run</span>
-            <span class="mis show_mis shortkey_m button_toggle_mis">17 missing</span>
+            <span class="run shortkey_r button_toggle_run">218 run</span>
+            <span class="mis show_mis shortkey_m button_toggle_mis">11 missing</span>
             <span class="exc show_exc shortkey_x button_toggle_exc">0 excluded</span>
         </h2>
     </div>
@@ -473,8 +473,8 @@
     <p id="t420" class="pln"><span class="n"><a href="#t420">420</a></span><span class="t"><span class="str">        Go back to home ui from the Settings pane.</span>&nbsp;</span><span class="r"></span></p>
     <p id="t421" class="pln"><span class="n"><a href="#t421">421</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p id="t422" class="pln"><span class="n"><a href="#t422">422</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t423" class="mis show_mis"><span class="n"><a href="#t423">423</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_main</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t424" class="mis show_mis"><span class="n"><a href="#t424">424</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_menu</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t423" class="run"><span class="n"><a href="#t423">423</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_main</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t424" class="run"><span class="n"><a href="#t424">424</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_menu</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t425" class="pln"><span class="n"><a href="#t425">425</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t426" class="run"><span class="n"><a href="#t426">426</a></span><span class="t">    <span class="key">def</span> <span class="nam">goto_alarms</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t427" class="pln"><span class="n"><a href="#t427">427</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -490,9 +490,9 @@
     <p id="t437" class="pln"><span class="n"><a href="#t437">437</a></span><span class="t"><span class="str">        Go back to home ui from the alarms settings pane.</span>&nbsp;</span><span class="r"></span></p>
     <p id="t438" class="pln"><span class="n"><a href="#t438">438</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p id="t439" class="pln"><span class="n"><a href="#t439">439</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t440" class="mis show_mis"><span class="n"><a href="#t440">440</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_menu</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t441" class="mis show_mis"><span class="n"><a href="#t441">441</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_plots</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t442" class="mis show_mis"><span class="n"><a href="#t442">442</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">alarms_settings</span><span class="op">.</span><span class="nam">deconfig_monitors</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t440" class="run"><span class="n"><a href="#t440">440</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_menu</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t441" class="run"><span class="n"><a href="#t441">441</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">show_plots</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t442" class="run"><span class="n"><a href="#t442">442</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">alarms_settings</span><span class="op">.</span><span class="nam">deconfig_monitors</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t443" class="pln"><span class="n"><a href="#t443">443</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t444" class="run"><span class="n"><a href="#t444">444</a></span><span class="t">    <span class="key">def</span> <span class="nam">show_settings</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t445" class="pln"><span class="n"><a href="#t445">445</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -577,7 +577,7 @@
     <p id="t524" class="pln"><span class="n"><a href="#t524">524</a></span><span class="t"><span class="str">        Shows the plots in the center of the home pane.</span>&nbsp;</span><span class="r"></span></p>
     <p id="t525" class="pln"><span class="n"><a href="#t525">525</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p id="t526" class="pln"><span class="n"><a href="#t526">526</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p id="t527" class="mis show_mis"><span class="n"><a href="#t527">527</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">centerpane</span><span class="op">.</span><span class="nam">setCurrentWidget</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">plots_all</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t527" class="run"><span class="n"><a href="#t527">527</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">centerpane</span><span class="op">.</span><span class="nam">setCurrentWidget</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">plots_all</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t528" class="pln"><span class="n"><a href="#t528">528</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t529" class="run"><span class="n"><a href="#t529">529</a></span><span class="t">    <span class="key">def</span> <span class="nam">show_alarmsbar</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t530" class="pln"><span class="n"><a href="#t530">530</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -609,7 +609,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.1</a>,
-            created at 2020-05-04 11:56
+            created at 2020-05-04 12:13
         </p>
     </div>
 </div>
