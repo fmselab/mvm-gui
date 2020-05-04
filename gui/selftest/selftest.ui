@@ -57,7 +57,7 @@
     <widget class="QPushButton" name="btn_run_leakcheck">
      <property name="geometry">
       <rect>
-       <x>460</x>
+       <x>490</x>
        <y>140</y>
        <width>170</width>
        <height>60</height>
@@ -167,7 +167,7 @@
     <widget class="QPushButton" name="btn_run_spiro_dir">
      <property name="geometry">
       <rect>
-       <x>460</x>
+       <x>490</x>
        <y>140</y>
        <width>180</width>
        <height>60</height>
@@ -191,7 +191,7 @@ Direction Check</string>
       <rect>
        <x>20</x>
        <y>70</y>
-       <width>390</width>
+       <width>450</width>
        <height>140</height>
       </rect>
      </property>
@@ -204,7 +204,14 @@ Direction Check</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Connect a test lung to the system&lt;/p&gt;&lt;p&gt;2. Press on the &amp;quot;Run Leak Check&amp;quot; button&lt;/p&gt;&lt;p&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:13pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Actions required:&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1. Connect a test bag lung to the system&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;2. Press the &amp;quot;Spirometer Flow Direction Check&amp;quot; button&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3. Wait for completion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -315,7 +322,7 @@ Check</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Press on the &amp;quot;Battery-Switch Check&amp;quot; button&lt;/p&gt;&lt;p&gt;2. Unplug the power cable from the power outlet&lt;/p&gt;&lt;p&gt;3. Plug back the power cable to the power outlet&lt;/p&gt;&lt;p&gt;4. Confirm that the buzzer sounded and that the LED flashed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actions required:&lt;/p&gt;&lt;p&gt;1. Press on the &amp;quot;Battery-Switch Check&amp;quot; button&lt;/p&gt;&lt;p&gt;2. Unplug the power cable from the power outlet&lt;/p&gt;&lt;p&gt;3. Plug back the power cable to the power outlet&lt;/p&gt;&lt;p&gt;4. Confirm that the buzzer sound and that the LED flashes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
