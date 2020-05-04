@@ -352,7 +352,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self._start_stop_worker.toggle_mode)
         self.gui_alarm.connect_workers(self._start_stop_worker)
 
-
         # Instantiate the critical alarm handler meant for severe communications and hardware error
         self.critical_alarm_handler = CriticalAlarmHandler(self, esp32)
 
