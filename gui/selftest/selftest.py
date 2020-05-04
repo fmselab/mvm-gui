@@ -131,6 +131,7 @@ class SelfTest(QtWidgets.QWidget):
         self.endstatus_label_lc.setText("")
         self.completion_bar_lc.setValue(0)
 
+        retriever = None
         try:
             retriever = self._esp32.leakage_test()
 
@@ -151,7 +152,8 @@ class SelfTest(QtWidgets.QWidget):
         finally:
             self._enable_bar_buttons()
             self.btn_run_leakcheck.setEnabled(True)
-            del retriever
+            if retriever:
+                del retriever
 
     def run_spiro_dir(self):
         '''
