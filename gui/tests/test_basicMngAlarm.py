@@ -93,6 +93,49 @@ def test_single_alarm(qtbot, code, expected, message):
 
 
 """
+TS04-TS12 + TS23 (Same as before, but with different alarm handling)
+"""
+@pytest.mark.parametrize("code, expected, message", [(0, 1, "Gas pressure too low"),
+                                                     (1, 2, "Gas pressure too high"),
+                                                     (2, 4, "Internal pressure too low (internal leakage)"),
+                                                     (3, 8, "Internal pressure too high"),
+                                                     (4, 16, "Out of battery power"),
+                                                     (5, 32, "Leakage in gas circuit"),
+                                                     (6, 64, "Obstruction in hydraulic circuit"),
+                                                     (7, 128, "Partial obstruction in hydraulic circuit"),
+                                                     (22, 4194304, "Apnea alarm"),
+                                                     (31, 2147483648, "System failure")])
+def test_single_alarm_2(qtbot, code, expected, message):
+    '''
+    Tests that when there is an alarm, it is revealed by the get_alarms function
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+
+    code = (1 << code)
+
+    esp32.alarms_checkboxes[code].setChecked(True)
+
+    esp32._compute_and_raise_alarms()
+    assert esp32.get_alarms().number == expected
+
+    handler = AlarmHandler(config, esp32, window.alarmbar)
+    handler.handle_alarms()
+
+    # Check the alarm message
+    assert esp32.get_alarms().alarm_to_string[expected] == message
+
+    handler.snooze_alarm(code)
+
+
+"""
 TS13
 """
 def test_not_alarm(qtbot):
