@@ -38,10 +38,10 @@ class ExceptionWrapper:
             self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
             return func(*args, **kwargs)
         except self.ExceptionType:
-            self.exception_state = True
-            if self.except_func is not None:
+            if self.except_func is not None and not self.except_state
                 print("Caught the exception")
                 self.except_func()
+                self.except_state = True
                 print('Done catching exception')
             raise
 
