@@ -155,7 +155,9 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        return self.set("watchdog_reset", 1)
+        try:
+            return self.set("watchdog_reset", 1)
+        except ESP32Exception: pass
 
     def get(self, name):
         """
@@ -228,7 +230,9 @@ class ESP32Serial:
         returns: a ESP32Alarm instance describing the possible alarms.
         """
 
-        return ESP32Alarm(int(self.get("alarm")))
+        try:
+            return ESP32Alarm(int(self.get("alarm")))
+        except ESP32Exception: raise
 
     def get_warnings(self):
         """
@@ -237,7 +241,9 @@ class ESP32Serial:
         returns: a ESP32Warning instance describing the possible warnings.
         """
 
-        return ESP32Warning(int(self.get("warning")))
+        try:
+            return ESP32Warning(int(self.get("warning")))
+        except ESP32Exception: raise
 
     def reset_alarms(self):
         """
@@ -246,7 +252,9 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        return self.set("alarm", 0)
+        try:
+            return self.set("alarm", 0)
+        except ESP32Exception: raise
 
     def reset_warnings(self):
         """
@@ -255,7 +263,9 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        return self.set("warning", 0)
+        try:
+            return self.set("warning", 0)
+        except ESP32Exception: raise
 
     def raise_gui_alarm(self):
         """
@@ -266,8 +276,10 @@ class ESP32Serial:
 
         returns: an "OK" string in case of success.
         """
-
-        return self.set("alarm", 1)
+        
+        try:
+            return self.set("alarm", 1)
+        except ESP32Exception: raise
 
     def snooze_hw_alarm(self, alarm_type):
         """
@@ -285,7 +297,9 @@ class ESP32Serial:
         bitmap = {1 << x: x for x in range(32)}
 
         pos = bitmap[alarm_type]
-        return self.set("alarm_snooze", pos)
+        try:
+            return self.set("alarm_snooze", pos)
+        except ESP32Exception: raise
 
     def snooze_gui_alarm(self):
         """
@@ -294,4 +308,6 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        return self.set("alarm_snooze", 29)
+        try:
+            return self.set("alarm_snooze", 29)
+        except ESP32Exception: raise
