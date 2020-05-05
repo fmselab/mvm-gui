@@ -48,10 +48,7 @@ def connect_esp32(config):
                                msg.Abort: lambda: None})
         return answer()
 
-    # Wrap the raw ESP32 class in an Exception Wrapper
-    esp32 = ExceptionWrapper(raw_esp32, ESP32Exception)
-
-    return esp32
+    return raw_esp32
 
 def main():
     """
@@ -67,9 +64,12 @@ def main():
     print('Config:', yaml.dump(config), sep='\n')
 
     # Initialize ESP32 connection
-    esp32 = connect_esp32(config)
-    if esp32 is None:
+    raw_esp32 = connect_esp32(config)
+    if raw_esp32 is None:
         sys.exit(-1)
+
+    # Wrap the raw ESP32 class in an Exception Wrapper
+    esp32 = ExceptionWrapper(raw_esp32, ESP32Exception)
 
     # Spawn mainwindow
     window = MainWindow(config, esp32)
