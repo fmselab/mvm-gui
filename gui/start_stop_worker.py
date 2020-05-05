@@ -91,6 +91,8 @@ class StartStopWorker():
                     self._settings.update_spinbox_value(param, converted_value)
                 else:
                     self._settings.update_spinbox_value(param, value)
+    
+            self._settings.update_toolsettings_values()
 
     def _esp32_io(self):
         '''

@@ -295,6 +295,12 @@ class Settings(QtWidgets.QMainWindow):
             else:
                 # Hide the widget
                 widget.load_presets(None)
+               
+        # When this class is being constructed, we haven't
+        # read any values, so will just leave the toolsettings
+        # as their default values.
+        if len(self._current_values) > 0:
+            self.update_toolsettings_values()
         
     def close_settings_worker(self):
         '''
@@ -401,11 +407,17 @@ class Settings(QtWidgets.QMainWindow):
                              {msg.Retry: lambda: self.send_values_to_hardware,
                               msg.Abort: lambda: sys.exit(-1)})()
 
-            if param in self.toolsettings_lookup:
-                self.toolsettings_lookup[param].update(self._current_values[param])
-
+        self.update_toolsettings_values()
         settings_file = SettingsFile(self._config["settings_file_path"])
         settings_file.store(settings_to_file)
+
+    def update_toolsettings_values(self):
+        '''
+        Update the values shown in the bottom toolsettings boxes
+        with the current values of the parameters.
+        '''
+        for param, toolsetting in self.toolsettings_lookup.items():
+            toolsetting.update(self._current_values[param])
 
     def worker(self):
         '''
