@@ -81,7 +81,10 @@ def main():
     # Set up watchdog and star the main Qt executable
     esp32.set("wdenable", 1)
     watchdog = QtCore.QTimer()
-    watchdog.timeout.connect(esp32.set_watchdog)
+    def watchdog_redirect():
+        try: esp32.set_watchdog()
+        except ESP32Exception: return
+    watchdog.timeout.connect(watchdog_redirect)
     watchdog.start(config["wdinterval"] * 1000)
     app.exec_()
     esp32.set("wdenable", 0)

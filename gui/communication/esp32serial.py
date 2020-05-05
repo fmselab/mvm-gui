@@ -14,7 +14,7 @@ class ESP32Exception(Exception):
     Exception class for decoding and hardware failures.
     """
 
-    def __init__(self, verb, line, output):
+    def __init__(self, verb="", line="", output="__internal_exception__"):
         """
         Contructor
 
