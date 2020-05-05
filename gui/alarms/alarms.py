@@ -87,7 +87,11 @@ class Alarms(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(Alarms, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "alarms/alarms.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "alarms.ui")
+
+        uic.loadUi(uifile, self)
 
         self.layout = self.findChild(QtWidgets.QGridLayout, "monitors_layout")
         self.label_alarmname = self.findChild(

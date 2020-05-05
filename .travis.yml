@@ -23,12 +23,12 @@ install:
   - pip install coveralls
 # environment variables
 env:
-  - MVMGUI_BASEDIR="." MVMGUI="./gui/"
+  - MVMGUI_BASEDIR="."
 # deploy to the pages
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUBTOKEN
+  github_token: $GITHUB_TOKEN
   keep_history: true
   on:
     branch: testwtravis

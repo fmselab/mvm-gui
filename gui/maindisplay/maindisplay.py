@@ -19,4 +19,8 @@ class MainDisplay(QtWidgets.QWidget):
         Provides a passthrough to underlying widgets.
         """
         super(MainDisplay, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "maindisplay/maindisplay.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "maindisplay.ui")
+
+        uic.loadUi(uifile, self)

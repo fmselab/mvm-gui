@@ -26,7 +26,11 @@ class Monitor(QtWidgets.QWidget):
 
         """
         super(Monitor, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "monitor/monitor.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "monitor.ui")
+
+        uic.loadUi(uifile, self)
         self.config = config
         self.configname = name
 

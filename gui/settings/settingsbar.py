@@ -19,4 +19,8 @@ class SettingsBar(QtWidgets.QWidget):
         Provides a passthrough to underlying widgets.
         """
         super(SettingsBar, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "settings/settingsbar.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "settingsbar.ui")
+
+        uic.loadUi(uifile, self)

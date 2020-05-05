@@ -19,5 +19,9 @@ class AlarmsBar(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(AlarmsBar, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "alarms/alarmsbar.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "alarmsbar.ui")
+
+        uic.loadUi(uifile, self)
 

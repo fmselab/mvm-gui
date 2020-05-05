@@ -33,7 +33,11 @@ class Presets(QtWidgets.QWidget):
         - args: Other arguments for QtWidgets.QWidget
         """
         super(Presets, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "presets/presets.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "presets.ui")
+
+        uic.loadUi(uifile, self)
 
         # get the buttons from the preset dialog
         self.button_cancel = self.findChild(QtWidgets.QPushButton, "button_cancel")

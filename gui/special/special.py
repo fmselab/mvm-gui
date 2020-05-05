@@ -21,7 +21,11 @@ class SpecialBar(QtWidgets.QWidget):
         Provides a passthrough to underlying widgets.
         """
         super(SpecialBar, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "special/special.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "special.ui")
+
+        uic.loadUi(uifile, self)
 
         self.button_expause.pressed.connect(
             lambda: self.paused_pressed('pause_exhale'))
