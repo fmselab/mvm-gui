@@ -92,15 +92,16 @@ class SnoozeButton:
             else:
                 self._esp32.reset_warnings()
                 self._alarm_h.snooze_warning(self._code)
-        except ESP32Exception as error:
-            msg = MessageBox()
-            func = msg.critical("Critical",
-                                "Severe hardware communication error",
-                                str(error),
-                                "Communication error",
-                                {msg.Retry: lambda: None,
-                                 msg.Abort: lambda: None})
-            func()
+        except ESP32Exception: return
+        # except ESP32Exception as error:
+        #     msg = MessageBox()
+        #     func = msg.critical("Critical",
+        #                         "Severe hardware communication error",
+        #                         str(error),
+        #                         "Communication error",
+        #                         {msg.Retry: lambda: None,
+        #                          msg.Abort: lambda: None})
+        #     func()
 
 class AlarmButton(QtWidgets.QPushButton):
     """
@@ -220,19 +221,21 @@ class AlarmHandler:
         try:
             esp32alarm = self._esp32.get_alarms()
             esp32warning = self._esp32.get_warnings()
-        except ESP32Exception as error:
-            esp32alarm = None
-            esp32warning = None
-            err_msg = "Severe hardware communication error. "
-            err_msg += "Cannot retrieve alarm and warning statuses from hardware."
-            msg = MessageBox()
-            func = msg.critical("Critical",
-                                err_msg,
-                                str(error),
-                                "Communication error",
-                                {msg.Retry: lambda: None,
-                                 msg.Abort: lambda: sys.exit(-1)})
-            func()
+        except ESP32Exception: return
+        # except ESP32Exception as error:
+
+        #     esp32alarm = None
+        #     esp32warning = None
+        #     err_msg = "Severe hardware communication error. "
+        #     err_msg += "Cannot retrieve alarm and warning statuses from hardware."
+        #     msg = MessageBox()
+        #     func = msg.critical("Critical",
+        #                         err_msg,
+        #                         str(error),
+        #                         "Communication error",
+        #                         {msg.Retry: lambda: None,
+        #                          msg.Abort: lambda: sys.exit(-1)})
+        #     func()
 
         #
         # ALARMS
