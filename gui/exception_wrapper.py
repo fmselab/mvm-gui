@@ -31,12 +31,15 @@ class ExceptionWrapper:
         """
 
         self._last_func = lambda: func(*args, **kwargs)
+        print("We are wrapping")
 
         try:
             return func(*args, **kwargs)
         except self.ExceptionType:
             if self.except_func is not None:
+                print("Caught the exception")
                 self.except_func()
+            raise
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
