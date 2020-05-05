@@ -6,6 +6,7 @@ This includes country-specific-procedurings, pause functions, and freezing funct
 
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
+from communication.esp32serial import ESP32Exception
 from messagebox import MessageBox
 import os
 
@@ -67,7 +68,9 @@ class SpecialBar(QtWidgets.QWidget):
         """
         Retrieves the Lungh Recruitment ETA from the esp32 and displays the result in Stop button
         """
-        eta = float(self._esp32.get("pause_lg_time"))
+        try:
+            eta = float(self._esp32.get("pause_lg_time"))
+        except ESP32Exception: return
         if eta == 0:
             self.stop_lung_recruit()
             self._lung_recruit_timer.stop()
@@ -85,9 +88,11 @@ class SpecialBar(QtWidgets.QWidget):
         self.button_lung_recruit.setText(
             "Stop\nLung Recruitment\n %d" % lr_time)
 
-        self._esp32.set("pause_lg_p", lr_pres)
-        self._esp32.set("pause_lg_time", lr_time)
-        self._esp32.set("pause_lg", 1)
+        try:
+            self._esp32.set("pause_lg_p", lr_pres)
+            self._esp32.set("pause_lg_time", lr_time)
+            self._esp32.set("pause_lg", 1)
+        except ESP32Exception: return
 
         self._lung_recruit_timer = QtCore.QTimer()
         self._lung_recruit_timer.timeout.connect(self._get_lung_recruit_eta)
@@ -98,7 +103,9 @@ class SpecialBar(QtWidgets.QWidget):
         Stops the lung recruitment procedure
         """
         self._lung_recruit = False
-        self._esp32.set("pause_lg", 0)
+        try:
+            self._esp32.set("pause_lg", 0)
+        except ESP32Exception: return
         self._lung_recruit_timer.stop()
         self.button_lung_recruit.setText("Country-Specific\nProcedures")
 
