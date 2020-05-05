@@ -41,6 +41,7 @@ class ExceptionWrapper:
                 print("Caught the exception")
                 self.except_func()
                 print('Done catching exception')
+            raise
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
