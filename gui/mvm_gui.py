@@ -12,6 +12,7 @@ from serial import SerialException
 import yaml
 
 from mainwindow import MainWindow
+from exception_wrapper import ExceptionWrapper
 from communication.esp32serial import ESP32Serial, ESP32Exception
 from communication.fake_esp32serial import FakeESP32Serial
 from messagebox import MessageBox
@@ -47,12 +48,16 @@ def connect_esp32(config):
                                msg.Abort: lambda: None})
         return answer()
 
-    return raw_esp32
+    # Wrap the raw ESP32 class in an Exception Wrapper
+    esp32 = ExceptionWrapper(raw_esp32, ESP32Exception)
+
+    return esp32
 
 def main():
     """
     Main function.
     """
+    app = QtWidgets.QApplication(sys.argv)
 
     base_dir = os.path.dirname(__file__)
     settings_file = os.path.join(base_dir, 'default_settings.yaml')
@@ -61,20 +66,23 @@ def main():
         config = yaml.load(fsettings, Loader=yaml.FullLoader)
     print('Config:', yaml.dump(config), sep='\n')
 
-    app = QtWidgets.QApplication(sys.argv)
-
-    raw_esp32 = connect_esp32(config)
-
+    # Initialize ESP32 connection
+    esp32 = connect_esp32(config)
     if esp32 is None:
         sys.exit(-1)
-    esp32.set("wdenable", 1)
 
+    # Spawn mainwindow
+    window = MainWindow(config, esp32)
+    window.show()
+
+    # Assign exception function
+    esp32.assign_except_func(window.critical_alarm_handler.call_communication_failure)
+
+    # Set up watchdog and star the main Qt executable
+    esp32.set("wdenable", 1)
     watchdog = QtCore.QTimer()
     watchdog.timeout.connect(esp32.set_watchdog)
     watchdog.start(config["wdinterval"] * 1000)
-
-    window = MainWindow(config, esp32)
-    window.show()
     app.exec_()
     esp32.set("wdenable", 0)
 
