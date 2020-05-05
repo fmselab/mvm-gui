@@ -51,21 +51,20 @@ class DataHandler():
         try:
             # Get all params from ESP
             current_values = self._esp32.get_all()
+        except ESP32Exception: return
 
-            # Converting from str to float
-            for name, value in current_values.items():
-                current_values[name] = float(value)
+        # Converting from str to float
+        for name, value in current_values.items():
+            current_values[name] = float(value)
 
-            current_values = self._convert_values(current_values)
+        current_values = self._convert_values(current_values)
 
-            self._gui_alarm.set_data(current_values)
+        self._gui_alarm.set_data(current_values)
 
-            # finally, send values to the DataFiller
-            for name, value in current_values.items():
-                self._data_f.add_data_point(name, value)
+        # finally, send values to the DataFiller
+        for name, value in current_values.items():
+            self._data_f.add_data_point(name, value)
 
-        except ESP32Exception as error:
-            self.open_comm_error(str(error))
 
     def _convert_values(self, values):
         '''
