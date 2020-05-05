@@ -34,7 +34,11 @@ class ToolSettings(QtWidgets.QWidget):
         Grabs child widgets and and connects slider value to text value.
         """
         super(ToolSettings, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "toolsettings/toolsettings.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "toolsettings.ui")
+
+        uic.loadUi(uifile, self)
 
         self.labels = {}
         self.labels["name"] = self.findChild(QtWidgets.QLabel, "label_name")

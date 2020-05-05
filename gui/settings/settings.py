@@ -25,7 +25,11 @@ class Settings(QtWidgets.QMainWindow):
         Initialized the Settings overlay widget.
         """
         super(Settings, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "settings/settings.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "settings.ui")
+
+        uic.loadUi(uifile, self)
 
         self._debug = True
         self.mainparent = mainparent
@@ -34,6 +38,7 @@ class Settings(QtWidgets.QMainWindow):
         self._config = self.mainparent.config
         self._data_h = self.mainparent._data_h
         self._toolsettings = self.mainparent.toolsettings
+        self._messagebar = self.mainparent.messagebar
         # self._start_stop_worker = self.mainparent._start_stop_worker
 
         # This contains all the default params
@@ -41,6 +46,8 @@ class Settings(QtWidgets.QMainWindow):
         self._current_values_temp = {}
 
         self._all_spinboxes = {
+            # General
+            'leak_compensation': self.spinBox_leak_compensation,
             # Auto
             'respiratory_rate': self.spinBox_rr,
             'insp_expir_ratio': self.spinBox_insp_expir_ratio,
@@ -53,12 +60,16 @@ class Settings(QtWidgets.QMainWindow):
             'support_pressure': self.spinBox_support_pressure,
             'max_apnea_time': self.spinBox_max_apnea_time,
             'enable_backup': self.toggle_enable_backup,
+            'apnea_rr': self.spinBox_apnea_rr,
+            'apnea_insp_press': self.spinBox_apnea_insp_press,
             # Lung recruit
             'lung_recruit_pres': self.spinBox_lr_p,
             'lung_recruit_time': self.spinBox_lr_t,
         }
 
         self._all_fakebtn = {
+            # General
+            'leak_compensation': self.fake_btn_leak_compensation,
             # Auto
             'respiratory_rate': self.fake_btn_rr,
             'insp_expir_ratio': self.fake_btn_ie,
@@ -69,6 +80,8 @@ class Settings(QtWidgets.QMainWindow):
             'flow_trigger': self.fake_btn_flow_trig,
             'support_pressure': self.fake_btn_support_pressure,
             'max_apnea_time': self.fake_btn_max_apnea_time,
+            'apnea_rr': self.fake_btn_apnea_rr,
+            'apnea_insp_press': self.fake_btn_apnea_insp_press,
             # Lung recruit
             'lung_recruit_pres': self.fake_btn_lr_p,
             'lung_recruit_time': self.fake_btn_lr_t
@@ -178,6 +191,10 @@ class Settings(QtWidgets.QMainWindow):
         self._button_loadpreset.clicked.connect(self.load_presets)
         self._button_close.clicked.connect(self.close_settings_worker)
 
+        # General
+        self._all_fakebtn['leak_compensation'].clicked.connect(
+            lambda: self.spawn_presets_window('leak_compensation'))
+
         # Auto
         self._all_fakebtn['respiratory_rate'].clicked.connect(
             lambda: self.spawn_presets_window('respiratory_rate'))
@@ -197,6 +214,10 @@ class Settings(QtWidgets.QMainWindow):
             lambda: self.spawn_presets_window('support_pressure'))
         self._all_fakebtn['max_apnea_time'].clicked.connect(
             lambda: self.spawn_presets_window('max_apnea_time'))
+        self._all_fakebtn['apnea_rr'].clicked.connect(
+            lambda: self.spawn_presets_window('apnea_rr'))
+        self._all_fakebtn['apnea_insp_press'].clicked.connect(
+            lambda: self.spawn_presets_window('apnea_insp_press'))
 
         # Lung recruitment
         self._all_fakebtn['lung_recruit_pres'].clicked.connect(
@@ -211,14 +232,20 @@ class Settings(QtWidgets.QMainWindow):
                 btn.valueChanged.connect(self.worker)
 
         # Special operations
-        # TODO: implement the function to associate to buttons
         self.label_warning.setVisible(False)
-        self.btn_sw_update.clicked.connect(lambda: print(
-            'Sw update button clicked, but not implemented.'))
-        self.btn_restart_os.clicked.connect(lambda: print(
-            'OS restart button clicked, but not implemented.'))
-        self.btn_shut_down_os.clicked.connect(lambda: print(
-            'OS shut down button clicked, but not implemented.'))
+        self.btn_sw_update.clicked.connect(lambda: self._messagebar.get_confirmation(
+            "Confirm SOFTWARE UPDATE AND CLOSE",
+            "Are you sure you want to request and execute a SOFTWARE UPDATE and CLOSE?",
+            func_confirm=self.upgrade_and_exit,
+            color="red"))
+
+    def upgrade_and_exit(self):
+        cmd = self._config['upgrade_script']
+
+        print("Running \"%s\"..." % cmd) 
+        os.system(cmd)
+        print("Complete. Closing GUI.")
+        sys.exit(0)
 
     def load_presets(self):
         '''

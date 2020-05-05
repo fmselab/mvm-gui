@@ -19,4 +19,8 @@ class Menu(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(Menu, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "menu/menu.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "menu.ui")
+
+        uic.loadUi(uifile, self)

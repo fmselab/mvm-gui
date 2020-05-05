@@ -119,6 +119,8 @@ class ESP32Alarm(ESP32BaseAlarm):
 
         # from the ESP
         1 << 22: "Apnea alarm",
+        1 << 23: "Flow Meter is Inverted: action required",
+        1 << 24: "Flow Meter not connected",
         1 << 29: "GUI alarm raised",
         1 << 30: "GUI watchdog not reset",
         1 << 31: "System failure",

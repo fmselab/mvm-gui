@@ -21,7 +21,11 @@ class Toolbar(QtWidgets.QWidget):
         Provides a passthrough to underlying widgets.
         """
         super(Toolbar, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "toolbar/toolbar.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "toolbar.ui")
+
+        uic.loadUi(uifile, self)
 
         self.label_status = self.findChild(QtWidgets.QLabel, "label_status")
         self.button_unlockscreen = self.findChild(

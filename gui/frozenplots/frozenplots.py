@@ -144,7 +144,11 @@ class FrozenPlotsBottomMenu(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(FrozenPlotsBottomMenu, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "frozenplots/frozenplots_bottom.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "frozenplots_bottom.ui")
+
+        uic.loadUi(uifile, self)
 
         self.button_reset_zoom = self.findChild(
             QtWidgets.QPushButton, "button_reset_zoom")
@@ -226,7 +230,11 @@ class FrozenPlotsRightMenu(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(FrozenPlotsRightMenu, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "frozenplots/frozenplots_right.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "frozenplots_right.ui")
+
+        uic.loadUi(uifile, self)
 
         self.yzoom_top = self.findChild(QtWidgets.QWidget, "yzoom_top")
         self.yzoom_mid = self.findChild(QtWidgets.QWidget, "yzoom_mid")
@@ -268,7 +276,11 @@ class YZoom(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(YZoom, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "frozenplots/y_zoom.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "y_zoom.ui")
+
+        uic.loadUi(uifile, self)
 
         self.button_plus = self.findChild(QtWidgets.QPushButton, "y_plus")
         self.button_minus = self.findChild(QtWidgets.QPushButton, "y_minus")
@@ -371,7 +383,11 @@ class XZoom(QtWidgets.QWidget):
         Grabs child widgets.
         """
         super(XZoom, self).__init__(*args)
-        uic.loadUi(os.environ['MVMGUI'] + "frozenplots/x_zoom.ui", self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "x_zoom.ui")
+
+        uic.loadUi(uifile, self)
 
         self.button_plus = self.findChild(QtWidgets.QPushButton, "x_plus")
         self.button_minus = self.findChild(QtWidgets.QPushButton, "x_minus")

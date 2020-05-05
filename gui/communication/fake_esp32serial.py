@@ -27,7 +27,11 @@ class FakeMonitored(QtWidgets.QWidget):
         - is_random: Boolean to indicate using randomized data.
         """
         super(FakeMonitored, self).__init__()
-        uic.loadUi(os.environ['MVMGUI'] + 'communication/input_monitor_widget.ui', self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "input_monitor_widget.ui")
+
+        uic.loadUi(uifile, self)
 
         self.generator = generator
 
@@ -66,7 +70,11 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
     def __init__(self, config):
         super(FakeESP32Serial, self).__init__()
 
-        uic.loadUi(os.environ['MVMGUI'] + 'communication/fakeesp32.ui', self)
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "fakeesp32.ui")
+
+        uic.loadUi(uifile, self)
         self.get_all_fields = config["get_all_fields"]
         self.observables = {name: None for name in self.get_all_fields}
 
@@ -84,6 +92,7 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "alarm": 0,
             "warning": 0,
             "temperature": 40,
+            "leak_compensation": 7,
             "rate": 17.0,
             "ratio": 2 / 3,
             "ptarget": 37.7,
@@ -94,6 +103,8 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "pressure_support": 27.,
             "backup_min_time": 17.0,
             "backup_enable": 1,
+            "apnea_rate": 7,
+            "apnea_ptarget": 37,
             "pause_lg_p": 37,
             "pause_lg_time": 7.0}
 
@@ -183,6 +194,8 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
             "gas_occlusion_alarm": 6,
             "partial_gas_occlusion_alarm": 7,
             "apnea_alarm": 22,
+            "inverted_venturi_alarm": 23,
+            "no_venturi_alarm": 24,
             "system_failure_alarm": 31}
 
         # HW warnings

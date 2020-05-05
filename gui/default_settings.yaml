@@ -1,6 +1,6 @@
 # The serial port to use:
 port: '/dev/ttyUSB0'
-settings_file_path: '/home/pi/settings.txt'
+settings_file_path: '/storage/pi/settings.txt'
 
 # list of observables to expect from the get_all function call
 # The returned dict will use those as keys. Order matters.
@@ -19,10 +19,14 @@ get_all_fields:
   - total_expired_volume
   - volume_minute
 
+# Path to upgrade script
+upgrade_script: "cd /home/pi/upgrade.gui/gui/; python3 mvm_update.py"
+
 # Conversion factors to apply to the values from the get_all
 conversions:
     pressure: 1.01972 # mbar to cmH2O
     peak: 1.01972 # mbar to cmH2O
+    peep: 1.01972 # mbar to cmH2O
 
 # watchdog reset interval time in seconds
 wdinterval: 1
@@ -50,6 +54,7 @@ historic_nsamples: 200
 # The parameters that can be set on the ESP
 # The values below must match those used in the ESP
 esp_settable_param:
+    leak_compensation: 'leak_compensation'
     respiratory_rate:  'rate'
     insp_expir_ratio:  'ratio'
     insp_pressure:     'ptarget'
@@ -58,6 +63,8 @@ esp_settable_param:
     support_pressure:  'pressure_support'
     enable_backup:     'backup_enable'
     max_apnea_time:    'backup_min_time'
+    apnea_rr:          'apnea_rate'
+    apnea_insp_press:  'apnea_ptarget'
     lung_recruit_pres: 'pause_lg_p'
     lung_recruit_time: 'pause_lg_time'
     pcv_trigger_pressure: 'pcv_trigger'
@@ -334,6 +341,22 @@ plots:
 #
 # Note: can only have max 6 presets for now.
 
+# General 
+
+leak_compensation:
+    name: "Leak-compensed PEEP"
+    default:  0
+    min: 0
+    max: 10
+    current: None
+    units: "[cmH<sub>2</sub>O]"
+    conversion: 0.980665 # From cmH2O to mbar
+    presets:
+        - [2, '']
+        - [5, '']
+        - [7.5, '']
+        - [10, '']
+
 # Respiration Rate (breaths per minute)
 respiratory_rate:
     name: "Resp. Rate"
@@ -472,7 +495,7 @@ support_pressure:
 #        - [10, '']
 #        - [15, '']
 
-# Minimal Respiratory Rate
+# Maximum apnea time
 max_apnea_time:
     default: 5
     min: 2
@@ -485,6 +508,31 @@ max_apnea_time:
         - [10, '']
         - [15, '']
 
+# Apnea inspiratory pressure
+apnea_insp_press:
+    default: 5
+    min: 0
+    max: 15.
+    step: 1
+    conversion: 0.980665 # From cmH2O to mbar
+    current: None
+    presets:
+        - [3, '']
+        - [10, '']
+        - [15, '']
+
+# Apnea respiratory rate
+apnea_rr:
+    default: 5
+    min: 2
+    max: 20.
+    step: 1
+    current: None
+    presets:
+        - [5, '']
+        - [10, '']
+        - [15, '']
+        - [20, '']
 
 # Enable backup
 enable_backup: 

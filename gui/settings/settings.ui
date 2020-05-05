@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>390</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="font">
@@ -84,8 +84,8 @@ QDoubleSpinBox::down-button  {
       <property name="styleSheet">
        <string notr="true">QTabBar::tab {
     /* make the tab large enough to show the full text */
-    width: 190px;
-	height: 45px;
+    width: 160px;
+	height: 35px;
 }
 
 QTabBar::tab:selected {
@@ -105,7 +105,7 @@ QTabBar::tab:!selected {
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>
@@ -116,6 +116,191 @@ QTabBar::tab:!selected {
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
       </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>General</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>781</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="title">
+         <string>Leak Compensation</string>
+        </property>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>30</y>
+           <width>340</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Cantarell</family>
+           <pointsize>13</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PEEP [cmH&lt;span style=&quot; vertical-align:sub;&quot;&gt;2&lt;/span&gt;O]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="spinBox_leak_compensation">
+         <property name="geometry">
+          <rect>
+           <x>360</x>
+           <y>30</y>
+           <width>400</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="fake_btn_leak_compensation">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>30</y>
+           <width>240</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgba(0, 0, 0, 0);
+     border-style: outset;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </widget>
+      </widget>
       <widget class="QWidget" name="tab_pcv">
        <attribute name="title">
         <string>PCV</string>
@@ -615,8 +800,8 @@ QTabBar::tab:!selected {
          <rect>
           <x>10</x>
           <y>200</y>
-          <width>781</width>
-          <height>131</height>
+          <width>780</width>
+          <height>110</height>
          </rect>
         </property>
         <property name="font">
@@ -921,7 +1106,7 @@ border: 2px solid gray;
           <x>10</x>
           <y>0</y>
           <width>340</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -939,9 +1124,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
+          <y>55</y>
           <width>340</width>
-          <height>40</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -961,7 +1146,7 @@ border: 2px solid gray;
           <x>360</x>
           <y>0</y>
           <width>400</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -980,9 +1165,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>360</x>
-          <y>70</y>
+          <y>55</y>
           <width>400</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -1001,9 +1186,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>180</x>
-          <y>240</y>
+          <y>180</y>
           <width>20</width>
-          <height>71</height>
+          <height>131</height>
          </rect>
         </property>
         <property name="orientation">
@@ -1016,7 +1201,7 @@ border: 2px solid gray;
           <x>440</x>
           <y>0</y>
           <width>240</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="palette">
@@ -1129,9 +1314,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>440</x>
-          <y>70</y>
+          <y>55</y>
           <width>240</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="palette">
@@ -1244,9 +1429,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>360</x>
-          <y>140</y>
+          <y>110</y>
           <width>400</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -1265,9 +1450,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>440</x>
-          <y>140</y>
+          <y>110</y>
           <width>240</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="palette">
@@ -1380,9 +1565,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>140</y>
+          <y>110</y>
           <width>340</width>
-          <height>60</height>
+          <height>45</height>
          </rect>
         </property>
         <property name="font">
@@ -1400,9 +1585,9 @@ border: 2px solid gray;
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>200</y>
-          <width>781</width>
-          <height>131</height>
+          <y>165</y>
+          <width>780</width>
+          <height>155</height>
          </rect>
         </property>
         <property name="font">
@@ -1424,8 +1609,8 @@ border: 2px solid gray;
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>20</y>
-           <width>171</width>
+           <y>40</y>
+           <width>170</width>
            <height>40</height>
           </rect>
          </property>
@@ -1447,14 +1632,14 @@ border: 2px solid gray;
          <property name="geometry">
           <rect>
            <x>190</x>
-           <y>40</y>
+           <y>5</y>
            <width>150</width>
-           <height>60</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>13</pointsize>
+           <pointsize>12</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -1467,9 +1652,9 @@ border: 2px solid gray;
          <property name="geometry">
           <rect>
            <x>350</x>
-           <y>40</y>
+           <y>5</y>
            <width>400</width>
-           <height>60</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -1497,9 +1682,9 @@ border: 2px solid gray;
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>40</y>
+           <y>5</y>
            <width>240</width>
-           <height>60</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="palette">
@@ -1615,12 +1800,353 @@ border: 2px solid gray;
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>60</y>
+           <y>80</y>
            <width>130</width>
            <height>40</height>
           </rect>
          </property>
         </widget>
+        <widget class="QLabel" name="label_15">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>55</y>
+           <width>150</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apnea RR [bpm]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>105</y>
+           <width>150</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apnea P&lt;span style=&quot; vertical-align:sub;&quot;&gt;insp &lt;/span&gt;[cmH&lt;span style=&quot; vertical-align:sub;&quot;&gt;2&lt;/span&gt;O]&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="spinBox_apnea_rr">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>55</y>
+           <width>400</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="showGroupSeparator" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="spinBox_apnea_insp_press">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>105</y>
+           <width>400</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="showGroupSeparator" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="fake_btn_apnea_rr">
+         <property name="geometry">
+          <rect>
+           <x>430</x>
+           <y>55</y>
+           <width>240</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgba(0, 0, 0, 0);
+     border-style: outset;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="fake_btn_apnea_insp_press">
+         <property name="geometry">
+          <rect>
+           <x>430</x>
+           <y>105</y>
+           <width>240</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="0">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgba(0, 0, 0, 0);
+     border-style: outset;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <zorder>label_11</zorder>
+        <zorder>label_8</zorder>
+        <zorder>spinBox_max_apnea_time</zorder>
+        <zorder>fake_btn_max_apnea_time</zorder>
+        <zorder>toggle_enable_backup</zorder>
+        <zorder>label_15</zorder>
+        <zorder>label_16</zorder>
+        <zorder>spinBox_apnea_rr</zorder>
+        <zorder>spinBox_apnea_insp_press</zorder>
+        <zorder>fake_btn_apnea_insp_press</zorder>
+        <zorder>fake_btn_apnea_rr</zorder>
        </widget>
        <zorder>groupBox</zorder>
        <zorder>label_6</zorder>
@@ -1999,107 +2525,68 @@ border: 2px solid gray;
        <attribute name="title">
         <string>Maintenance</string>
        </attribute>
-       <widget class="QWidget" name="horizontalLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>70</y>
-          <width>761</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetNoConstraint</enum>
-         </property>
-         <item>
-          <widget class="QPushButton" name="btn_sw_update">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <family>Cantarell</family>
-             <pointsize>13</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Software Upgrade </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_restart_os">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>13</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Reboot
-Operative System</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_shut_down_os">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>13</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Shut Down
-Operative System</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLabel" name="label_warning">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>20</y>
-          <width>620</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>These settings are only available when the ventilator is not running.</string>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_warning">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>These settings are only available when the ventilator is not running.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetNoConstraint</enum>
+          </property>
+          <item>
+           <widget class="QPushButton" name="btn_sw_update">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>75</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Cantarell</family>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Software Upgrade </string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

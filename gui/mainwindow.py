@@ -45,7 +45,11 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         super(MainWindow, self).__init__(*args, **kwargs)
-        uic.loadUi(os.environ['MVMGUI'] + 'mainwindow.ui', self) # Load the .ui file
+        uifile = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)),
+            "mainwindow.ui")
+
+        uic.loadUi(uifile, self)
 
         self.config = config
         self.esp32 = esp32

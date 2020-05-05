@@ -118,6 +118,7 @@ void setup()
   parameters["pcv_trigger"]        = String(5);
   parameters["pcv_trigger_enable"] = String(0);
 
+  parameters["leak_compensation"]= String(5);
   parameters["rate"]             = String(12);
   parameters["ratio"]            = String(2);
   parameters["ptarget"]          = String(15);
@@ -126,6 +127,8 @@ void setup()
   parameters["pressure_support"] = String(10);
   parameters["backup_enable"]    = String(1);
   parameters["backup_min_time"]  = String(10);
+  parameters["apnea_rate"]       = String(10);
+  parameters["apnea_ptarget"]    = String(10);
   parameters["pause_lg_time"]    = String(10);
   parameters["pause_lg_p"]       = String(10);
 }
