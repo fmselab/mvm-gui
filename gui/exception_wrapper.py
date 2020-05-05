@@ -30,16 +30,17 @@ class ExceptionWrapper:
                          wrapped function
         """
 
-        self._last_func = lambda: func(*args, **kwargs)
         print("We are wrapping")
 
         try:
+            print("Trying to run ", func)
+            self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
             return func(*args, **kwargs)
         except self.ExceptionType:
             if self.except_func is not None:
                 print("Caught the exception")
                 self.except_func()
-            raise
+                print('Done catching exception')
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
@@ -58,6 +59,7 @@ class ExceptionWrapper:
 
         methods = dir(instance)
         self.except_func = None
+        self.except_state = False
         self.ExceptionType = ExceptionType
         self._last_func_call = None
 
