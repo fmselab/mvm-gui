@@ -6,7 +6,7 @@ Data management and dispatching back and forth the ESP32
 import sys
 from PyQt5.QtCore import QTimer
 from messagebox import MessageBox
-from communication import ESP32Exception
+from communication.esp32serial import ESP32Exception
 
 class DataHandler():
     '''
@@ -118,6 +118,8 @@ class DataHandler():
         Sets data to the ESP
         '''
 
-        result = self._esp32.set(param, value)
+        try:
+            result = self._esp32.set(param, value)
+        except ESP32Exception: return False
 
         return result == self._config['return_success_code']
