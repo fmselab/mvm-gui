@@ -30,12 +30,15 @@ class ExceptionWrapper:
                          wrapped function
         """
 
+        self._last_func = lambda: func(*args, **kwargs)
+
         try:
             return func(*args, **kwargs)
         except self.ExceptionType:
-            self.except_func()
+            if self.except_func is not None:
+                self.except_func()
 
-    def __init__(self, instance, ExceptionType, except_func):
+    def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
         """
         Constructor.
@@ -48,15 +51,26 @@ class ExceptionWrapper:
                          methods
         - ExceptionType: the Exception class or tuple of Exception classes
                          to catch in the wrapper.
-        - except_func:   function to call in the 'except' block in the
-                         wrapper function.
         """
 
         methods = dir(instance)
-        self.except_func = except_func
+        self.except_func = None
         self.ExceptionType = ExceptionType
+        self._last_func_call = None
+
         for __method in methods:
             if callable(getattr(instance, __method)) and __method[0] != '_':
                 replacement = lambda *args, __method=__method, **kwargs: self._wrap(
                     getattr(instance, __method), *args, **kwargs)
                 setattr(self, __method, replacement)
+    
+    def assign_except_func(self, except_func):
+        """
+        Assign an exception function to this wrapper, which will be called
+        when an exception is raised by the _wrap function.
+
+        arguments:
+        - except_func:   function to call in the 'except' block in the
+                         wrapper function.
+        """
+        self.except_func = except_func
