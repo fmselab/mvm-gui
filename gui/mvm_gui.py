@@ -7,6 +7,7 @@ import sys
 import os
 import os.path
 from PyQt5 import QtCore, QtWidgets
+from serial import SerialException
 
 import yaml
 
@@ -30,15 +31,14 @@ def connect_esp32(config):
 
     try:
         if 'fakeESP32' in sys.argv:
-            print('******* Simulating communication with ESP32')
             err_msg = "Cannot setup FakeESP32Serial"
-            esp32 = FakeESP32Serial(config)
-            esp32.set("wdenable", 1)
+            print('******* Simulating communication with ESP32')
+            raw_esp32 = FakeESP32Serial(config)
         else:
             err_msg = "Cannot communicate with port %s" % config['port']
-            esp32 = ESP32Serial(config)
-            esp32.set("wdenable", 1)
-    except ESP32Exception as error:
+            raw_esp32 = ESP32Serial(config)
+
+    except SerialException as error:
         msg = MessageBox()
         answer = msg.critical("Do you want to retry?",
                               "Severe hardware communication error",
@@ -47,8 +47,7 @@ def connect_esp32(config):
                                msg.Abort: lambda: None})
         return answer()
 
-    return esp32
-
+    return raw_esp32
 
 def main():
     """
@@ -64,10 +63,11 @@ def main():
 
     app = QtWidgets.QApplication(sys.argv)
 
-    esp32 = connect_esp32(config)
+    raw_esp32 = connect_esp32(config)
 
     if esp32 is None:
         sys.exit(-1)
+    esp32.set("wdenable", 1)
 
     watchdog = QtCore.QTimer()
     watchdog.timeout.connect(esp32.set_watchdog)
