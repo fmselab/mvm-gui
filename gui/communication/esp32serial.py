@@ -105,7 +105,13 @@ class ESP32Serial:
         arguments:
         - cmd           the unencoded command
         """
-        self.connection.write(cmd.encode())
+        retuls = b""
+        try:
+            result = self.connection.write(cmd.encode())
+        except Exception as exc: # pylint: disable=W0703
+            print("ERROR: write to port failing: %s %s" %
+                    (result.decode(), str(exc)))
+            raise ESP32Exception("write", cmd, result.decode())
 
     def set(self, name, value):
         """
