@@ -58,6 +58,19 @@ def test_defaultConfiguration(qtbot):
     # assert config['max_apnea_time']['min'] == 10
     # assert config['max_apnea_time']['max'] == 60
 
+    # TODO: Remove comment on the following line when the GUI has been fixed - ETS
+    assert config['flow_trigger']['default'] == 30
+    assert config['flow_trigger']['step'] == 1
+    # assert config['flow_trigger']['min'] == 5
+    # assert config['flow_trigger']['max'] == 60
+
+    # TODO: Remove comment on the following line when the GUI has been fixed - ITS
+    # assert config['pressure_trigger']['default'] == 3
+    assert config['pressure_trigger']['step'] == 1
+    # assert config['pressure_trigger']['min'] == 1
+    # assert config['pressure_trigger']['max'] == 9
+
+
 
 
 # """

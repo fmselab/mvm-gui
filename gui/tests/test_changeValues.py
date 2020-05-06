@@ -308,51 +308,51 @@ def test_change_ETS(qtbot):
     At the current situation, the test cannot be executed, since the ETS parameter is not loaded from the default values
     '''
 
-    # assert qt_api.QApplication.instance() is not None
-    #
-    # esp32 = FakeESP32Serial(config)
-    # qtbot.addWidget(esp32)
-    #
-    # assert config is not None
-    #
-    # print(esp32)
-    #
-    # window = MainWindow(config, esp32)
-    # qtbot.addWidget(window)
-    # window.show()
-    # qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
-    # qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.toolbar
-    #
-    # # Enter the menu and the Mode Settings tab
-    # qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.menu
-    # qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.settingsfork
-    # qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
-    # assert window.toppane.currentWidget() == window.settings
-    #
-    # # Try to increase the value
-    # startingValue = window.settings._all_spinboxes['ETS'].value()
-    #
-    # i = startingValue
-    # oldValue = 0
-    # while i <= int(config['ETS']['max'] + 1) or i == oldValue:
-    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
-    #     oldValue = i
-    #     i = i + int(config['ETS']['step'])
-    #     assert window.settings._all_spinboxes['ETS'].value() <= config['ETS']['max']
-    #
-    # # Try to decrease the value
-    # window._start_stop_worker._settings.update_spinbox_value('ETS', startingValue)
-    #
-    # i = startingValue
-    # oldValue = 0
-    # while i >= int(config['ETS']['min'] - 1) or i == oldValue:
-    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
-    #     oldValue = i
-    #     i = i - int(config['ETS']['step'])
-    #     assert window.settings._all_spinboxes['ETS'].value() >= config['ETS']['min']
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    print(esp32)
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['flow_trigger'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['flow_trigger']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('flow_trigger', i)
+        oldValue = i
+        i = i + int(config['flow_trigger']['step'])
+        assert window.settings._all_spinboxes['flow_trigger'].value() <= config['flow_trigger']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('flow_trigger', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['flow_trigger']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('flow_trigger', i)
+        oldValue = i
+        i = i - int(config['flow_trigger']['step'])
+        assert window.settings._all_spinboxes['flow_trigger'].value() >= config['flow_trigger']['min']
 
 
 """
