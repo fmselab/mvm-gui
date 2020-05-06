@@ -10,7 +10,7 @@ from start_stop_worker import StartStopWorker
 from PyQt5.QtCore import QCoreApplication
 
 """
-TS27
+TH27
 """
 def test_storeSettings(qtbot):
 
@@ -39,7 +39,7 @@ def test_storeSettings(qtbot):
 
 
 """
-TS28
+TH28
 """
 def test_loadSettings(qtbot):
     assert qt_api.QApplication.instance() is not None
