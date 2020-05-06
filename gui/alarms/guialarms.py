@@ -24,7 +24,7 @@ class GuiAlarms:
     - max: Maximum value that can be set for setmin/setmax
     - setmin: Alarm if value below this (if None - no lower bound)
     - setmax: Alarm if value above this  (if None - no upper bound)
-    - step: Increment for setting alarm value (if None, step of the linked monitor is used)
+    - step: Increment for setting alarm value
     - linked_monitor: Name of the monitor connected to this observable
     - observable: Name of this observable
     - under_threshold_code: Not implemented yet
@@ -48,7 +48,7 @@ class GuiAlarms:
             settings['max'] = settings.get('max', None)
             settings['setmin'] = settings.get('setmin', settings.get('min'))
             settings['setmax'] = settings.get('setmax', settings.get('max'))
-            settings['step'] = settings.get('step', None)
+            settings['step'] = settings.get('step', 1)
 
         self._alarmed_monitors = set()
         self.update_mon_thresholds()
@@ -277,11 +277,6 @@ class GuiAlarms:
     def get_step(self, name):
         """
         Get the step in which the user can increment the alarm value.
-        
-        The order of precendence is:
-        a) step of this alarm
-        b) step of the linked monitor
-        c) fixed value 1
 
         Arguments:
         - name: monitor name
@@ -292,13 +287,5 @@ class GuiAlarms:
         
         if obs is None:
             return False
-
-        settings = self._obs[obs]
         
-        if 'step' in settings:
-            return self._obs[obs]['step']
-        
-        if 'linked_monitor' in settings:
-            return self._monitors[settings['linked_monitor']].step
-        
-        return 1
+        return self._obs[obs]['step']

@@ -264,7 +264,7 @@ alarms:
     #    linked_monitor: flow
 
     tidal_volume:
-        min: 0
+        min: 10
         max: 1500
         setmin: 10
         setmax: 990
@@ -275,7 +275,7 @@ alarms:
         linked_monitor: total_inspired_volume
 
     bpm:
-        min: 0
+        min: 4
         max: 50
         under_threshold_code: 1048576
         over_threshold_code: 2097152
