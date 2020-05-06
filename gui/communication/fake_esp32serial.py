@@ -268,6 +268,12 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         if name == 'pause_lg' and int(value) == 1:
             self._lung_recruit_stop_time = time.time(
             ) + self.set_params["pause_lg_time"]
+        elif name == 'alarm_test':
+            if int(value) == 1:
+                self.set_params["alarm"] = self.set_params["alarm"] | 1 << 28
+            else:
+                self.snooze_hw_alarm(1 << 28)
+            return "OK"
 
         self.set_params[name] = value
         return "OK"
