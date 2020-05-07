@@ -255,6 +255,10 @@ alarms:
         over_threshold_code: 131072
         observable: o2
         linked_monitor: oxygen_concentration
+    temperature:
+        max: 75
+        observable: temperature
+        linked_monitor: temperature
     
     #flow:
     #    min: -300
