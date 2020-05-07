@@ -450,17 +450,17 @@ pressure_trigger:
 flow_trigger: 
     name: "Flow Trigger"
     default: 30.
-    min: 0.
-    max: 50.
+    min: 5.
+    max: 60.
     step: 1
     current: None
     presets:
         - [10, '']
-        - [15, '']
         - [20, '']
-        - [25, '']
         - [30, '']
-        - [35, '']
+        - [40, '']
+        - [50, '']
+        - [60, '']
 
 # Support Pressure
 support_pressure:
