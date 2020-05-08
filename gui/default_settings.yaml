@@ -26,6 +26,7 @@ upgrade_script: "cd /home/pi/upgrade.gui/gui/; python3 mvm_update.py"
 conversions:
     pressure: 1.01972 # mbar to cmH2O
     peak: 1.01972 # mbar to cmH2O
+    peep: 1.01972 # mbar to cmH2O
 
 # watchdog reset interval time in seconds
 wdinterval: 1
@@ -254,6 +255,10 @@ alarms:
         over_threshold_code: 131072
         observable: o2
         linked_monitor: oxygen_concentration
+    temperature:
+        max: 75
+        observable: temperature
+        linked_monitor: temperature
     
     #flow:
     #    min: -300
