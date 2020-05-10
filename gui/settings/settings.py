@@ -300,7 +300,7 @@ class Settings(QtWidgets.QMainWindow):
         # When this class is being constructed, we haven't
         # read any values, so will just leave the toolsettings
         # as their default values.
-        if len(self._current_values) > 0:
+        if self._current_values:
             self.update_toolsettings_values()
 
     def close_settings_worker(self):
