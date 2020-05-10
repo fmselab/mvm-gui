@@ -387,7 +387,7 @@ respiratory_rate:
 
 # Inspiration/Expiration
 insp_expir_ratio:
-    # NOTE: this value is always the inverse of the fruction
+    # NOTE: this value is always the inverse of the fraction
     name: "Insp./Expir."
     default: 2
     min: 1
