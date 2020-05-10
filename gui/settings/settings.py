@@ -244,7 +244,7 @@ class Settings(QtWidgets.QMainWindow):
     def upgrade_and_exit(self):
         cmd = self._config['upgrade_script']
 
-        print("Running \"%s\"..." % cmd) 
+        print("Running \"%s\"..." % cmd)
         os.system(cmd)
         print("Complete. Closing GUI.")
         sys.exit(0)
@@ -273,35 +273,35 @@ class Settings(QtWidgets.QMainWindow):
         """
         When the mode changes between PSV/PCV, we need to change which toolsettings
         are shown in the bottom bar.
-        
+
         Arguments:
         - is_psv (bool): Whether PSV or PCV is now active
         """
         self.toolsettings_lookup = {}
-        
+
         mode = 'psv' if is_psv else 'pcv'
         tool_list = self._config["displayed_toolsettings"][mode]
-        
+
         self.toolsettings_lookup = {}
-        
+
         # At most 3 tools can be shown
         for idx in range(3):
             widget = self._toolsettings["toolsettings_%d" % (idx + 1)]
-            
             if len(tool_list) > idx:
+
                 # Show the widget and assign an easy lookup
                 widget.load_presets(tool_list[idx])
                 self.toolsettings_lookup[tool_list[idx]] = widget
             else:
                 # Hide the widget
                 widget.load_presets(None)
-               
+
         # When this class is being constructed, we haven't
         # read any values, so will just leave the toolsettings
         # as their default values.
         if len(self._current_values) > 0:
             self.update_toolsettings_values()
-        
+
     def close_settings_worker(self):
         '''
         Closes the settings window, w/o applying
