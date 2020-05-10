@@ -13,7 +13,6 @@ the user has selected.
 import sys
 from PyQt5 import QtCore, QtWidgets
 
-from messagebox import MessageBox
 from communication.esp32serial import ESP32Exception
 
 BITMAP = {1 << x: x for x in range(32)}
@@ -93,15 +92,6 @@ class SnoozeButton:
                 self._esp32.reset_warnings()
                 self._alarm_h.snooze_warning(self._code)
         except ESP32Exception: return
-        # except ESP32Exception as error:
-        #     msg = MessageBox()
-        #     func = msg.critical("Critical",
-        #                         "Severe hardware communication error",
-        #                         str(error),
-        #                         "Communication error",
-        #                         {msg.Retry: lambda: None,
-        #                          msg.Abort: lambda: None})
-        #     func()
 
 class AlarmButton(QtWidgets.QPushButton):
     """
@@ -223,19 +213,6 @@ class AlarmHandler:
             esp32warning = self._esp32.get_warnings()
         except ESP32Exception: return
         # except ESP32Exception as error:
-
-        #     esp32alarm = None
-        #     esp32warning = None
-        #     err_msg = "Severe hardware communication error. "
-        #     err_msg += "Cannot retrieve alarm and warning statuses from hardware."
-        #     msg = MessageBox()
-        #     func = msg.critical("Critical",
-        #                         err_msg,
-        #                         str(error),
-        #                         "Communication error",
-        #                         {msg.Retry: lambda: None,
-        #                          msg.Abort: lambda: sys.exit(-1)})
-        #     func()
 
         #
         # ALARMS
