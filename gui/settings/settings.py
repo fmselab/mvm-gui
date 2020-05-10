@@ -269,16 +269,15 @@ class Settings(QtWidgets.QMainWindow):
 
         self.repaint()
 
-    def mode_changed(self, is_psv):
+    def _set_mode(self, mode):
         """
-        When the mode changes between PSV/PCV, we need to change which toolsettings
-        are shown in the bottom bar.
+        Set the mode to PSV or PCV depending on the parameter and sets the
+        toolsetting shown in the bottom bar.
 
         Arguments:
-        - is_psv (bool): Whether PSV or PCV is now active
+        - mode (string): 'psv' or 'pcv'
         """
 
-        mode = 'psv' if is_psv else 'pcv'
         tool_list = self._config["displayed_toolsettings"][mode]
 
         self.toolsettings_lookup = {}
