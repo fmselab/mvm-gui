@@ -8,7 +8,6 @@ import sys
 import copy
 from PyQt5 import QtWidgets, uic
 from presets.presets import Presets
-from messagebox import MessageBox
 from communication import ESP32Exception
 from .settingsfile import SettingsFile
 
@@ -392,18 +391,9 @@ class Settings(QtWidgets.QMainWindow):
 
             # Finally, try to set the value to the ESP
             # Raise an error message if this fails.
-            try:
-                if self._data_h.set_data(esp_param_name, value):
-                    # Now set the color to green, as we know it has been set
-                    btn.setStyleSheet("color: green")
-            except ESP32Exception as error:
-                msg = MessageBox()
-                msg.critical("Critical",
-                             "Severe Hardware Communication Error",
-                             str(error),
-                             "Communication error",
-                             {msg.Retry: lambda: self.send_values_to_hardware,
-                              msg.Abort: lambda: sys.exit(-1)})()
+            if self._data_h.set_data(esp_param_name, value):
+                # Now set the color to green, as we know it has been set
+                btn.setStyleSheet("color: green")
 
             if param == 'respiratory_rate':
                 self.toolsettings_lookup["respiratory_rate"].update(value)
