@@ -62,7 +62,10 @@ class StartStopWorker():
         self._start_timer()
 
         # Tell the Settings widget what the current mode is.
-        self._settings.mode_changed(self._mode == self.MODE_PSV)
+        if self._mode == self.MODE_PSV:
+            self._settings.set_psv()
+        else:
+            self._settings.set_pcv()
 
     def _init_settings_panel(self):
         '''
@@ -190,7 +193,7 @@ class StartStopWorker():
                 self._button_mode.setText("Set\nPCV")
                 self.update_startstop_text()
                 self._mode = self.MODE_PSV
-                self._settings.mode_changed(True)
+                self._settings.set_psv()
             else:
                 self._raise_comm_error('Cannot set PSV mode.')
 
@@ -202,7 +205,7 @@ class StartStopWorker():
                 self._button_mode.setText("Set\nPSV")
                 self.update_startstop_text()
                 self._mode = self.MODE_PCV
-                self._settings.mode_changed(False)
+                self._settings.set_pcv()
             else:
                 self._raise_comm_error('Cannot set PCV mode.')
 
