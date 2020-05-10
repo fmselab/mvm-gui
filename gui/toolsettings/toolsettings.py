@@ -92,7 +92,7 @@ class ToolSettings(QtWidgets.QWidget):
             self.labels["units"].setText("")
 
         self.update(val)
-        
+
     def load_presets(self, name="default"):
         """
         Configure this widget by loading values from the configuration file.
@@ -108,7 +108,7 @@ class ToolSettings(QtWidgets.QWidget):
             # just make everything empty.
             for label in self.labels.values():
                 label.setText("")
-            
+
             self.slider_value.hide()
         else:
             self.slider_value.show()
@@ -173,7 +173,7 @@ class ToolSettings(QtWidgets.QWidget):
             disp_value = "1:%.2g" % value
         else:
             # Display decimal/integer
-            disp_value = "%g" % (round(value / self.step) * self.step)
+            disp_value = str(value).rstrip('0').rstrip('.')
 
         slider_value = int((value - self.min) / self.step)
         self.slider_value.setValue(slider_value)
