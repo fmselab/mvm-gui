@@ -76,7 +76,7 @@ def main():
     window.show()
 
     # Assign exception function
-    esp32.assign_except_func(window.critical_alarm_handler.call_communication_failure)
+    esp32.assign_except_func(window.critical_alarm_handler.call_system_failure)
 
     # Set up watchdog and star the main Qt executable
     esp32.set("wdenable", 1)
