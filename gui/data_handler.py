@@ -5,7 +5,6 @@ Data management and dispatching back and forth the ESP32
 
 import sys
 from PyQt5.QtCore import QTimer
-from messagebox import MessageBox
 from communication.esp32serial import ESP32Exception
 
 class DataHandler():
@@ -74,22 +73,6 @@ class DataHandler():
         return {k: v * conv.get(k, 1.) for (k, v) in values.items()}
         # for n, v in values.items():
         #     values[n] = v * conv['pressure'] if 'pressure' in conv else v
-
-    def open_comm_error(self, error):
-        '''
-        Opens a message window if there is a communication error.
-        '''
-        msg = MessageBox()
-
-        # TODO: find a good exit point
-        callbacks = {msg.Retry: self._restart_timer,
-                     msg.Abort: lambda: sys.exit(-1)}
-
-        msg.critical("COMMUNICATION ERROR",
-                     "CANNOT COMMUNICATE WITH THE HARDWARE",
-                     "Check cable connections then click retry.\n" + error,
-                     "COMMUNICATION ERROR",
-                     callbacks)()
 
     def _start_timer(self):
         '''
