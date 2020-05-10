@@ -285,10 +285,11 @@ class Settings(QtWidgets.QMainWindow):
         self.toolsettings_lookup = {}
 
         # At most 3 tools can be shown
+        len_tool_list = len(tool_list)
         for idx in range(3):
             widget = self._toolsettings["toolsettings_%d" % (idx + 1)]
-            if len(tool_list) > idx:
 
+            if len_tool_list > idx:
                 # Show the widget and assign an easy lookup
                 widget.load_presets(tool_list[idx])
                 self.toolsettings_lookup[tool_list[idx]] = widget
