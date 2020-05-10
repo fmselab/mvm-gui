@@ -97,10 +97,7 @@ class StartStopWorker():
         QTimer times out.
         '''
 
-        try:
-            self._call_esp32()
-        except ESP32Exception as error:
-            self._raise_comm_error(str(error))
+        self._call_esp32()
 
     def _call_esp32(self):
         '''
@@ -148,21 +145,6 @@ class StartStopWorker():
         Sets _backup_ackowledged to True
         '''
         self._backup_ackowledged = True
-
-    def _raise_comm_error(self, message):
-        """
-        Opens an error window with 'message'.
-
-        arguments:
-        - message: the message to show in the error window
-        """
-
-        # TODO: find a good exit point
-        msg = MessageBox()
-        msg.critical('COMMUNICATION ERROR',
-                     'Error communicating with the hardware', message,
-                     '** COMMUNICATION ERROR **', {msg.Ok: lambda:
-                                                           sys.exit(-1)})()
 
     def is_running(self):
         """
