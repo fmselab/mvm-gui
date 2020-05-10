@@ -175,7 +175,7 @@ class Alarms(QtWidgets.QWidget):
         #pylint: disable=no-self-use
         """
         Sets the range for a slider given the current monitor being used.
-        Range is set to the coarseness of the monitor.step.
+        Range is set to the coarseness of the alarm's step.
 
         arguments:
         - slider: Reference to the slider to be set.
@@ -183,15 +183,13 @@ class Alarms(QtWidgets.QWidget):
         """
         alarm = monitor.gui_alarm
         if alarm.has_valid_minmax(monitor.configname):
+            num_steps = int((alarm.get_max(monitor.configname) -
+                         alarm.get_min(monitor.configname)) /
+                        alarm.get_step(monitor.configname))
             slider.setMinimum(0)
-            slider.setMaximum(
-                (alarm.get_max(
-                    monitor.configname) -
-                 alarm.get_min(
-                     monitor.configname)) /
-                monitor.step)
-            slider.setSingleStep(monitor.step)
-            slider.setPageStep(slider.maximum() / 2)
+            slider.setMaximum(num_steps)
+            slider.setSingleStep(1)
+            slider.setPageStep(num_steps / 2)
             slider.setEnabled(True)
         else:
             slider.setMinimum(0)
@@ -212,9 +210,9 @@ class Alarms(QtWidgets.QWidget):
         if alarm.has_valid_minmax(monitor.configname):
             slidervalue = min(
                 self.slider_alarmmax.sliderPosition(), slidervalue)
-            value = slidervalue * monitor.step + \
+            value = slidervalue * alarm.get_step(monitor.configname) + \
                 alarm.get_min(monitor.configname)
-            self.alarmmin_value.setText(str(value))
+            self.alarmmin_value.setText("Raise alarm if below: %s" % value)
             self.slider_alarmmin.setValue(slidervalue)
             self.slider_alarmmin.setSliderPosition(slidervalue)
 
@@ -231,9 +229,9 @@ class Alarms(QtWidgets.QWidget):
         if alarm.has_valid_minmax(monitor.configname):
             slidervalue = max(
                 self.slider_alarmmin.sliderPosition(), slidervalue)
-            value = slidervalue * monitor.step + \
+            value = slidervalue * alarm.get_step(monitor.configname) + \
                 alarm.get_min(monitor.configname)
-            self.alarmmax_value.setText(str(value))
+            self.alarmmax_value.setText("Raise alarm if above: %s" % value)
             self.slider_alarmmax.setValue(slidervalue)
             self.slider_alarmmax.setSliderPosition(slidervalue)
 
@@ -257,7 +255,7 @@ class Alarms(QtWidgets.QWidget):
 
         if alarm.has_valid_minmax(name):
             sliderpos = int(
-                (alarm.get_setmin(name) - alarm.get_min(name)) / monitor.step)
+                (alarm.get_setmin(name) - alarm.get_min(name)) / alarm.get_step(name))
             self.slider_alarmmin.setSliderPosition(sliderpos)
             self.do_alarmmin_moved(sliderpos, monitor)
             self.alarmmin_min.setText(str(alarm.get_min(name)))
@@ -272,7 +270,7 @@ class Alarms(QtWidgets.QWidget):
             lambda value: self.do_alarmmax_moved(value, monitor))
         if alarm.has_valid_minmax(name):
             sliderpos = int(
-                (alarm.get_setmax(name) - alarm.get_min(name)) / monitor.step)
+                (alarm.get_setmax(name) - alarm.get_min(name)) / alarm.get_step(name))
             self.slider_alarmmax.setSliderPosition(sliderpos)
             self.do_alarmmax_moved(sliderpos, monitor)
             self.alarmmax_min.setText(str(alarm.get_min(name)))
@@ -293,13 +291,13 @@ class Alarms(QtWidgets.QWidget):
             alarm.update_min(
                 monitor.configname,
                 self.slider_alarmmin.sliderPosition() *
-                monitor.step +
+                alarm.get_step(monitor.configname) +
                 alarm.get_min(
                     monitor.configname))
             alarm.update_max(
                 monitor.configname,
                 self.slider_alarmmax.sliderPosition() *
-                monitor.step +
+                alarm.get_step(monitor.configname) +
                 alarm.get_min(
                     monitor.configname))
             # monitor.update_thresholds()
