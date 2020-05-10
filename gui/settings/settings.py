@@ -102,7 +102,7 @@ class Settings(QtWidgets.QMainWindow):
         self._current_preset_name = None
 
         # Default to PCV setup; will be updated by start_stop_worker.
-        self.mode_changed(False)
+        self.set_pcv()
         self.load_presets()
 
     def _recalculate_inspiratory_time(self):
@@ -268,6 +268,20 @@ class Settings(QtWidgets.QMainWindow):
         self._current_values_temp = copy.copy(self._current_values)
 
         self.repaint()
+
+    def set_pcv(self):
+        """
+        Inform that the current ventilation mode is PCV
+        """
+
+        self._set_mode("pcv")
+
+    def set_psv(self):
+        """
+        Inform that the current ventilation mode is PSV
+        """
+
+        self._set_mode("psv")
 
     def _set_mode(self, mode):
         """
