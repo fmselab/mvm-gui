@@ -642,31 +642,11 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QPushButton" name="button_start_vent">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>120</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Start Ventilation</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="button_start_settings">
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>120</height>
+            <height>90</height>
            </size>
           </property>
           <property name="font">
@@ -686,7 +666,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>120</height>
+            <height>90</height>
            </size>
           </property>
           <property name="font">
@@ -697,13 +677,55 @@
            </font>
           </property>
           <property name="text">
-           <string>Circuit Test</string>
+           <string>Self Test</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_spiro_calib">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>90</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Spirometer Calibration</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_start_vent">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>90</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Proceed</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="MainDisplay" name="main"/>
+      <widget class="SpirometerCalibration" name="spiro_calib"/>
+      <widget class="SelfTest" name="self_test"/>
      </widget>
     </item>
     <item>
@@ -773,6 +795,7 @@
         </layout>
        </widget>
       </widget>
+      <widget class="SelfTestBar" name="selftestbar"/>
       <widget class="Toolbar" name="toolbar"/>
       <widget class="SpecialBar" name="specialbar"/>
       <widget class="Menu" name="menu"/>
@@ -1928,6 +1951,24 @@ Screen</string>
    <class>SpecialBar</class>
    <extends>QWidget</extends>
    <header>special/special</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SpirometerCalibration</class>
+   <extends>QWidget</extends>
+   <header>calibration/spirometer</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SelfTest</class>
+   <extends>QWidget</extends>
+   <header>selftest/selftest</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SelfTestBar</class>
+   <extends>QWidget</extends>
+   <header>selftest/selftestbar</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
