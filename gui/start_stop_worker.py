@@ -60,7 +60,7 @@ class StartStopWorker():
         self._timer = QTimer()
         self._timer.timeout.connect(self._esp32_io)
         self._start_timer()
-        
+
         # Tell the Settings widget what the current mode is.
         self._settings.mode_changed(self._mode == self.MODE_PSV)
 
@@ -91,7 +91,7 @@ class StartStopWorker():
                     self._settings.update_spinbox_value(param, converted_value)
                 else:
                     self._settings.update_spinbox_value(param, value)
-    
+
             self._settings.update_toolsettings_values()
 
     def _esp32_io(self):
