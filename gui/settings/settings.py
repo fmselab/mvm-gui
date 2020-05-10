@@ -277,7 +277,6 @@ class Settings(QtWidgets.QMainWindow):
         Arguments:
         - is_psv (bool): Whether PSV or PCV is now active
         """
-        self.toolsettings_lookup = {}
 
         mode = 'psv' if is_psv else 'pcv'
         tool_list = self._config["displayed_toolsettings"][mode]
