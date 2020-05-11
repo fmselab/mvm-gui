@@ -317,15 +317,15 @@ class CriticalAlarmHandler:
         if details is not None:
             self._label_criticaldetails.setText(details)
 
-    def call_system_failure(self, ExceptionType=None):
+    def call_system_failure(self, details=None):
         """
         Calls a system failure and sets the mainwindow into a state that is irrecoverable without
         maintenance support.
         """
         self._button_retrycmd.hide()
         disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
-        if ExceptionType is not None:
-            details = str(ExceptionType).replace("\n",  "")
+        if details is not None:
+            details = str(details).replace("\n",  "")
         self.show_critical_error(disp_msg, details=details)
 
     def call_communication_failure(self, nretry=3):
