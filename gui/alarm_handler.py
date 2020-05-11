@@ -325,7 +325,7 @@ class CriticalAlarmHandler:
         self._button_retrycmd.hide()
         disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
         if ExceptionType is not None:
-            details = str(ExceptionType)
+            details = str(ExceptionType).replace("\n",  "")
         self.show_critical_error(disp_msg, details=details)
 
     def call_communication_failure(self, nretry=3):
