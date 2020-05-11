@@ -40,13 +40,15 @@ class ExceptionWrapper:
                 self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
                 return func(*args, **kwargs)
             except self.ExceptionType as error:
-                print("ERROR in %s%s (%d tries left): %s" % 
-                        (func.func_name, str(args), tries, str(error)))
+                self._last_error_str = str(error)
+                print("ERROR in %s (%d tries left)" % (func.__name__, tries)) 
+                print(self._last_error_str)
+
                 
         # Lock the state as failed by setting except_state
-        self.except_state = True
         if self.except_func is not None and not self.except_state:
-            self.except_func(error)
+            self.except_state = True
+            self.except_func(self._last_error_str)
         raise self.ExceptionType()
 
 
@@ -70,6 +72,7 @@ class ExceptionWrapper:
         self.except_state = False
         self.ExceptionType = ExceptionType
         self._last_func = None
+        self._last_error_str = None
 
         for __method in methods:
             if callable(getattr(instance, __method)) and __method[0] != '_':
