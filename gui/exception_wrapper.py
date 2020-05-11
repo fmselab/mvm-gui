@@ -18,9 +18,12 @@ class ExceptionWrapper:
 
     It has only the constructor, but it will automagically generate all
     other methods starting from the public methods of the provided class.
+
+    extra arguments:
+    - tries: the number of times to try the function before going into a permanent error state
     """
 
-    def _wrap(self, func, *args, **kwargs):
+    def _wrap(self, func, *args, tries=10, **kwargs):
         """
         Wrapper function. This implements the try-catch statement
 
@@ -30,16 +33,22 @@ class ExceptionWrapper:
                          wrapped function
         """
 
-        try:
-            if self.except_state:
-                raise self.ExceptionType()
-            self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
-            return func(*args, **kwargs)
-        except self.ExceptionType as error:
-            if self.except_func is not None and not self.except_state:
-                self.except_func(error)
-                self.except_state = True
-            raise
+        # Try the function a number of times before failing (unless had failed before)
+        while not self.except_state and tries > 0:
+            tries -= 1
+            try:
+                self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
+                return func(*args, **kwargs)
+            except self.ExceptionType as error:
+                print("ERROR in %s%s (%d tries left): %s" % 
+                        (func.func_name, str(args), tries, str(error)))
+                
+        # Lock the state as failed by setting except_state
+        self.except_state = True
+        if self.except_func is not None and not self.except_state:
+            self.except_func(error)
+        raise self.ExceptionType()
+
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
@@ -60,7 +69,7 @@ class ExceptionWrapper:
         self.except_func = None
         self.except_state = False
         self.ExceptionType = ExceptionType
-        self._last_func_call = None
+        self._last_func = None
 
         for __method in methods:
             if callable(getattr(instance, __method)) and __method[0] != '_':
