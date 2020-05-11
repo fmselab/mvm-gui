@@ -30,19 +30,15 @@ class ExceptionWrapper:
                          wrapped function
         """
 
-        print("We are wrapping")
-
         try:
-            print("Trying to run ", func)
-            if self.except_state: raise self.ExceptionType()
+            if self.except_state:
+                raise self.ExceptionType()
             self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
             return func(*args, **kwargs)
         except self.ExceptionType:
             if self.except_func is not None and not self.except_state:
-                print("Caught the exception")
                 self.except_func()
                 self.except_state = True
-                print('Done catching exception')
             raise
 
     def __init__(self, instance, ExceptionType):
@@ -71,7 +67,7 @@ class ExceptionWrapper:
                 replacement = lambda *args, __method=__method, **kwargs: self._wrap(
                     getattr(instance, __method), *args, **kwargs)
                 setattr(self, __method, replacement)
-    
+
     def assign_except_func(self, except_func):
         """
         Assign an exception function to this wrapper, which will be called
