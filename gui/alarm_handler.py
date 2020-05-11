@@ -312,13 +312,16 @@ class CriticalAlarmHandler:
         self._toppane.setCurrentWidget(self._criticalerrorpage)
         self._bottombar.setCurrentWidget(self._criticalerrorbar)
 
-    def call_system_failure(self):
+    def call_system_failure(self, ExceptionType=None):
         """
         Calls a system failure and sets the mainwindow into a state that is irrecoverable without
         maintenance support.
         """
         self._button_retrycmd.hide()
-        self.show_critical_error("*** SYSTEM FAILURE ***\nCall the Maintenance Service")
+        disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
+        if ExceptionType is not None:
+            disp_msg += "\n" + str(ExceptionType)
+        self.show_critical_error(disp_msg)
 
     def call_communication_failure(self, nretry=3):
         """
