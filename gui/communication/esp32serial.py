@@ -24,13 +24,14 @@ class ESP32Exception(Exception):
         - output         what the ESP32 is replying
         """
 
-        self.verb = verb
-        self.line = line
-        self.output = output
-        self.details = None
+        self.verb = str(verb)
+        self.line = str(line)
+        self.output = str(output)
+        self.details = str(details)
 
         super(ESP32Exception, self).__init__(
-            "ERROR in %s: line: '%s'; output: %s; details: %s" % (verb, line, output, details))
+            "ERROR in %s: line: %s; output: %s; details: %s" % 
+            (self.verb, self.line, self.output, self.details))
 
 
 class ESP32Serial:
