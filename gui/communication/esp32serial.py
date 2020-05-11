@@ -14,7 +14,7 @@ class ESP32Exception(Exception):
     Exception class for decoding and hardware failures.
     """
 
-    def __init__(self, verb="", line="", output="__internal_exception__"):
+    def __init__(self, verb=None, line=None, output=None, details=None):
         """
         Contructor
 
@@ -27,9 +27,10 @@ class ESP32Exception(Exception):
         self.verb = verb
         self.line = line
         self.output = output
+        self.details = None
 
         super(ESP32Exception, self).__init__(
-            "ERROR in %s: line: '%s'; output: %s" % (verb, line, output))
+            "ERROR in %s: line: '%s'; output: %s; details: %s" % (verb, line, output, details))
 
 
 class ESP32Serial:
@@ -109,9 +110,7 @@ class ESP32Serial:
         try:
             result = self.connection.write(cmd.encode())
         except Exception as exc: # pylint: disable=W0703
-            print("ERROR: write to port failing: %s %s" %
-                    (result.decode(), str(exc)))
-            raise ESP32Exception("write", cmd, result.decode())
+            raise ESP32Exception("write", cmd, result.decode(), str(exc))
 
     def set(self, name, value):
         """
@@ -134,19 +133,15 @@ class ESP32Serial:
             command = 'set ' + name + ' ' + str(value) + '\r\n'
             try:
                 self._write(command)
-            except ESP32Exception: raise
+            except ESP32Exception:
+                raise
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: set failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("set", command, result.decode())
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                return self._parse(result)
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("set", command, result.decode(), str(exc))
 
     def set_watchdog(self):
         """
@@ -157,7 +152,8 @@ class ESP32Serial:
 
         try:
             return self.set("watchdog_reset", 1)
-        except ESP32Exception: pass
+        except ESP32Exception:
+            raise
 
     def get(self, name):
         """
@@ -175,19 +171,15 @@ class ESP32Serial:
             command = 'get ' + name + '\r\n'
             try:
                 self._write(command)
-            except ESP32Exception: raise
+            except ESP32Exception:
+                raise
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: get failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("get", command, result.decode())
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                return self._parse(result)
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("get", command, result.decode(), str(exc))
 
     def get_all(self):
         """
@@ -203,25 +195,21 @@ class ESP32Serial:
         with self.lock:
             try:
                 self._write("get all\r\n")
-            except ESP32Exception: raise
+            except ESP32Exception:
+                raise
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    values = self._parse(result).split(',')
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                values = self._parse(result).split(',')
 
-                    if len(values) != len(self.get_all_fields):
-                        raise Exception("get_all answer mismatch: expected: %s, got %s" % (
-                            self.get_all_fields, values))
+                if len(values) != len(self.get_all_fields):
+                    raise Exception("get_all answer mismatch: expected: %s, got %s" % (
+                        self.get_all_fields, values))
 
-                    return dict(zip(self.get_all_fields, values))
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: get failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("get", "get all", result.decode())
+                return dict(zip(self.get_all_fields, values))
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("get", "get all", result.decode(), str(exc))
 
     def get_alarms(self):
         """
@@ -232,7 +220,8 @@ class ESP32Serial:
 
         try:
             return ESP32Alarm(int(self.get("alarm")))
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def get_warnings(self):
         """
@@ -243,7 +232,8 @@ class ESP32Serial:
 
         try:
             return ESP32Warning(int(self.get("warning")))
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def reset_alarms(self):
         """
@@ -254,7 +244,8 @@ class ESP32Serial:
 
         try:
             return self.set("alarm", 0)
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def reset_warnings(self):
         """
@@ -265,7 +256,8 @@ class ESP32Serial:
 
         try:
             return self.set("warning", 0)
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def raise_gui_alarm(self):
         """
@@ -276,10 +268,11 @@ class ESP32Serial:
 
         returns: an "OK" string in case of success.
         """
-        
+
         try:
             return self.set("alarm", 1)
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def snooze_hw_alarm(self, alarm_type):
         """
@@ -299,7 +292,8 @@ class ESP32Serial:
         pos = bitmap[alarm_type]
         try:
             return self.set("alarm_snooze", pos)
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
 
     def snooze_gui_alarm(self):
         """
@@ -310,4 +304,5 @@ class ESP32Serial:
 
         try:
             return self.set("alarm_snooze", 29)
-        except ESP32Exception: raise
+        except ESP32Exception:
+            raise
