@@ -317,6 +317,9 @@ class CriticalAlarmHandler:
         if details is not None:
             self._label_criticaldetails.setText(details)
 
+        QtCore.QCoreApplication.processEvents()
+        QtCore.QCoreApplication.quit()
+
     def call_system_failure(self, details=None):
         """
         Calls a system failure and sets the mainwindow into a state that is irrecoverable without
