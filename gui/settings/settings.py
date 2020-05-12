@@ -8,7 +8,6 @@ import sys
 import copy
 from PyQt5 import QtWidgets, uic
 from presets.presets import Presets
-from communication import ESP32Exception
 from .settingsfile import SettingsFile
 
 
