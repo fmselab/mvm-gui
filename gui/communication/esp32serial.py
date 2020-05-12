@@ -132,10 +132,7 @@ class ESP32Serial:
             # but I don't really remember now the version running on
             # Raspbian
             command = 'set ' + name + ' ' + str(value) + '\r\n'
-            try:
-                self._write(command)
-            except ESP32Exception:
-                raise
+            self._write(command)
 
             result = b""
             try:
@@ -151,10 +148,7 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        try:
-            return self.set("watchdog_reset", 1)
-        except ESP32Exception:
-            raise
+        return self.set("watchdog_reset", 1)
 
     def get(self, name):
         """
@@ -170,10 +164,7 @@ class ESP32Serial:
 
         with self.lock:
             command = 'get ' + name + '\r\n'
-            try:
-                self._write(command)
-            except ESP32Exception:
-                raise
+            self._write(command)
 
             result = b""
             try:
@@ -194,10 +185,7 @@ class ESP32Serial:
         print("ESP32Serial-DEBUG: get all")
 
         with self.lock:
-            try:
-                self._write("get all\r\n")
-            except ESP32Exception:
-                raise
+            self._write("get all\r\n")
 
             result = b""
             try:
@@ -219,10 +207,7 @@ class ESP32Serial:
         returns: a ESP32Alarm instance describing the possible alarms.
         """
 
-        try:
-            return ESP32Alarm(int(self.get("alarm")))
-        except ESP32Exception:
-            raise
+        return ESP32Alarm(int(self.get("alarm")))
 
     def get_warnings(self):
         """
@@ -231,10 +216,7 @@ class ESP32Serial:
         returns: a ESP32Warning instance describing the possible warnings.
         """
 
-        try:
-            return ESP32Warning(int(self.get("warning")))
-        except ESP32Exception:
-            raise
+        return ESP32Warning(int(self.get("warning")))
 
     def reset_alarms(self):
         """
@@ -243,10 +225,7 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        try:
-            return self.set("alarm", 0)
-        except ESP32Exception:
-            raise
+        return self.set("alarm", 0)
 
     def reset_warnings(self):
         """
@@ -255,10 +234,7 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        try:
-            return self.set("warning", 0)
-        except ESP32Exception:
-            raise
+        return self.set("warning", 0)
 
     def raise_gui_alarm(self):
         """
@@ -270,10 +246,7 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        try:
-            return self.set("alarm", 1)
-        except ESP32Exception:
-            raise
+        return self.set("alarm", 1)
 
     def snooze_hw_alarm(self, alarm_type):
         """
@@ -291,10 +264,7 @@ class ESP32Serial:
         bitmap = {1 << x: x for x in range(32)}
 
         pos = bitmap[alarm_type]
-        try:
-            return self.set("alarm_snooze", pos)
-        except ESP32Exception:
-            raise
+        return self.set("alarm_snooze", pos)
 
     def snooze_gui_alarm(self):
         """
@@ -303,7 +273,4 @@ class ESP32Serial:
         returns: an "OK" string in case of success.
         """
 
-        try:
-            return self.set("alarm_snooze", 29)
-        except ESP32Exception:
-            raise
+        return self.set("alarm_snooze", 29)
