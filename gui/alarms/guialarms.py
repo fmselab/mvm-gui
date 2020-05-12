@@ -4,8 +4,6 @@ Alarm facility.
 
 from copy import copy
 
-from communication.esp32serial import ESP32Exception
-
 class GuiAlarms:
     """
     This class checks whether observables are within allowed ranges. If out of range:
@@ -100,9 +98,7 @@ class GuiAlarms:
         """
         if item['setmax'] is not None:
             if value > item["setmax"]:
-                try:
-                    self._esp32.raise_gui_alarm()
-                except ESP32Exception: return
+                self._esp32.raise_gui_alarm()
                 linked_monitor = self._monitors[item['linked_monitor']]
                 linked_monitor.set_alarm_state(isalarm=True)
                 self._alarmed_monitors.add(linked_monitor.configname)
@@ -120,9 +116,7 @@ class GuiAlarms:
         """
         if item['setmin'] is not None:
             if value < item["setmin"]:
-                try:
-                    self._esp32.raise_gui_alarm()
-                except ESP32Exception: return
+                self._esp32.raise_gui_alarm()
                 linked_monitor = self._monitors[item['linked_monitor']]
                 linked_monitor.set_alarm_state(isalarm=True)
                 self._alarmed_monitors.add(linked_monitor.configname)
@@ -152,9 +146,7 @@ class GuiAlarms:
         if name in self._alarmed_monitors:
             self._alarmed_monitors.remove(name)
             if len(self._alarmed_monitors) == 0:
-                try:
-                    self._esp32.snooze_gui_alarm()
-                except ESP32Exception: return
+                self._esp32.snooze_gui_alarm()
 
         # self._esp32.reset_alarms()
         #obs = self._mon_to_obs.get(name, None)

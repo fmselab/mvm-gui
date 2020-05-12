@@ -4,8 +4,6 @@ A file from class StartStopWorker
 import sys
 from PyQt5.QtCore import QTimer
 from messagebox import MessageBox
-from communication.esp32serial import ESP32Exception
-
 
 class StartStopWorker():
     #pylint: disable=too-many-instance-attributes
@@ -81,9 +79,7 @@ class StartStopWorker():
             # parameters from the ESP and set those
             # values to the settings panels
             for param, esp_name in self._config['esp_settable_param'].items():
-                try:
-                    value = float(self._esp32.get(esp_name))
-                except ESP32Exception: return
+                value = float(self._esp32.get(esp_name))
                 print('Reading Settings parameters from ESP:', param, value)
                 if esp_name == 'ratio':
                     converted_value = (value**-1 - 1)**-1
@@ -106,11 +102,9 @@ class StartStopWorker():
         StartStopWorker class.
         '''
 
-        try:
-            run = int(self._esp32.get('run'))
-            mode = int(self._esp32.get('mode'))
-            backup = int(self._esp32.get('backup'))
-        except ESP32Exception: return
+        run = int(self._esp32.get('run'))
+        mode = int(self._esp32.get('mode'))
+        backup = int(self._esp32.get('backup'))
 
         if backup:
             if not self._backup_ackowledged:
@@ -164,9 +158,7 @@ class StartStopWorker():
         Toggles between desired mode (MODE_PCV or MODE_PSV).
         """
         if self._mode == self.MODE_PCV:
-            try:
-                self._esp32.set('mode', self.MODE_PSV)
-            except ESP32Exception: return
+            self._esp32.set('mode', self.MODE_PSV)
 
             self._mode_text = "PSV"
             self._button_mode.setText("Set\nPCV")
@@ -174,9 +166,7 @@ class StartStopWorker():
             self._mode = self.MODE_PSV
 
         else:
-            try:
-                self._esp32.set('mode', self.MODE_PCV)
-            except ESP32Exception: return
+            self._esp32.set('mode', self.MODE_PCV)
 
             self._mode_text = "PCV"
             self._button_mode.setText("Set\nPSV")
@@ -199,9 +189,7 @@ class StartStopWorker():
         Callback for when the Start button is pressed
         '''
         # Send signal to ESP to start running
-        try:
-            self._esp32.set('run', self.DO_RUN)
-        except ESP32Exception: return
+        self._esp32.set('run', self.DO_RUN)
 
         self._run = self.DO_RUN
         self.show_stop_button()
@@ -229,9 +217,7 @@ class StartStopWorker():
         Callback for when the Stop button is pressed
         '''
         # Send signal to ESP to stop running
-        try:
-            self._esp32.set('run', self.DONOT_RUN)
-        except ESP32Exception: return
+        self._esp32.set('run', self.DONOT_RUN)
 
         self._run = self.DONOT_RUN
         self.show_start_button()

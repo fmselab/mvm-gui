@@ -5,7 +5,6 @@ Data management and dispatching back and forth the ESP32
 
 import sys
 from PyQt5.QtCore import QTimer
-from communication.esp32serial import ESP32Exception
 
 class DataHandler():
     '''
@@ -47,10 +46,8 @@ class DataHandler():
         It runs the get_all to get the data from the ESP.
         '''
 
-        try:
-            # Get all params from ESP
-            current_values = self._esp32.get_all()
-        except ESP32Exception: return
+        # Get all params from ESP
+        current_values = self._esp32.get_all()
 
         # Converting from str to float
         for name, value in current_values.items():
@@ -101,8 +98,6 @@ class DataHandler():
         Sets data to the ESP
         '''
 
-        try:
-            result = self._esp32.set(param, value)
-        except ESP32Exception: return False
+        result = self._esp32.set(param, value)
 
         return result == self._config['return_success_code']

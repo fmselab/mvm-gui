@@ -13,8 +13,6 @@ the user has selected.
 import sys
 from PyQt5 import QtCore, QtWidgets
 
-from communication.esp32serial import ESP32Exception
-
 BITMAP = {1 << x: x for x in range(32)}
 ERROR = 0
 WARNING = 1
@@ -84,14 +82,12 @@ class SnoozeButton:
         # Reset the alarms/warnings in the ESP
         # If the ESP connection fails at this
         # time, raise an error box
-        try:
-            if self._mode == ERROR:
-                self._esp32.snooze_hw_alarm(self._code)
-                self._alarm_h.snooze_alarm(self._code)
-            else:
-                self._esp32.reset_warnings()
-                self._alarm_h.snooze_warning(self._code)
-        except ESP32Exception: return
+        if self._mode == ERROR:
+            self._esp32.snooze_hw_alarm(self._code)
+            self._alarm_h.snooze_alarm(self._code)
+        else:
+            self._esp32.reset_warnings()
+            self._alarm_h.snooze_warning(self._code)
 
 class AlarmButton(QtWidgets.QPushButton):
     """
@@ -208,11 +204,8 @@ class AlarmHandler:
         """
 
         # Retrieve alarms and warnings from the ESP
-        try:
-            esp32alarm = self._esp32.get_alarms()
-            esp32warning = self._esp32.get_warnings()
-        except ESP32Exception: return
-        # except ESP32Exception as error:
+        esp32alarm = self._esp32.get_alarms()
+        esp32warning = self._esp32.get_warnings()
 
         #
         # ALARMS
