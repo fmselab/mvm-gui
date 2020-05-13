@@ -76,17 +76,41 @@ class ESP32Serial:
 
         self.lock = Lock()
 
-        baudrate = kwargs["baudrate"] if "baudrate" in kwargs else 115200
-        timeout = kwargs["timeout"] if "timeout" in kwargs else 1
         self.term = kwargs["terminator"] if "terminator" in kwargs else b'\n'
-        self.connection = serial.Serial(port=config["port"],
-                                        baudrate=baudrate, timeout=timeout,
-                                        **kwargs)
+
+        self._port = config["port"]
+        self._port_kwargs = kwargs
+        self.reconnect()
 
         self.get_all_fields = config["get_all_fields"]
 
-        while self.connection.read():
-            pass
+
+    def reconnect(self):
+        """
+        Reconnects to the ESP32 serial based on initialized settings.
+        """
+        try:
+            self._close_connection()
+
+            baudrate = self._port_kwargs["baudrate"] if "baudrate" in self._port_kwargs else 115200
+            timeout = self._port_kwargs["timeout"] if "timeout" in self._port_kwargs else 1
+            self.connection = serial.Serial(port=self._port,
+                                            baudrate=baudrate, timeout=timeout,
+                                            **self._port_kwargs)
+            while self.connection.read():
+                pass
+        except Exception as exc: # pylint: disable=W0703
+            raise ESP32Exception("reconnect", None, None, str(exc))
+
+    def _close_connection(self):
+        """
+        Closes the connection.
+        """
+
+        with self.lock:
+            if hasattr(self, "connection"):
+                self.connection.close()
+
 
     def __del__(self):
         """
@@ -95,9 +119,7 @@ class ESP32Serial:
         Closes the connection.
         """
 
-        with self.lock:
-            if hasattr(self, "connection"):
-                self.connection.close()
+        self._close_connection()
 
     def _write(self, cmd):
         """
