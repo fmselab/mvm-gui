@@ -34,21 +34,26 @@ class ExceptionWrapper:
         """
 
         # Try the function a number of times before failing (unless had failed before)
-        while not self.except_state and tries > 0:
+        while not self.failed_state and tries > 0:
             tries -= 1
             try:
-                self._last_func = lambda func=func: self._wrap(func, *args, **kwargs)
                 return func(*args, **kwargs)
             except self.ExceptionType as error:
                 self._last_error_str = str(error)
                 print("ERROR in %s (%d tries left)" % (func.__name__, tries)) 
+                # Run exception function (e.g. retry connect), but pass known exceptions
+                if self.except_func is not None:
+                    try:
+                        self.except_func()
+                    except self.ExceptionType:
+                        pass
                 print(self._last_error_str)
 
                 
-        # Lock the state as failed by setting except_state
-        if self.except_func is not None and not self.except_state:
-            self.except_state = True
-            self.except_func(self._last_error_str)
+        # Lock the state as failed by setting failed_state
+        if self.failed_func is not None and not self.failed_state:
+            self.failed_state = True
+            self.failed_func(self._last_error_str)
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
@@ -66,10 +71,10 @@ class ExceptionWrapper:
         """
 
         methods = dir(instance)
+        self.failed_func = None
         self.except_func = None
-        self.except_state = False
+        self.failed_state = False
         self.ExceptionType = ExceptionType
-        self._last_func = None
         self._last_error_str = None
 
         for __method in methods:
@@ -77,6 +82,16 @@ class ExceptionWrapper:
                 replacement = lambda *args, __method=__method, **kwargs: self._wrap(
                     getattr(instance, __method), *args, **kwargs)
                 setattr(self, __method, replacement)
+
+    def assign_failed_func(self, failed_func):
+        """
+        Assign an failure function to this wrapper, which will be called
+        when the _wrap function has failed after certain number of tries.
+
+        arguments:
+        - failed_func:   function to call once after all retries have failed 
+        """
+        self.failed_func = failed_func
 
     def assign_except_func(self, except_func):
         """
