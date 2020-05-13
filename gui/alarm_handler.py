@@ -299,7 +299,7 @@ class CriticalAlarmHandler:
 
         self._button_retrycmd.pressed.connect(self._retry_cmd)
 
-    def show_critical_error(self, text, details=None):
+    def show_critical_error(self, text, details=""):
         """
         Shows the critical error in the mainwindow.
         This includes changing the screen to red and displaying a big message to this effect.
@@ -307,21 +307,19 @@ class CriticalAlarmHandler:
         self._label_criticalerror.setText(text)
         self._toppane.setCurrentWidget(self._criticalerrorpage)
         self._bottombar.setCurrentWidget(self._criticalerrorbar)
-        if details is not None:
-            self._label_criticaldetails.setText(details)
+        self._label_criticaldetails.setText(details)
 
         QtCore.QCoreApplication.processEvents()
         QtCore.QCoreApplication.quit()
 
-    def call_system_failure(self, details=None):
+    def call_system_failure(self, details=""):
         """
         Calls a system failure and sets the mainwindow into a state that is irrecoverable without
         maintenance support.
         """
         self._button_retrycmd.hide()
         disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
-        if details is not None:
-            details = str(details).replace("\n",  "")
+        details = str(details).replace("\n",  "")
         self.show_critical_error(disp_msg, details=details)
 
     def call_communication_failure(self, nretry=3):
