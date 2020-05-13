@@ -175,7 +175,7 @@ class AlarmHandler:
     - _snooze_btn: SnoozeButton that manipulates _alarmsnooze
     """
 
-    def __init__(self, config, esp32, alarmbar):
+    def __init__(self, config, esp32, alarmbar, hwfail_func):
         """
         Constructor
 
@@ -190,6 +190,9 @@ class AlarmHandler:
 
         self._err_buttons = {}
         self._war_buttons = {}
+
+        self._hwfail_func = hwfail_func
+        self._hwfail_codes = [1 << code for code in config['hwfail_codes']]
 
         self._alarmlabel = alarmbar.findChild(QtWidgets.QLabel, "alarmlabel")
         self._alarmstack = alarmbar.findChild(QtWidgets.QHBoxLayout, "alarmstack")
@@ -216,6 +219,9 @@ class AlarmHandler:
             alarm_codes = esp32alarm.get_alarm_codes()
 
             for alarm_code, err_str in zip(alarm_codes, errors):
+                if alarm_code in self._hwfail_codes:
+                    self._hwfail_func(err_str)
+                    print("Critical harware failure")
                 if alarm_code not in self._err_buttons:
                     btn = AlarmButton(ERROR, alarm_code, err_str,
                                       self._alarmlabel, self._snooze_btn)
@@ -298,8 +304,6 @@ class CriticalAlarmHandler:
                 "label_criticaldetails")
         self._button_retrycmd = mainparent.findChild(QtWidgets.QPushButton, "button_retrycmd")
 
-        self._button_retrycmd.pressed.connect(self._retry_cmd)
-
     def show_critical_error(self, text, details=""):
         """
         Shows the critical error in the mainwindow.
@@ -322,28 +326,3 @@ class CriticalAlarmHandler:
         disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
         details = str(details).replace("\n",  "")
         self.show_critical_error(disp_msg, details=details)
-
-    def call_communication_failure(self, nretry=3):
-        """
-        Calls a severe communications failure and sets the mainwindow into a state that is
-        recoverable if communication can be re-established after n tries.
-        If not, the system is irrecoverable.
-
-        Arguments:
-        - nretry: Number of communication retries before system failure (default: 3)
-        """
-        self.nretry = nretry
-
-        if self.nretry <= 0:
-            self.call_system_failure()
-        else:
-            self._button_retrycmd.show()
-            self._button_retrycmd.setText("Retry (%d)" % self.nretry)
-            self.show_critical_error("Severe Communication Error")
-
-    def _retry_cmd(self):
-        """
-        Re-issues the last (and presumably failed) command to the ESP32.
-        """
-        self.nretry -= 1
-        self.call_communication_failure(self.nretry) 
