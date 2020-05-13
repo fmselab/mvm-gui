@@ -34,7 +34,7 @@ class ExceptionWrapper:
         """
 
         # Try the function a number of times before failing (unless had failed before)
-        while not self.failed_state and tries > 0:
+        while tries > 0:
             tries -= 1
             try:
                 return func(*args, **kwargs)
@@ -50,9 +50,7 @@ class ExceptionWrapper:
                 print(self._last_error_str)
 
                 
-        # Lock the state as failed by setting failed_state
-        if self.failed_func is not None and not self.failed_state:
-            self.failed_state = True
+        if self.failed_func is not None:
             self.failed_func(self._last_error_str)
 
     def __init__(self, instance, ExceptionType):
@@ -73,7 +71,6 @@ class ExceptionWrapper:
         methods = dir(instance)
         self.failed_func = None
         self.except_func = None
-        self.failed_state = False
         self.ExceptionType = ExceptionType
         self._last_error_str = None
 
