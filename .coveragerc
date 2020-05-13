@@ -1,0 +1,6 @@
+[run]
+omit=gui/tests/*,*__init__.py
+
+[report]
+include=gui/*
+omit=gui/tests/*,*__init__.py

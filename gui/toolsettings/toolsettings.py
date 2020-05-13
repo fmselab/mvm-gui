@@ -100,26 +100,37 @@ class ToolSettings(QtWidgets.QWidget):
         Arguments:
         - name: The attribute to look for in the YAML file. If the attribute is not
             found, default values will be loaded instead (no warning/exception).
+            If the name is None, then the widget will be empty.
         """
-        toolsettings_default = {
-            "name": "Param",
-            "default": 50,
-            "min": 0,
-            "max": 100,
-            "current": None,
-            "units": "-",
-            "step": 1,
-            "show_fraction": False}
-        entry = self._config.get(name, toolsettings_default)
-        self.setup(
-            entry.get("name", toolsettings_default["name"]),
-            setrange=(
-                entry.get("min", toolsettings_default["min"]),
-                entry.get("default", toolsettings_default["default"]),
-                entry.get("max", toolsettings_default["max"])),
-            units=entry.get("units", toolsettings_default["units"]),
-            step=entry.get("step", toolsettings_default["step"]),
-            show_fraction=entry.get("show_fraction", toolsettings_default["show_fraction"]))
+        if name is None:
+            # It would be cleaner to hide the entire widget, but that affects the
+            # position of other elements. So we keep the widget around, and
+            # just make everything empty.
+            for label in self.labels.values():
+                label.setText("")
+
+            self.slider_value.hide()
+        else:
+            self.slider_value.show()
+            toolsettings_default = {
+                "name": "Param",
+                "default": 50,
+                "min": 0,
+                "max": 100,
+                "current": None,
+                "units": "-",
+                "step": 1,
+                "show_fraction": False}
+            entry = self._config.get(name, toolsettings_default)
+            self.setup(
+                entry.get("name", toolsettings_default["name"]),
+                setrange=(
+                    entry.get("min", toolsettings_default["min"]),
+                    entry.get("default", toolsettings_default["default"]),
+                    entry.get("max", toolsettings_default["max"])),
+                units=entry.get("units", toolsettings_default["units"]),
+                step=entry.get("step", toolsettings_default["step"]),
+                show_fraction=entry.get("show_fraction", toolsettings_default["show_fraction"]))
 
     def connect_config(self, config):
         """
@@ -162,7 +173,7 @@ class ToolSettings(QtWidgets.QWidget):
             disp_value = "1:%.2g" % value
         else:
             # Display decimal/integer
-            disp_value = "%g" % (round(value / self.step) * self.step)
+            disp_value = str(value).rstrip('0').rstrip('.')
 
         slider_value = int((value - self.min) / self.step)
         self.slider_value.setValue(slider_value)

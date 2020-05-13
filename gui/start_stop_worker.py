@@ -59,6 +59,12 @@ class StartStopWorker():
         self._timer.timeout.connect(self._esp32_io)
         self._start_timer()
 
+        # Tell the Settings widget what the current mode is.
+        if self._mode == self.MODE_PSV:
+            self._settings.set_psv()
+        else:
+            self._settings.set_pcv()
+
     def _init_settings_panel(self):
         '''
         Initializes the settings values.
@@ -86,6 +92,8 @@ class StartStopWorker():
                     self._settings.update_spinbox_value(param, converted_value)
                 else:
                     self._settings.update_spinbox_value(param, value)
+
+            self._settings.update_toolsettings_values()
 
     def _esp32_io(self):
         '''

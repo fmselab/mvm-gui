@@ -33,6 +33,23 @@ class ESP32Exception(Exception):
             "ERROR in %s: line: %s; output: %s; details: %s" % 
             (self.verb, self.line, self.output, self.details))
 
+def _parse(result):
+    """
+    Parses the message from ESP32
+
+    arguments:
+    - result         what the ESP replied as a binary buffer
+
+    returns the requested value as a string
+    """
+
+    check_str, value = result.decode().split('=')
+    check_str = check_str.strip()
+
+    if check_str != 'valore':
+        raise ESP32Exception("", "", "protocol error: 'valore=' expected")
+    return value.strip()
+
 
 class ESP32Serial:
     """
@@ -82,23 +99,6 @@ class ESP32Serial:
             if hasattr(self, "connection"):
                 self.connection.close()
 
-    def _parse(self, result):
-        """
-        Parses the message from ESP32
-
-        arguments:
-        - result         what the ESP replied as a binary buffer
-
-        returns the requested value as a string
-        """
-
-        check_str, value = result.decode().split('=')
-        check_str = check_str.strip()
-
-        if check_str != 'valore':
-            raise Exception("protocol error: 'valore=' expected")
-        return value.strip()
-
     def _write(self, cmd):
         """
         Writes the un-encoded message to the ESP32.
@@ -137,7 +137,7 @@ class ESP32Serial:
             result = b""
             try:
                 result = self.connection.read_until(terminator=self.term)
-                return self._parse(result)
+                return _parse(result)
             except Exception as exc: # pylint: disable=W0703
                 raise ESP32Exception("set", command, result.decode(), str(exc))
 
@@ -169,7 +169,7 @@ class ESP32Serial:
             result = b""
             try:
                 result = self.connection.read_until(terminator=self.term)
-                return self._parse(result)
+                return _parse(result)
             except Exception as exc: # pylint: disable=W0703
                 raise ESP32Exception("get", command, result.decode(), str(exc))
 
@@ -274,3 +274,167 @@ class ESP32Serial:
         """
 
         return self.set("alarm_snooze", 29)
+
+    def venturi_calibration(self):
+        """
+        Generator function to retrieve data for spirometer calibration.
+
+        returns a helper class instance.
+        """
+
+        class VenturiRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the Venturi Calibration
+            data.
+            """
+
+            def __init__(self, esp32):
+                """
+                Constructor
+
+                arguments:
+                - esp32: an istance of ESP32Serial
+                """
+
+                self._esp32 = esp32
+
+                self._esp32.set("flush_pipe", 1)
+
+                # from this point, the class effectively OWNS the
+                # connection...
+
+                self._esp32.lock.acquire()
+
+                self._previous_timeout = self._esp32.connection.timeout
+                self._esp32.connection.timeout = 2
+                self._esp32.connection.write("get venturi_scan\r\n".encode())
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. measure index (percentage)
+                2. raw measured flow (spirometer)
+                3. pressure variation (Sinsirion)
+                """
+
+                while True:
+                    bresult = self._esp32.connection.read_until(
+                        terminator=self._esp32.term)
+
+                    result = bresult.decode().strip()
+                    if result == '':
+                        raise ESP32Exception("get", "get venturi_scan", "timeout")
+                    elif result == 'valore=OK':
+                        return
+                    yield [float(datum) for datum in result.split(',')]
+
+            def __del__(self):
+                """
+                Destructor
+
+                this puts the connection back in normal operation
+                """
+
+                # read any possibly remaining data.
+                # For example if the generator has not been called till
+                # the end of the procedure.
+                while self._esp32.connection.read():
+                    pass
+                # restore the timeout to the previously using value
+                self._esp32.connection.timeout = self._previous_timeout
+                self._esp32.lock.release()
+                # ...and from here it finally releases its ownership
+                self._esp32.set("flush_pipe", 0)
+
+        return VenturiRetriever(self)
+
+    def leakage_test(self):
+        """
+        Generator function to retrieve data for leakage test.
+
+        returns a helper class instance.
+        """
+
+        class LeakTestRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the leakage test data.
+            """
+
+            def __init__(self, esp32):
+                """
+                Constructor
+
+                arguments:
+                - esp32: an istance of ESP32Serial
+                """
+
+                self._esp32 = esp32
+
+                # from this point, the class effectively OWNS the
+                # connection...
+
+                self._esp32.lock.acquire()
+
+                self._previous_timeout = self._esp32.connection.timeout
+                self._esp32.connection.timeout = 2
+                self._esp32.connection.write("get leakage_test\r\n".encode())
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. completed percentage
+                2. internal pressure
+                3. pressure at the patient mouth
+                """
+
+                while True:
+                    bresult = self._esp32.connection.read_until(
+                        terminator=self._esp32.term)
+
+                    result = bresult.decode().strip()
+                    if result == '':
+                        raise ESP32Exception("get", "get leakage_test", "timeout")
+                    elif result == 'valore=OK':
+                        return
+                    yield [float(datum) for datum in result.split(',')]
+
+            def __del__(self):
+                """
+                Destructor
+
+                this puts the connection back in normal operation
+                """
+
+                # read any possibly remaining data.
+                # For example if the generator has not been called till
+                # the end of the procedure.
+                while self._esp32.connection.read():
+                    pass
+                # restore the timeout to the previously using value
+                self._esp32.connection.timeout = self._previous_timeout
+                self._esp32.lock.release()
+                # ...and from here it finally releases its ownership
+
+        return LeakTestRetriever(self)

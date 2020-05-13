@@ -49,3 +49,18 @@ def test_setupWithoutUnits(qtbot):
 
     assert settings.label_name.text() == "Prova"
     assert settings.label_units.text() == ""
+
+
+"""
+TS31
+"""
+def test_checkToolSettings(qtbot):
+    assert qt_api.QApplication.instance() is not None
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    # Check the toolSettings on the mainn window
+    assert window.toolsettings["toolsettings_1"].labels["name"].text() == "Resp. Rate"
+    assert window.toolsettings["toolsettings_2"].labels["name"].text() == "Insp./Expir."

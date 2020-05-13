@@ -139,15 +139,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.label_status = self.toolbar.findChild(
             QtWidgets.QLabel, "label_status")
 
-        toolsettings_names = {"toolsettings_1",
-                              "toolsettings_2", "toolsettings_3"}
-        self.toolsettings = {}
-
-        for name in toolsettings_names:
-            toolsettings = self.toolbar.findChild(QtWidgets.QWidget, name)
-            toolsettings.connect_config(config)
-            self.toolsettings[name] = toolsettings
-
         # Get menu widgets and connect settings for the menu widget
         self.button_back = self.menu.findChild(
             QtWidgets.QPushButton, "button_back")
@@ -195,8 +186,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button_resume_patient.pressed.connect(self.goto_resume_patient)
         self.button_new_patient.pressed.connect(self.goto_new_patient)
         self.button_start_vent.pressed.connect(self.goto_main)
-        # TODO: connect to circuit test on ESP
-        # self.button_start_test.pressed.connect()
+        self.button_start_test.pressed.connect(self.goto_selftest)
+        self.button_spiro_calib.pressed.connect(self.goto_spiro_calibration)
         self.button_start_settings.pressed.connect(self.goto_settings)
 
         # Connect back and menu buttons to toolbar and menu
@@ -224,6 +215,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # Confirmation bar
         self.messagebar = MessageBar(self)
         self.bottombar.insertWidget(self.bottombar.count(), self.messagebar)
+        # Spirometer Calibration
+        self.spiro_calib.connect_mainwindow_esp32(self, self.esp32)
+        # Self Test
+        self.self_test.connect_mainwindow_esp32_selftestbar(self, self.esp32, self.selftestbar)
 
         # Assign unlock screen button and setup state
         self.unlockscreen_interval = self.config['unlockscreen_interval']
@@ -394,6 +389,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.show_startup()
+        self.show_blank_bottom()
 
     def goto_resume_patient(self):
         """
@@ -415,6 +411,22 @@ class MainWindow(QtWidgets.QMainWindow):
             self.settings.tabs.setCurrentWidget(self.settings.tab_psv)
         elif self._start_stop_worker.mode() == self._start_stop_worker.MODE_PCV:
             self.settings.tabs.setCurrentWidget(self.settings.tab_pcv)
+
+    def goto_spiro_calibration(self):
+        """
+        Open the sprimeter calibration pane.
+        """
+
+        self.show_spiro_calib()
+        self.show_blank_bottom()
+
+    def goto_selftest(self):
+        """
+        Open the self-test pane
+        """
+
+        self.show_selftest()
+        self.show_selftestbar()
 
     def goto_main(self):
         """
@@ -478,6 +490,19 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.bottombar.setCurrentWidget(self.numpadbar)
 
+    def show_blank_bottom(self):
+        """
+        Shows a blank bottom bar.
+        """
+
+        self.bottombar.setCurrentWidget(self.blank)
+
+    def show_selftestbar(self):
+        """
+        Shows the numeric pad in the bottom of the home pane.
+        """
+        self.bottombar.setCurrentWidget(self.selftestbar)
+
     def show_toolbar(self, locked_state=False):
         """
         Shows the toolbar in the bottom bar.
@@ -512,6 +537,20 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.toppane.setCurrentWidget(self.main)
+
+    def show_spiro_calib(self):
+        """
+        Show the spirometer calibration pane.
+        """
+
+        self.toppane.setCurrentWidget(self.spiro_calib)
+
+    def show_selftest(self):
+        """
+        Show the self-test pane.
+        """
+
+        self.toppane.setCurrentWidget(self.self_test)
 
     def show_settingsfork(self):
         """

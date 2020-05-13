@@ -3,19 +3,28 @@
 # from pytestqt import qt_compat
 from pytestqt.qt_compat import qt_api
 import pytest
-import time
 from communication.peep import PEEP
+from mainwindow import MainWindow
+from communication.fake_esp32serial import FakeESP32Serial
 
 
 """
-TH11
+TH13
 """
-def test_peepReset(qtbot):
+def check_peep_on_monitor(qtbot):
     '''
-    Test the reset of the Peep
+    Check that the peep monitor has been initialized
     '''
 
-    p = PEEP()
+    assert qt_api.QApplication.instance() is not None
+
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+
+    assert window.monitors['peep'] is not None
 
     # Set a negative value for the t5 parameter, so the time t is obiously greater than t5
     t5 = p.phase_start["restart"]
