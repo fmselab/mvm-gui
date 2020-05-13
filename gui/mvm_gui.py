@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtWidgets
 import yaml
 
 from mainwindow import MainWindow
+from communication.rpi import configure as gpio_configure
 from communication.esp32serial import ESP32Serial, ESP32Exception
 from communication.fake_esp32serial import FakeESP32Serial
 from messagebox import MessageBox
@@ -54,6 +55,8 @@ def main():
     """
     Main function.
     """
+
+    gpio_configure()
 
     base_dir = os.path.dirname(__file__)
     settings_file = os.path.join(base_dir, 'default_settings.yaml')

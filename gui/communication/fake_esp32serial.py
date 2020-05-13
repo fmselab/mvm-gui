@@ -268,6 +268,12 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
         if name == 'pause_lg' and int(value) == 1:
             self._lung_recruit_stop_time = time.time(
             ) + self.set_params["pause_lg_time"]
+        elif name == 'alarm_test':
+            if int(value) == 1:
+                self.set_params["alarm"] = self.set_params["alarm"] | 1 << 28
+            else:
+                self.snooze_hw_alarm(1 << 28)
+            return "OK"
 
         self.set_params[name] = value
         return "OK"
@@ -408,3 +414,97 @@ class FakeESP32Serial(QtWidgets.QMainWindow):
 
         self.log("Snooze gui alarms")
         return self.snooze_hw_alarm(1 << 29)
+
+    def venturi_calibration(self):
+        """
+        Generator function to simulate data for spirometer calibration.
+
+        returns a helper class instance.
+        """
+
+        class VenturiRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the Venturi Calibration
+            data.
+            """
+
+            def __init__(self):
+                """
+                Constructor
+                """
+
+                self._coefficients = [10, 1e-1, 1e-2, 1e-3, 1e-4]
+
+            def _flow(self, delta_p):
+                return self._coefficients[0] + self._coefficients[1] * delta_p + self._coefficients[2] * delta_p**2 + self._coefficients[3] * delta_p**3 + self._coefficients[4] * delta_p**4
+
+            def data(self):
+                """
+                This function is a generator. It yields a value every
+                second.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats
+                """
+
+                for time_point in range(100):
+                    time.sleep(0.1)
+                    delta_p = time_point+30
+                    yield (time_point, self._flow(delta_p), delta_p)
+
+        return VenturiRetriever()
+
+    def leakage_test(self):
+        """
+        Generator function to retrieve data for leakage test.
+
+        returns a helper class instance.
+        """
+
+        class LeakTestRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the leakage test data.
+            """
+
+
+            def __init__(self):
+                """
+                Constructor
+                """
+
+                self._is_leaking = True
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. completed percentage
+                2. internal pressure
+                3. pressure at the patient mouth
+                """
+
+                for time_point in range(100):
+                    time.sleep(0.1)
+                    internal_pressure = time_point+30
+                    patient_pressure = 5 if self._is_leaking else internal_pressure
+                    yield (time_point, internal_pressure, patient_pressure)
+
+        return LeakTestRetriever()
+
