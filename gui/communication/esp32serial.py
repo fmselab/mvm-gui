@@ -30,7 +30,7 @@ class ESP32Exception(Exception):
         self.details = str(details)
 
         super(ESP32Exception, self).__init__(
-            "ERROR in %s: line: %s; output: %s; details: %s" % 
+            "ERROR in %s: line: %s; output: %s; details: %s" %
             (self.verb, self.line, self.output, self.details))
 
 def _parse(result):
@@ -190,7 +190,7 @@ class ESP32Serial:
             result = b""
             try:
                 result = self.connection.read_until(terminator=self.term)
-                values = self._parse(result).split(',')
+                values = _parse(result).split(',')
 
                 if len(values) != len(self.get_all_fields):
                     raise Exception("get_all answer mismatch: expected: %s, got %s" % (
