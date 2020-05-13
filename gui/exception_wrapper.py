@@ -49,7 +49,6 @@ class ExceptionWrapper:
         if self.except_func is not None and not self.except_state:
             self.except_state = True
             self.except_func(self._last_error_str)
-        raise self.ExceptionType()
 
     def __init__(self, instance, ExceptionType):
         #pylint: disable=invalid-name
