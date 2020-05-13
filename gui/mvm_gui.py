@@ -13,6 +13,7 @@ import yaml
 
 from mainwindow import MainWindow
 from exception_wrapper import ExceptionWrapper
+from communication.rpi import configure as gpio_configure
 from communication.esp32serial import ESP32Serial, ESP32Exception
 from communication.fake_esp32serial import FakeESP32Serial
 from messagebox import MessageBox
@@ -34,11 +35,11 @@ def connect_esp32(config):
         if 'fakeESP32' in sys.argv:
             err_msg = "Cannot setup FakeESP32Serial"
             print('******* Simulating communication with ESP32')
+            err_msg = "Cannot setup FakeESP32Serial"
             raw_esp32 = FakeESP32Serial(config)
         else:
             err_msg = "Cannot communicate with port %s" % config['port']
             raw_esp32 = ESP32Serial(config)
-
     except SerialException as error:
         msg = MessageBox()
         answer = msg.critical("Do you want to retry?",
@@ -50,11 +51,13 @@ def connect_esp32(config):
 
     return raw_esp32
 
+
 def main():
     """
     Main function.
     """
     app = QtWidgets.QApplication(sys.argv)
+    gpio_configure()
 
     base_dir = os.path.dirname(__file__)
     settings_file = os.path.join(base_dir, 'default_settings.yaml')
@@ -88,8 +91,9 @@ def main():
     watchdog.start(config["wdinterval"] * 1000)
     app.exec_()
     if esp32.except_state:
-        input("Press any key to contiue...")
+        input("Press any key to continue...")
     esp32.set("wdenable", 0)
+
 
 if __name__ == "__main__":
     main()

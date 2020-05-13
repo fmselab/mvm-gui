@@ -9,6 +9,7 @@
 ## Requirements
 
 - Python >= 3.5 (but not 3.8 because PyQtGraph is [incompatible](https://github.com/conda-forge/pyqtgraph-feedstock/issues/10))
+- RPi.GPIO
 - PyQt5
 - PyQtGraph
 - PySerial
