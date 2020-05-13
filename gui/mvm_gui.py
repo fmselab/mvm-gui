@@ -87,8 +87,6 @@ def main():
     watchdog.timeout.connect(esp32.set_watchdog)
     watchdog.start(config["wdinterval"] * 1000)
     app.exec_()
-    if esp32.except_state:
-        input("Press any key to continue...")
     esp32.set("wdenable", 0)
 
 
