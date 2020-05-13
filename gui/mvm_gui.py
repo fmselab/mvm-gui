@@ -6,6 +6,7 @@ Runs the MVM GUI
 import sys
 import os
 import os.path
+import time
 from PyQt5 import QtCore, QtWidgets
 from serial import SerialException
 
@@ -80,7 +81,10 @@ def main():
 
     # Assign exception function
     esp32.assign_failed_func(window.critical_alarm_handler.call_system_failure)
-    esp32.assign_except_func(raw_esp32.reconnect)
+    def pause_and_reconnect():
+        time.sleep(0.2)
+        raw_esp32.reconnect()
+    esp32.assign_except_func(pause_and_reconnect)
 
     # Set up watchdog and star the main Qt executable
     esp32.set("wdenable", 1)
