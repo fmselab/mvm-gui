@@ -40,7 +40,7 @@ def connect_esp32(config):
         else:
             err_msg = "Cannot communicate with port %s" % config['port']
             raw_esp32 = ESP32Serial(config)
-    except SerialException as error:
+    except ESP32Exception as error:
         msg = MessageBox()
         answer = msg.critical("Do you want to retry?",
                               "Severe hardware communication error",
@@ -79,7 +79,8 @@ def main():
     window.show()
 
     # Assign exception function
-    esp32.assign_except_func(window.critical_alarm_handler.call_system_failure)
+    esp32.assign_failed_func(window.critical_alarm_handler.call_system_failure)
+    esp32.assign_except_func(raw_esp32.reconnect)
 
     # Set up watchdog and star the main Qt executable
     esp32.set("wdenable", 1)
