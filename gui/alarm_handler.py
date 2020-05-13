@@ -289,6 +289,7 @@ class CriticalAlarmHandler:
         self._criticalerrorpage = mainparent.criticalerrorpage
         self._bottombar = mainparent.bottombar
         self._criticalerrorbar = mainparent.criticalerrorbar
+        self._mainparent = mainparent
         self.nretry = 0
 
         self._label_criticalerror = mainparent.findChild(QtWidgets.QLabel, "label_criticalerror")
@@ -309,8 +310,8 @@ class CriticalAlarmHandler:
         self._bottombar.setCurrentWidget(self._criticalerrorbar)
         self._label_criticaldetails.setText(details)
 
-        QtCore.QCoreApplication.processEvents()
-        QtCore.QCoreApplication.quit()
+        self._mainparent.repaint()
+        input("Hang on wait reboot")
 
     def call_system_failure(self, details=""):
         """
