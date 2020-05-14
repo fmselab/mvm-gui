@@ -11,6 +11,7 @@ try:
 
         Call this function only once per **program**
         """
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(17, GPIO.OUT)
 
     def start_alarm_system():
@@ -18,7 +19,7 @@ try:
         Raises the LED and buzzer alarm
         """
 
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.output(17, GPIO.HIGH)
 
     def stop_alarm_system():
@@ -26,7 +27,7 @@ try:
         Lowers the LED and buzzer alarm
         """
 
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.output(17, GPIO.LOW)
 
 except (ImportError, RuntimeError):
