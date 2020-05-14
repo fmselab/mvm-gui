@@ -52,14 +52,14 @@ def start_simulate(_qtbot,esp32):
     # it it exists because it reaches the timeout -> it fails
 """
 fuzzing test. try the main windows for a min amount of time with some invalid data
-and check that it does not crashes
+and check that it does not crash
 """
-def test_start_fakeESP32(qtbot):        
+def test_start_fuzzing(qtbot):        
     start_simulate(qtbot,FuzzingESP32(config))
 
 """
-test w fake esp32. try the main windows for a min amount of time with some invalid data
-and check that it does not crashes
+test w fake esp32. try the main windows for a min amount of time with some valid data from the fake 32
+and check that it does not crash
 """
-def test_start_fuzzing(qtbot):        
+def test_start_fakeESP32(qtbot):        
     start_simulate(qtbot,FakeESP32Serial(config))
