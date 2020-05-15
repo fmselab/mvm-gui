@@ -17,6 +17,7 @@ from exception_wrapper import ExceptionWrapper
 from communication.rpi import configure as gpio_configure
 from communication.esp32serial import ESP32Serial, ESP32Exception
 from communication.fake_esp32serial import FakeESP32Serial
+from communication.fuzzing_esp32 import FuzzingESP32
 from messagebox import MessageBox
 
 
@@ -38,6 +39,10 @@ def connect_esp32(config):
             print('******* Simulating communication with ESP32')
             err_msg = "Cannot setup FakeESP32Serial"
             raw_esp32 = FakeESP32Serial(config)
+        elif 'fuzzingESP32' in sys.argv:
+            print('******* Simulating communication with Fuzzing Data')
+            err_msg = "Cannot setup communication with Fuzzing Data"
+            raw_esp32 = FuzzingESP32(config)
         else:
             err_msg = "Cannot communicate with port %s" % config['port']
             raw_esp32 = ESP32Serial(config)

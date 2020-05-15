@@ -21,7 +21,7 @@ The following fonts have to be present to obtain consistent look
 - [Noto Mono](https://www.google.com/get/noto/#mono-mono)
 - [Cantarell](https://fonts.google.com/specimen/Cantarell)
 
-## Run
+# Run
 
 You can run with:
 ```
@@ -29,11 +29,20 @@ cd gui/
 ./mvm_gui.py
 ```
 By default, the program will read from the specified serial port.
+
+## Test
 If you want to run with simulated input, the program is invoked with:
 ```
 ./mvm_gui.py fakeESP32
 ```
 
+In the fuzzy testing mode, activated by the following command:
+```
+./mvm_gui.py fuzzingESP32
+```
+the input is simulated adding random errors.
+
+## Settings
 Default settings are stored in:
 ```
 ./gui/default_settings.yaml
