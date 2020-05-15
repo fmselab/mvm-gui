@@ -59,7 +59,13 @@ class MainWindow(QtWidgets.QMainWindow):
         '''
         Start the alarm handler, which will check for ESP alarms
         '''
-        self.alarm_h = AlarmHandler(self.config, self.esp32, self.alarmbar)
+        # Instantiate the critical alarm handler meant for severe communications and hardware error
+        self.critical_alarm_handler = CriticalAlarmHandler(self, esp32)
+        self.alarm_h = AlarmHandler(
+                self.config,
+                self.esp32,
+                self.alarmbar,
+                self.critical_alarm_handler.call_system_failure)
 
         '''
         Get the toppane and child pages
@@ -347,9 +353,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self._start_stop_worker.toggle_mode)
         self.gui_alarm.connect_workers(self._start_stop_worker)
 
-
-        # Instantiate the critical alarm handler meant for severe communications and hardware error
-        self.critical_alarm_handler = CriticalAlarmHandler(self, esp32)
 
     def lock_screen(self):
         """

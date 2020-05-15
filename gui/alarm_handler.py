@@ -13,9 +13,6 @@ the user has selected.
 import sys
 from PyQt5 import QtCore, QtWidgets
 
-from messagebox import MessageBox
-from communication.esp32serial import ESP32Exception
-
 BITMAP = {1 << x: x for x in range(32)}
 ERROR = 0
 WARNING = 1
@@ -85,22 +82,12 @@ class SnoozeButton:
         # Reset the alarms/warnings in the ESP
         # If the ESP connection fails at this
         # time, raise an error box
-        try:
-            if self._mode == ERROR:
-                self._esp32.snooze_hw_alarm(self._code)
-                self._alarm_h.snooze_alarm(self._code)
-            else:
-                self._esp32.reset_warnings()
-                self._alarm_h.snooze_warning(self._code)
-        except ESP32Exception as error:
-            msg = MessageBox()
-            func = msg.critical("Critical",
-                                "Severe hardware communication error",
-                                str(error),
-                                "Communication error",
-                                {msg.Retry: lambda: None,
-                                 msg.Abort: lambda: None})
-            func()
+        if self._mode == ERROR:
+            self._esp32.snooze_hw_alarm(self._code)
+            self._alarm_h.snooze_alarm(self._code)
+        else:
+            self._esp32.reset_warnings()
+            self._alarm_h.snooze_warning(self._code)
 
 class AlarmButton(QtWidgets.QPushButton):
     """
@@ -188,7 +175,7 @@ class AlarmHandler:
     - _snooze_btn: SnoozeButton that manipulates _alarmsnooze
     """
 
-    def __init__(self, config, esp32, alarmbar):
+    def __init__(self, config, esp32, alarmbar, hwfail_func):
         """
         Constructor
 
@@ -204,6 +191,9 @@ class AlarmHandler:
         self._err_buttons = {}
         self._war_buttons = {}
 
+        self._hwfail_func = hwfail_func
+        self._hwfail_codes = [1 << code for code in config['hwfail_codes']]
+
         self._alarmlabel = alarmbar.findChild(QtWidgets.QLabel, "alarmlabel")
         self._alarmstack = alarmbar.findChild(QtWidgets.QHBoxLayout, "alarmstack")
         self._alarmsnooze = alarmbar.findChild(QtWidgets.QPushButton, "alarmsnooze")
@@ -217,22 +207,8 @@ class AlarmHandler:
         """
 
         # Retrieve alarms and warnings from the ESP
-        try:
-            esp32alarm = self._esp32.get_alarms()
-            esp32warning = self._esp32.get_warnings()
-        except ESP32Exception as error:
-            esp32alarm = None
-            esp32warning = None
-            err_msg = "Severe hardware communication error. "
-            err_msg += "Cannot retrieve alarm and warning statuses from hardware."
-            msg = MessageBox()
-            func = msg.critical("Critical",
-                                err_msg,
-                                str(error),
-                                "Communication error",
-                                {msg.Retry: lambda: None,
-                                 msg.Abort: lambda: sys.exit(-1)})
-            func()
+        esp32alarm = self._esp32.get_alarms()
+        esp32warning = self._esp32.get_warnings()
 
         #
         # ALARMS
@@ -243,6 +219,9 @@ class AlarmHandler:
             alarm_codes = esp32alarm.get_alarm_codes()
 
             for alarm_code, err_str in zip(alarm_codes, errors):
+                if alarm_code in self._hwfail_codes:
+                    self._hwfail_func(err_str)
+                    print("Critical harware failure")
                 if alarm_code not in self._err_buttons:
                     btn = AlarmButton(ERROR, alarm_code, err_str,
                                       self._alarmlabel, self._snooze_btn)
@@ -316,14 +295,16 @@ class CriticalAlarmHandler:
         self._criticalerrorpage = mainparent.criticalerrorpage
         self._bottombar = mainparent.bottombar
         self._criticalerrorbar = mainparent.criticalerrorbar
+        self._mainparent = mainparent
         self.nretry = 0
 
         self._label_criticalerror = mainparent.findChild(QtWidgets.QLabel, "label_criticalerror")
+        self._label_criticaldetails = mainparent.findChild(
+                QtWidgets.QLabel, 
+                "label_criticaldetails")
         self._button_retrycmd = mainparent.findChild(QtWidgets.QPushButton, "button_retrycmd")
 
-        self._button_retrycmd.pressed.connect(self._retry_cmd)
-
-    def show_critical_error(self, text):
+    def show_critical_error(self, text, details=""):
         """
         Shows the critical error in the mainwindow.
         This includes changing the screen to red and displaying a big message to this effect.
@@ -331,36 +312,17 @@ class CriticalAlarmHandler:
         self._label_criticalerror.setText(text)
         self._toppane.setCurrentWidget(self._criticalerrorpage)
         self._bottombar.setCurrentWidget(self._criticalerrorbar)
+        self._label_criticaldetails.setText(details)
 
-    def call_system_failure(self):
+        self._mainparent.repaint()
+        input("Hang on wait reboot")
+
+    def call_system_failure(self, details=""):
         """
         Calls a system failure and sets the mainwindow into a state that is irrecoverable without
         maintenance support.
         """
         self._button_retrycmd.hide()
-        self.show_critical_error("*** SYSTEM FAILURE ***\nCall the Maintenance Service")
-
-    def call_communication_failure(self, nretry=3):
-        """
-        Calls a severe communications failure and sets the mainwindow into a state that is
-        recoverable if communication can be re-established after n tries.
-        If not, the system is irrecoverable.
-
-        Arguments:
-        - nretry: Number of communication retries before system failure (default: 3)
-        """
-        self.nretry = nretry
-
-        if self.nretry <= 0:
-            self.call_system_failure()
-        else:
-            self._button_retrycmd.show()
-            self._button_retrycmd.setText("Retry (%d)" % self.nretry)
-            self.show_critical_error("Severe Communication Error")
-
-    def _retry_cmd(self):
-        """
-        Re-issues the last (and presumably failed) command to the ESP32.
-        """
-        self.nretry -= 1
-        self.call_communication_failure(self.nretry) 
+        disp_msg = "*** SYSTEM FAILURE ***\nCall the Maintenance Service"
+        details = str(details).replace("\n",  "")
+        self.show_critical_error(disp_msg, details=details)

@@ -34,6 +34,9 @@ wdinterval: 1
 # Time interval used to check for alarms
 alarminterval: 1
 
+# Alarm codes that produce an irrecoverable system failure
+hwfail_codes: [31]
+
 # Time [ms] required to hold down UNLOCK before screen is unlocked
 unlockscreen_interval: 2000
 # Unlock code: must use digits from 1-5
