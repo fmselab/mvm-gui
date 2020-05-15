@@ -42,7 +42,7 @@ def connect_esp32(config):
         elif 'fuzzingESP32' in sys.argv:
             print('******* Simulating communication with Fuzzing Data')
             err_msg = "Cannot setup communication with Fuzzing Data"
-            esp32 = FuzzingESP32(config)    
+            raw_esp32 = FuzzingESP32(config)
         else:
             err_msg = "Cannot communicate with port %s" % config['port']
             raw_esp32 = ESP32Serial(config)
