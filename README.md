@@ -15,22 +15,26 @@
 - PySerial
 - PyYaml
 - numpy
-- to run it under windows, install the Cantarell font https://fonts.google.com/specimen/Cantarell
+
+## Fonts
+The following fonts have to be present to obtain consistent look
+- [Noto Mono](https://www.google.com/get/noto/#mono-mono)
+- [Cantarell](https://fonts.google.com/specimen/Cantarell)
 
 ## Run
 
-You can run with 
+You can run with:
 ```
 cd gui/
 ./mvm_gui.py
 ```
 By default, the program will read from the specified serial port.
-If you want to run with simulated input, the program is invoked with
+If you want to run with simulated input, the program is invoked with:
 ```
 ./mvm_gui.py fakeESP32
 ```
 
-Default settings are stored in 
+Default settings are stored in:
 ```
 ./gui/default_settings.yaml
 ```
