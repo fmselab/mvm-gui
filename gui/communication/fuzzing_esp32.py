@@ -1,26 +1,18 @@
 """
-Fuzzying test - 
+Fuzzying test -
 Mariusz Suchenek <msuchenek@camk.edu.pl>
 reported by Angelo Gargantini
 """
 
-import random, string
-import os
 import random
-import time
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtGui import QTextCursor
-from communication.peep import PEEP
+import string
 from . import ESP32Alarm, ESP32Warning
 
-from threading import Lock
-import serial # pySerial
-from . import ESP32Alarm, ESP32Warning
-           
+
 class FuzzingESP32:
-    def __init__(self, config, **kwargs):
+    def __init__(self, config):
         self.get_all_fields = config["get_all_fields"]
-  
+
         self.cnt = 0
 
     def set(self, name, value):
@@ -59,7 +51,7 @@ class FuzzingESP32:
         if name == "pressure":
             value = random.uniform(-1500, 1500)
         elif name == "flow":
-            value = random.uniform(-1500, 1500)  
+            value = random.uniform(-1500, 1500)
         elif name == "battery_charge":
             value = random.uniform(-100, 100)
         elif name == "tidal":
@@ -81,23 +73,24 @@ class FuzzingESP32:
         elif name == "total_expired_volume":
             value = random.uniform(-100, 100)
         elif name == "volume_minute":
-            value = random.uniform(-100, 100)     
+            value = random.uniform(-100, 100)
         elif name == "run":
             value = '0'
         elif name == "alarm":
-            value = '0'     
+            value = '0'
         else:
-            value = '0';
+            value = '0'
 
         self.cnt += 1
         if self.cnt == 1000:
             self.cnt = 0
-            value = ''.join((random.choice(string.ascii_letters + string.digits) for i in range(8)))
+            value = ''.join(
+                (random.choice(string.ascii_letters + string.digits) for i in range(8)))
 
-        #print(str(self.cnt))
+        # print(str(self.cnt))
         print(str(value))
         return str(value)
-        
+
     def get_all(self):
         """
         Get the observables as listed in the get_all_fields internal
@@ -108,10 +101,10 @@ class FuzzingESP32:
         """
 
         print("ESP32Serial-DEBUG: get all")
-        
+
         values = [self.get(field) for field in self.get_all_fields]
         return dict(zip(self.get_all_fields, values))
-        
+
     def get_alarms(self):
         """
         Get the alarms from the ESP32
@@ -173,7 +166,7 @@ class FuzzingESP32:
 
         # yes, the ESP sends alarms as binary-coded struct, but the snooze
         # happens by means of the exponent
-        bitmap = { 1 << x: x for x in range(32)}
+        bitmap = {1 << x: x for x in range(32)}
 
         pos = bitmap[alarm_type]
         return self.set("alarm_snooze", pos)
