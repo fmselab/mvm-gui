@@ -11,6 +11,7 @@ the user has selected.
 """
 
 import sys
+from communication import rpi
 from PyQt5 import QtCore, QtWidgets
 
 BITMAP = {1 << x: x for x in range(32)}
@@ -123,8 +124,8 @@ class AlarmButton(QtWidgets.QPushButton):
         self.setText(str(BITMAP[self._code]))
 
         style = """background-color: %s;
-                   color: white; 
-                   border: 0.5px solid white; 
+                   color: white;
+                   border: 0.5px solid white;
                    font-weight: bold;
                 """ % self._bkg_color
 
@@ -140,8 +141,8 @@ class AlarmButton(QtWidgets.QPushButton):
 
         # Set the label showing the alarm name
         style = """QLabel {
-                        background-color: %s; 
-                        color: white; 
+                        background-color: %s;
+                        color: white;
                         font-weight: bold;
                     }""" % self._bkg_color
 
@@ -300,7 +301,7 @@ class CriticalAlarmHandler:
 
         self._label_criticalerror = mainparent.findChild(QtWidgets.QLabel, "label_criticalerror")
         self._label_criticaldetails = mainparent.findChild(
-                QtWidgets.QLabel, 
+                QtWidgets.QLabel,
                 "label_criticaldetails")
         self._button_retrycmd = mainparent.findChild(QtWidgets.QPushButton, "button_retrycmd")
 
@@ -313,6 +314,8 @@ class CriticalAlarmHandler:
         self._toppane.setCurrentWidget(self._criticalerrorpage)
         self._bottombar.setCurrentWidget(self._criticalerrorbar)
         self._label_criticaldetails.setText(details)
+
+        rpi.start_alarm_system()
 
         self._mainparent.repaint()
         input("Hang on wait reboot")
