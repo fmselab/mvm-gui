@@ -1,17 +1,18 @@
 language: python
+
 python:
   - "3.6"      # current default Python on Travis CI
+
 addons:
   apt:
     packages:
     - x11-utils
     - libxkbcommon-x11-0
+
 services: xvfb
+
 dist: xenial
-# branches to be built and tested
-#branches:
-#  only:
-#  - testwtravis
+
 # command to install dependencies
 install:
   - pip install --upgrade pip
@@ -21,9 +22,11 @@ install:
   - pip install coverage
   - pip install pytest-cov
   - pip install coveralls
+  
 # environment variables
 env:
   - MVMGUI_BASEDIR="."
+  
 # deploy to the pages
 deploy:
   provider: pages
@@ -33,12 +36,9 @@ deploy:
   on:
     branch: master
   verbose: false
+  
 # command to run tests
 script:
-  #- coverage run -m pytest gui/tests/
-  #- coverage report -m --include=gui/* --omit=gui/tests/*,*__init__.py
   - coverage run -m pytest
   - coverage report -m
-#after_success:
-  #- coverage html --include=gui/* --omit=gui/tests/*,*__init__.py
   - coverage html

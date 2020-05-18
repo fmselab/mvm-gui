@@ -30,4 +30,6 @@ def test_newSerial(qtbot):
         assert seriale.get_all_fields == config["get_all_fields"]
     except serial.SerialException:
         pass
+    except ESP32Exception:
+        pass
 

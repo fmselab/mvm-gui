@@ -32,6 +32,7 @@ def start_simulate(_qtbot,esp32):
 
     window = MainWindow(config, esp32)
     _qtbot.addWidget(window)
+    _qtbot.addWidget(esp32)
     window.show()
     # press new patient
     _qtbot.mouseClick(window.button_new_patient,QtCore.Qt.LeftButton)
