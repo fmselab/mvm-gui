@@ -24,8 +24,6 @@ def test_start_operating(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -77,8 +75,6 @@ def test_start_operating_PSV(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -113,8 +109,6 @@ def test_changeMode(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -161,8 +155,6 @@ def test_settingsWileRunning(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -205,8 +197,6 @@ def test_settingsWhileStarting(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -224,8 +214,6 @@ def test_from_PSV_to_PCV(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

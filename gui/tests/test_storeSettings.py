@@ -20,8 +20,6 @@ def test_storeSettings(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

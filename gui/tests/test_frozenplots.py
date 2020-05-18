@@ -25,8 +25,6 @@ def test_cursorShow(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -55,8 +53,6 @@ def test_cursorDrawLabel(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -89,8 +85,6 @@ def test_frozenPlotY(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -140,8 +134,6 @@ def test_frozenPlotX(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

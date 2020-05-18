@@ -24,8 +24,6 @@ def test_changePSV_RR(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -78,8 +76,6 @@ def test_changePSV_PINSP(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -134,8 +130,6 @@ def test_changePSV_RR_presets(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -170,8 +164,6 @@ def test_changePSV_RR(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -202,8 +194,6 @@ def test_changePRM(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -257,8 +247,6 @@ def test_changeTRM(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -315,8 +303,6 @@ def test_change_ETS(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -370,8 +356,6 @@ def test_change_ApneaLag(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -424,8 +408,6 @@ def test_changePCV_IE(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

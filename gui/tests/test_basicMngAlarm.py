@@ -38,8 +38,6 @@ def test_menu(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
