@@ -95,6 +95,8 @@ def test_frozenPlotY(qtbot):
     qtbot.mouseClick(window.button_specialops, QtCore.Qt.LeftButton)
     assert window.bottombar.currentWidget() == window.specialbar
 
+    assert window.esp32.get_all() != ""
+
     # Freeze plots
     qtbot.mouseClick(window.specialbar.button_freeze, QtCore.Qt.LeftButton)
     assert window.data_filler._frozen == True
