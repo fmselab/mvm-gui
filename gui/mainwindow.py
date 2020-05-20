@@ -23,7 +23,7 @@ from monitor.monitor import Monitor
 from data_filler import DataFiller
 from data_handler import DataHandler
 from start_stop_worker import StartStopWorker
-from alarm_handler import AlarmHandler
+from alarm_handler import AlarmHandler, CriticalAlarmHandler
 from numpad.numpad import NumPad
 from frozenplots.frozenplots import Cursor
 from messagebar.messagebar import MessageBar
@@ -59,7 +59,13 @@ class MainWindow(QtWidgets.QMainWindow):
         '''
         Start the alarm handler, which will check for ESP alarms
         '''
-        self.alarm_h = AlarmHandler(self.config, self.esp32, self.alarmbar)
+        # Instantiate the critical alarm handler meant for severe communications and hardware error
+        self.critical_alarm_handler = CriticalAlarmHandler(self, esp32)
+        self.alarm_h = AlarmHandler(
+                self.config,
+                self.esp32,
+                self.alarmbar,
+                self.critical_alarm_handler.call_system_failure)
 
         '''
         Get the toppane and child pages
@@ -68,6 +74,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main = self.findChild(QtWidgets.QWidget, "main")
         self.initial = self.findChild(QtWidgets.QWidget, "initial")
         self.startup = self.findChild(QtWidgets.QWidget, "startup")
+        self.criticalerrorpage = self.findChild(QtWidgets.QWidget, "criticalerrorpage")
 
         '''
         Get the center pane (plots) widgets
@@ -95,6 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QWidget, "settingsforkbar")
         self.alarmsbar = self.findChild(QtWidgets.QWidget, "alarmsbar")
         self.numpadbar = self.findChild(QtWidgets.QWidget, "numpadbar")
+        self.criticalerrorbar = self.findChild(QtWidgets.QWidget, "criticalerrorbar")
 
         '''
         Get the stackable bits on the right
@@ -136,15 +144,6 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QWidget, "goto_unlock")
         self.label_status = self.toolbar.findChild(
             QtWidgets.QLabel, "label_status")
-
-        toolsettings_names = {"toolsettings_1",
-                              "toolsettings_2", "toolsettings_3"}
-        self.toolsettings = {}
-
-        for name in toolsettings_names:
-            toolsettings = self.toolbar.findChild(QtWidgets.QWidget, name)
-            toolsettings.connect_config(config)
-            self.toolsettings[name] = toolsettings
 
         # Get menu widgets and connect settings for the menu widget
         self.button_back = self.menu.findChild(
@@ -193,8 +192,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.button_resume_patient.pressed.connect(self.goto_resume_patient)
         self.button_new_patient.pressed.connect(self.goto_new_patient)
         self.button_start_vent.pressed.connect(self.goto_main)
-        # TODO: connect to circuit test on ESP
-        # self.button_start_test.pressed.connect()
+        self.button_start_test.pressed.connect(self.goto_selftest)
+        self.button_spiro_calib.pressed.connect(self.goto_spiro_calibration)
         self.button_start_settings.pressed.connect(self.goto_settings)
 
         # Connect back and menu buttons to toolbar and menu
@@ -222,6 +221,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # Confirmation bar
         self.messagebar = MessageBar(self)
         self.bottombar.insertWidget(self.bottombar.count(), self.messagebar)
+        # Spirometer Calibration
+        self.spiro_calib.connect_mainwindow_esp32(self, self.esp32)
+        # Self Test
+        self.self_test.connect_mainwindow_esp32_selftestbar(self, self.esp32, self.selftestbar)
 
         # Assign unlock screen button and setup state
         self.unlockscreen_interval = self.config['unlockscreen_interval']
@@ -350,6 +353,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self._start_stop_worker.toggle_mode)
         self.gui_alarm.connect_workers(self._start_stop_worker)
 
+
     def lock_screen(self):
         """
         Perform screen locking.
@@ -389,6 +393,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.show_startup()
+        self.show_blank_bottom()
 
     def goto_resume_patient(self):
         """
@@ -410,6 +415,22 @@ class MainWindow(QtWidgets.QMainWindow):
             self.settings.tabs.setCurrentWidget(self.settings.tab_psv)
         elif self._start_stop_worker.mode() == self._start_stop_worker.MODE_PCV:
             self.settings.tabs.setCurrentWidget(self.settings.tab_pcv)
+
+    def goto_spiro_calibration(self):
+        """
+        Open the sprimeter calibration pane.
+        """
+
+        self.show_spiro_calib()
+        self.show_blank_bottom()
+
+    def goto_selftest(self):
+        """
+        Open the self-test pane
+        """
+
+        self.show_selftest()
+        self.show_selftestbar()
 
     def goto_main(self):
         """
@@ -473,6 +494,19 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.bottombar.setCurrentWidget(self.numpadbar)
 
+    def show_blank_bottom(self):
+        """
+        Shows a blank bottom bar.
+        """
+
+        self.bottombar.setCurrentWidget(self.blank)
+
+    def show_selftestbar(self):
+        """
+        Shows the numeric pad in the bottom of the home pane.
+        """
+        self.bottombar.setCurrentWidget(self.selftestbar)
+
     def show_toolbar(self, locked_state=False):
         """
         Shows the toolbar in the bottom bar.
@@ -507,6 +541,20 @@ class MainWindow(QtWidgets.QMainWindow):
         """
 
         self.toppane.setCurrentWidget(self.main)
+
+    def show_spiro_calib(self):
+        """
+        Show the spirometer calibration pane.
+        """
+
+        self.toppane.setCurrentWidget(self.spiro_calib)
+
+    def show_selftest(self):
+        """
+        Show the self-test pane.
+        """
+
+        self.toppane.setCurrentWidget(self.self_test)
 
     def show_settingsfork(self):
         """

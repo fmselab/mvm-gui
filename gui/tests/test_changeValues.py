@@ -24,8 +24,6 @@ def test_changePSV_RR(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -78,8 +76,6 @@ def test_changePSV_PINSP(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -134,8 +130,6 @@ def test_changePSV_RR_presets(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -158,7 +152,7 @@ def test_changePSV_RR_presets(qtbot):
 """
 TS21
 """
-def test_changePSV_RR(qtbot):
+def test_changePSV_RR_2(qtbot):
     '''
     Test the change of the RR
     '''
@@ -169,8 +163,6 @@ def test_changePSV_RR(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -202,8 +194,6 @@ def test_changePRM(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -258,8 +248,6 @@ def test_changeTRM(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -308,51 +296,259 @@ def test_change_ETS(qtbot):
     At the current situation, the test cannot be executed, since the ETS parameter is not loaded from the default values
     '''
 
-    # assert qt_api.QApplication.instance() is not None
-    #
-    # esp32 = FakeESP32Serial(config)
-    # qtbot.addWidget(esp32)
-    #
-    # assert config is not None
-    #
-    # print(esp32)
-    #
-    # window = MainWindow(config, esp32)
-    # qtbot.addWidget(window)
-    # window.show()
-    # qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
-    # qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.toolbar
-    #
-    # # Enter the menu and the Mode Settings tab
-    # qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.menu
-    # qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
-    # assert window.bottombar.currentWidget() == window.settingsfork
-    # qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
-    # assert window.toppane.currentWidget() == window.settings
-    #
-    # # Try to increase the value
-    # startingValue = window.settings._all_spinboxes['ETS'].value()
-    #
-    # i = startingValue
-    # oldValue = 0
-    # while i <= int(config['ETS']['max'] + 1) or i == oldValue:
-    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
-    #     oldValue = i
-    #     i = i + int(config['ETS']['step'])
-    #     assert window.settings._all_spinboxes['ETS'].value() <= config['ETS']['max']
-    #
-    # # Try to decrease the value
-    # window._start_stop_worker._settings.update_spinbox_value('ETS', startingValue)
-    #
-    # i = startingValue
-    # oldValue = 0
-    # while i >= int(config['ETS']['min'] - 1) or i == oldValue:
-    #     window._start_stop_worker._settings.update_spinbox_value('ETS', i)
-    #     oldValue = i
-    #     i = i - int(config['ETS']['step'])
-    #     assert window.settings._all_spinboxes['ETS'].value() >= config['ETS']['min']
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['flow_trigger'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['flow_trigger']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('flow_trigger', i)
+        oldValue = i
+        i = i + int(config['flow_trigger']['step'])
+        assert window.settings._all_spinboxes['flow_trigger'].value() <= config['flow_trigger']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('flow_trigger', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['flow_trigger']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('flow_trigger', i)
+        oldValue = i
+        i = i - int(config['flow_trigger']['step'])
+        assert window.settings._all_spinboxes['flow_trigger'].value() >= config['flow_trigger']['min']
+
+
+"""
+TS58
+"""
+def test_change_ITS_PSV(qtbot):
+    '''
+    Test the change of the ITS Parameter
+
+    At the current situation, the test cannot be executed, since the ITS parameter is not loaded from the default values
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['pressure_trigger'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['pressure_trigger']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('pressure_trigger', i)
+        oldValue = i
+        i = i + int(config['pressure_trigger']['step'])
+        assert window.settings._all_spinboxes['pressure_trigger'].value() <= config['pressure_trigger']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('pressure_trigger', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['pressure_trigger']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('pressure_trigger', i)
+        oldValue = i
+        i = i - int(config['pressure_trigger']['step'])
+        assert window.settings._all_spinboxes['pressure_trigger'].value() >= config['pressure_trigger']['min']
+
+
+"""
+TS59
+"""
+def test_change_ITS_PCV(qtbot):
+    '''
+    Test the change of the ITS Parameter
+
+    At the current situation, the test cannot be executed, since the ITS parameter is not loaded from the default values
+    '''
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['pcv_trigger_pressure'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['pcv_trigger_pressure']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('pcv_trigger_pressure', i)
+        oldValue = i
+        i = i + int(config['pcv_trigger_pressure']['step'])
+        assert window.settings._all_spinboxes['pcv_trigger_pressure'].value() <= config['pcv_trigger_pressure']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('pcv_trigger_pressure', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['pcv_trigger_pressure']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('pcv_trigger_pressure', i)
+        oldValue = i
+        i = i - int(config['pcv_trigger_pressure']['step'])
+        assert window.settings._all_spinboxes['pcv_trigger_pressure'].value() >= config['pcv_trigger_pressure']['min']
+
+
+"""
+TS60
+"""
+def test_change_apenea_rr(qtbot):
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['apnea_rr'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['apnea_rr']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('apnea_rr', i)
+        oldValue = i
+        i = i + int(config['apnea_rr']['step'])
+        assert window.settings._all_spinboxes['apnea_rr'].value() <= config['apnea_rr']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('apnea_rr', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['apnea_rr']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('apnea_rr', i)
+        oldValue = i
+        i = i - int(config['apnea_rr']['step'])
+        assert window.settings._all_spinboxes['apnea_rr'].value() >= config['apnea_rr']['min']
+
+
+"""
+TS61
+"""
+def test_change_apenea_pinsp(qtbot):
+
+    assert qt_api.QApplication.instance() is not None
+
+    esp32 = FakeESP32Serial(config)
+    qtbot.addWidget(esp32)
+
+    assert config is not None
+
+    window = MainWindow(config, esp32)
+    qtbot.addWidget(window)
+    window.show()
+    qtbot.mouseClick(window.button_new_patient, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(window.button_start_vent, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.toolbar
+
+    # Enter the menu and the Mode Settings tab
+    qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.menu
+    qtbot.mouseClick(window.button_settingsfork, QtCore.Qt.LeftButton)
+    assert window.bottombar.currentWidget() == window.settingsfork
+    qtbot.mouseClick(window.button_settings, QtCore.Qt.LeftButton)
+    assert window.toppane.currentWidget() == window.settings
+
+    # Try to increase the value
+    startingValue = window.settings._all_spinboxes['apnea_insp_press'].value()
+
+    i = startingValue
+    oldValue = 0
+    while i <= int(config['apnea_insp_press']['max'] + 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('apnea_insp_press', i)
+        oldValue = i
+        i = i + int(config['apnea_insp_press']['step'])
+        assert window.settings._all_spinboxes['apnea_insp_press'].value() <= config['apnea_insp_press']['max']
+
+    # Try to decrease the value
+    window._start_stop_worker._settings.update_spinbox_value('apnea_insp_press', startingValue)
+
+    i = startingValue
+    oldValue = 0
+    while i >= int(config['apnea_insp_press']['min'] - 1) or i == oldValue:
+        window._start_stop_worker._settings.update_spinbox_value('apnea_insp_press', i)
+        oldValue = i
+        i = i - int(config['apnea_insp_press']['step'])
+        assert window.settings._all_spinboxes['apnea_insp_press'].value() >= config['apnea_insp_press']['min']
 
 
 """
@@ -369,8 +565,6 @@ def test_change_ApneaLag(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -424,8 +618,6 @@ def test_changePCV_IE(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

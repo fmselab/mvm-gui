@@ -240,12 +240,12 @@ def check_plots_on_monitor(qtbot):
 """
 TS32-TS45
 """
-@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "", False),
-                                                     (9,1 << 9, "Pressure to patient mouth too high", "", True),
-                                                     (10,1 << 10, "Inpiratory flux too low", "", False),
-                                                     (11,1 << 11, "Inpiratory flux too high", "", True),
-                                                     (12,1 << 12, "Expiratory flux too low", "", False),
-                                                     (13,1 << 13, "Expiratory flux too high", "", True),
+@pytest.mark.parametrize("code, expected, message, monitorName,overMax", [(8,1 << 8, "Pressure to patient mouth too low", "pressure_patient_mouth", False),
+                                                     (9,1 << 9, "Pressure to patient mouth too high", "pressure_patient_mouth", True),
+                                                     (10,1 << 10, "Inpiratory flux too low", "insp_flux", False),
+                                                     (11,1 << 11, "Inpiratory flux too high", "insp_flux", True),
+                                                     (12,1 << 12, "Expiratory flux too low", "expr_flux", False),
+                                                     (13,1 << 13, "Expiratory flux too high", "expr_flux", True),
                                                      (14,1 << 14, "Tidal volume too low", "total_inspired_volume", False),
                                                      (15,1 << 15, "Tidal volume too high", "total_inspired_volume", True),
                                                      (16,1 << 16, "O2 too low", "oxygen_concentration", False),
@@ -299,7 +299,6 @@ def test_gui_alarm(qtbot, code, expected, message, monitorName,overMax):
 TS49
 """
 def test_gui_temperatureAlarm(qtbot):
-    """
     assert qt_api.QApplication.instance() is not None
 
     monitorName = "temperature"
@@ -320,11 +319,8 @@ def test_gui_temperatureAlarm(qtbot):
 
     # Check the background color of the monitor
     esp32.raise_gui_alarm()
-    qtbot.stopForInteraction()
     assert window.monitors[monitorName].palette().color(window.monitors[monitorName].backgroundRole()) == QtGui.QColor(
         "red")
-    """
-    pass
 
 
 """

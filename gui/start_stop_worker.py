@@ -4,8 +4,6 @@ A file from class StartStopWorker
 import sys
 from PyQt5.QtCore import QTimer
 from messagebox import MessageBox
-from communication.esp32serial import ESP32Exception
-
 
 class StartStopWorker():
     #pylint: disable=too-many-instance-attributes
@@ -61,6 +59,12 @@ class StartStopWorker():
         self._timer.timeout.connect(self._esp32_io)
         self._start_timer()
 
+        # Tell the Settings widget what the current mode is.
+        if self._mode == self.MODE_PSV:
+            self._settings.set_psv()
+        else:
+            self._settings.set_pcv()
+
     def _init_settings_panel(self):
         '''
         Initializes the settings values.
@@ -89,16 +93,15 @@ class StartStopWorker():
                 else:
                     self._settings.update_spinbox_value(param, value)
 
+            self._settings.update_toolsettings_values()
+
     def _esp32_io(self):
         '''
         The callback function called every time the
         QTimer times out.
         '''
 
-        try:
-            self._call_esp32()
-        except ESP32Exception as error:
-            self._raise_comm_error(str(error))
+        self._call_esp32()
 
     def _call_esp32(self):
         '''
@@ -145,21 +148,6 @@ class StartStopWorker():
         '''
         self._backup_ackowledged = True
 
-    def _raise_comm_error(self, message):
-        """
-        Opens an error window with 'message'.
-
-        arguments:
-        - message: the message to show in the error window
-        """
-
-        # TODO: find a good exit point
-        msg = MessageBox()
-        msg.critical('COMMUNICATION ERROR',
-                     'Error communicating with the hardware', message,
-                     '** COMMUNICATION ERROR **', {msg.Ok: lambda:
-                                                           sys.exit(-1)})()
-
     def is_running(self):
         """
         A simple function that returns true if running.
@@ -178,26 +166,20 @@ class StartStopWorker():
         Toggles between desired mode (MODE_PCV or MODE_PSV).
         """
         if self._mode == self.MODE_PCV:
-            result = self._esp32.set('mode', self.MODE_PSV)
+            self._esp32.set('mode', self.MODE_PSV)
 
-            if result:
-                self._mode_text = "PSV"
-                self._button_mode.setText("Set\nPCV")
-                self.update_startstop_text()
-                self._mode = self.MODE_PSV
-            else:
-                self._raise_comm_error('Cannot set PSV mode.')
+            self._mode_text = "PSV"
+            self._button_mode.setText("Set\nPCV")
+            self.update_startstop_text()
+            self._mode = self.MODE_PSV
 
         else:
-            result = self._esp32.set('mode', self.MODE_PCV)
+            self._esp32.set('mode', self.MODE_PCV)
 
-            if result:
-                self._mode_text = "PCV"
-                self._button_mode.setText("Set\nPSV")
-                self.update_startstop_text()
-                self._mode = self.MODE_PCV
-            else:
-                self._raise_comm_error('Cannot set PCV mode.')
+            self._mode_text = "PCV"
+            self._button_mode.setText("Set\nPSV")
+            self.update_startstop_text()
+            self._mode = self.MODE_PCV
 
     def update_startstop_text(self):
         '''
@@ -215,13 +197,10 @@ class StartStopWorker():
         Callback for when the Start button is pressed
         '''
         # Send signal to ESP to start running
-        result = self._esp32.set('run', self.DO_RUN)
+        self._esp32.set('run', self.DO_RUN)
 
-        if result:
-            self._run = self.DO_RUN
-            self.show_stop_button()
-        else:
-            self._raise_comm_error('Cannot start ventilator.')
+        self._run = self.DO_RUN
+        self.show_stop_button()
 
     def show_stop_button(self):
         '''
@@ -246,13 +225,10 @@ class StartStopWorker():
         Callback for when the Stop button is pressed
         '''
         # Send signal to ESP to stop running
-        result = self._esp32.set('run', self.DONOT_RUN)
+        self._esp32.set('run', self.DONOT_RUN)
 
-        if result:
-            self._run = self.DONOT_RUN
-            self.show_start_button()
-        else:
-            self._raise_comm_error('Cannot stop ventilator.')
+        self._run = self.DONOT_RUN
+        self.show_start_button()
 
     def show_start_button(self):
         '''

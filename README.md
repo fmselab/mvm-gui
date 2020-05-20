@@ -9,27 +9,41 @@
 ## Requirements
 
 - Python >= 3.5 (but not 3.8 because PyQtGraph is [incompatible](https://github.com/conda-forge/pyqtgraph-feedstock/issues/10))
+- RPi.GPIO
 - PyQt5
 - PyQtGraph
 - PySerial
 - PyYaml
 - numpy
-- to run it under windows, install the Cantarell font https://fonts.google.com/specimen/Cantarell
 
-## Run
+## Fonts
+The following fonts have to be present to obtain consistent look
+- [Noto Mono](https://www.google.com/get/noto/#mono-mono)
+- [Cantarell](https://fonts.google.com/specimen/Cantarell)
 
-You can run with 
+# Run
+
+You can run with:
 ```
 cd gui/
 ./mvm_gui.py
 ```
 By default, the program will read from the specified serial port.
-If you want to run with simulated input, the program is invoked with
+
+## Test
+If you want to run with simulated input, the program is invoked with:
 ```
 ./mvm_gui.py fakeESP32
 ```
 
-Default settings are stored in 
+In the fuzzy testing mode, activated by the following command:
+```
+./mvm_gui.py fuzzingESP32
+```
+the input is simulated adding random errors.
+
+## Settings
+Default settings are stored in:
 ```
 ./gui/default_settings.yaml
 ```

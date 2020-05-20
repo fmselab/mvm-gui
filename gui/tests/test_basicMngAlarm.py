@@ -38,8 +38,6 @@ def test_menu(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -73,6 +71,11 @@ def test_single_alarm(qtbot, code, expected, message):
     qtbot.addWidget(esp32)
 
     window = MainWindow(config, esp32)
+
+    def hwFailFuncMock(stringa) :
+        pass
+
+    window.alarm_h._hwfail_func = hwFailFuncMock
     qtbot.addWidget(window)
     qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
 
@@ -83,7 +86,7 @@ def test_single_alarm(qtbot, code, expected, message):
     esp32._compute_and_raise_alarms()
     assert esp32.get_alarms().number == expected
 
-    handler = AlarmHandler(config, esp32, window.alarmbar)
+    handler = window.alarm_h
     handler.handle_alarms()
 
     # Check the alarm message
@@ -117,6 +120,12 @@ def test_single_alarm_2(qtbot, code, expected, message):
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
+
+    def hwFailFuncMock(stringa) :
+        pass
+
+    window.alarm_h._hwfail_func = hwFailFuncMock
+
     qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
 
     code = (1 << code)
@@ -126,7 +135,7 @@ def test_single_alarm_2(qtbot, code, expected, message):
     esp32._compute_and_raise_alarms()
     assert esp32.get_alarms().number == expected
 
-    handler = AlarmHandler(config, esp32, window.alarmbar)
+    handler = window.alarm_h
     handler.handle_alarms()
 
     # Check the alarm message
@@ -151,6 +160,11 @@ def test_not_alarm(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
+
+    def hwFailFuncMock(stringa):
+        pass
+
+    window.alarm_h._hwfail_func = hwFailFuncMock
 
     esp32._compute_and_raise_alarms()
     

@@ -6,7 +6,6 @@ This includes country-specific-procedurings, pause functions, and freezing funct
 
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
-from messagebox import MessageBox
 import os
 
 
@@ -164,17 +163,7 @@ class SpecialBar(QtWidgets.QWidget):
         - mode: The pause mode (either 'pause_exhale' or 'pause_inhale')
         - pause: Boolean for paused or not paused
         """
-        try:
-            if not self._data_h.set_data(mode, int(pause)):
-                raise Exception('Call to set_data failed.')
-        except Exception as error:
-            msg = MessageBox()
-            confirm_func = msg.critical("Critical",
-                                        "Severe hardware communication error",
-                                        str(error),
-                                        "Communication error",
-                                        {msg.Ok: lambda: self.stop_timer(mode)})
-            confirm_func()
+        self._data_h.set_data(mode, int(pause))
 
     def stop_timer(self, mode):
         """

@@ -21,8 +21,6 @@ def test_expiratoryPause(qtbot):
 
     assert config is not None
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     window.show()
@@ -50,8 +48,6 @@ def test_inspiratoryPause(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -81,8 +77,6 @@ def test_lungRecruitment_1(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -114,8 +108,6 @@ def test_lungRecruitment_2(qtbot):
     qtbot.addWidget(esp32)
 
     assert config is not None
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)

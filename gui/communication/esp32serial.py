@@ -14,7 +14,7 @@ class ESP32Exception(Exception):
     Exception class for decoding and hardware failures.
     """
 
-    def __init__(self, verb, line, output):
+    def __init__(self, verb=None, line=None, output=None, details=None):
         """
         Contructor
 
@@ -24,12 +24,31 @@ class ESP32Exception(Exception):
         - output         what the ESP32 is replying
         """
 
-        self.verb = verb
-        self.line = line
-        self.output = output
+        self.verb = str(verb)
+        self.line = str(line)
+        self.output = str(output)
+        self.details = str(details)
 
         super(ESP32Exception, self).__init__(
-            "ERROR in %s: line: '%s'; output: %s" % (verb, line, output))
+            "ERROR in %s: line: %s; output: %s; details: %s" %
+            (self.verb, self.line, self.output, self.details))
+
+def _parse(result):
+    """
+    Parses the message from ESP32
+
+    arguments:
+    - result         what the ESP replied as a binary buffer
+
+    returns the requested value as a string
+    """
+
+    check_str, value = result.decode().split('=')
+    check_str = check_str.strip()
+
+    if check_str != 'valore':
+        raise ESP32Exception("", "", "protocol error: 'valore=' expected")
+    return value.strip()
 
 
 class ESP32Serial:
@@ -57,17 +76,41 @@ class ESP32Serial:
 
         self.lock = Lock()
 
-        baudrate = kwargs["baudrate"] if "baudrate" in kwargs else 115200
-        timeout = kwargs["timeout"] if "timeout" in kwargs else 1
         self.term = kwargs["terminator"] if "terminator" in kwargs else b'\n'
-        self.connection = serial.Serial(port=config["port"],
-                                        baudrate=baudrate, timeout=timeout,
-                                        **kwargs)
+
+        self._port = config["port"]
+        self._port_kwargs = kwargs
+        self.reconnect()
 
         self.get_all_fields = config["get_all_fields"]
 
-        while self.connection.read():
-            pass
+
+    def reconnect(self):
+        """
+        Reconnects to the ESP32 serial based on initialized settings.
+        """
+        try:
+            self._close_connection()
+
+            baudrate = self._port_kwargs["baudrate"] if "baudrate" in self._port_kwargs else 115200
+            timeout = self._port_kwargs["timeout"] if "timeout" in self._port_kwargs else 1
+            self.connection = serial.Serial(port=self._port,
+                                            baudrate=baudrate, timeout=timeout,
+                                            **self._port_kwargs)
+            while self.connection.read():
+                pass
+        except Exception as exc: # pylint: disable=W0703
+            raise ESP32Exception("reconnect", None, None, str(exc))
+
+    def _close_connection(self):
+        """
+        Closes the connection.
+        """
+
+        with self.lock:
+            if hasattr(self, "connection"):
+                self.connection.close()
+
 
     def __del__(self):
         """
@@ -76,26 +119,21 @@ class ESP32Serial:
         Closes the connection.
         """
 
-        with self.lock:
-            if hasattr(self, "connection"):
-                self.connection.close()
+        self._close_connection()
 
-    def _parse(self, result):
+    def _write(self, cmd):
         """
-        Parses the message from ESP32
+        Writes the un-encoded message to the ESP32.
+        The command is stored as the last cmd.
 
         arguments:
-        - result         what the ESP replied as a binary buffer
-
-        returns the requested value as a string
+        - cmd           the unencoded command
         """
-
-        check_str, value = result.decode().split('=')
-        check_str = check_str.strip()
-
-        if check_str != 'valore':
-            raise Exception("protocol error: 'valore=' expected")
-        return value.strip()
+        result = b""
+        try:
+            result = self.connection.write(cmd.encode())
+        except Exception as exc: # pylint: disable=W0703
+            raise ESP32Exception("write", cmd, result.decode(), str(exc))
 
     def set(self, name, value):
         """
@@ -116,19 +154,14 @@ class ESP32Serial:
             # but I don't really remember now the version running on
             # Raspbian
             command = 'set ' + name + ' ' + str(value) + '\r\n'
-            self.connection.write(command.encode())
+            self._write(command)
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: set failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("set", command, result.decode())
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                return _parse(result)
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("set", command, result.decode(), str(exc))
 
     def set_watchdog(self):
         """
@@ -153,19 +186,14 @@ class ESP32Serial:
 
         with self.lock:
             command = 'get ' + name + '\r\n'
-            self.connection.write(command.encode())
+            self._write(command)
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    return self._parse(result)
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: get failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("get", command, result.decode())
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                return _parse(result)
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("get", command, result.decode(), str(exc))
 
     def get_all(self):
         """
@@ -179,25 +207,20 @@ class ESP32Serial:
         print("ESP32Serial-DEBUG: get all")
 
         with self.lock:
-            self.connection.write(b"get all\r\n")
+            self._write("get all\r\n")
 
             result = b""
-            retry = 10
-            while retry:
-                retry -= 1
-                try:
-                    result = self.connection.read_until(terminator=self.term)
-                    values = self._parse(result).split(',')
+            try:
+                result = self.connection.read_until(terminator=self.term)
+                values = _parse(result).split(',')
 
-                    if len(values) != len(self.get_all_fields):
-                        raise Exception("get_all answer mismatch: expected: %s, got %s" % (
-                            self.get_all_fields, values))
+                if len(values) != len(self.get_all_fields):
+                    raise Exception("get_all answer mismatch: expected: %s, got %s" % (
+                        self.get_all_fields, values))
 
-                    return dict(zip(self.get_all_fields, values))
-                except Exception as exc: # pylint: disable=W0703
-                    print("ERROR: get failing: %s %s" %
-                          (result.decode(), str(exc)))
-            raise ESP32Exception("get", "get all", result.decode())
+                return dict(zip(self.get_all_fields, values))
+            except Exception as exc: # pylint: disable=W0703
+                raise ESP32Exception("get", "get all", result.decode(), str(exc))
 
     def get_alarms(self):
         """
@@ -273,3 +296,167 @@ class ESP32Serial:
         """
 
         return self.set("alarm_snooze", 29)
+
+    def venturi_calibration(self):
+        """
+        Generator function to retrieve data for spirometer calibration.
+
+        returns a helper class instance.
+        """
+
+        class VenturiRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the Venturi Calibration
+            data.
+            """
+
+            def __init__(self, esp32):
+                """
+                Constructor
+
+                arguments:
+                - esp32: an istance of ESP32Serial
+                """
+
+                self._esp32 = esp32
+
+                self._esp32.set("flush_pipe", 1)
+
+                # from this point, the class effectively OWNS the
+                # connection...
+
+                self._esp32.lock.acquire()
+
+                self._previous_timeout = self._esp32.connection.timeout
+                self._esp32.connection.timeout = 2
+                self._esp32.connection.write("get venturi_scan\r\n".encode())
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. measure index (percentage)
+                2. raw measured flow (spirometer)
+                3. pressure variation (Sinsirion)
+                """
+
+                while True:
+                    bresult = self._esp32.connection.read_until(
+                        terminator=self._esp32.term)
+
+                    result = bresult.decode().strip()
+                    if result == '':
+                        raise ESP32Exception("get", "get venturi_scan", "timeout")
+                    elif result == 'valore=OK':
+                        return
+                    yield [float(datum) for datum in result.split(',')]
+
+            def __del__(self):
+                """
+                Destructor
+
+                this puts the connection back in normal operation
+                """
+
+                # read any possibly remaining data.
+                # For example if the generator has not been called till
+                # the end of the procedure.
+                while self._esp32.connection.read():
+                    pass
+                # restore the timeout to the previously using value
+                self._esp32.connection.timeout = self._previous_timeout
+                self._esp32.lock.release()
+                # ...and from here it finally releases its ownership
+                self._esp32.set("flush_pipe", 0)
+
+        return VenturiRetriever(self)
+
+    def leakage_test(self):
+        """
+        Generator function to retrieve data for leakage test.
+
+        returns a helper class instance.
+        """
+
+        class LeakTestRetriever():
+            """
+            Helper class to wrap all the complexity and problems raising
+            from the protocol used to retrieve the leakage test data.
+            """
+
+            def __init__(self, esp32):
+                """
+                Constructor
+
+                arguments:
+                - esp32: an istance of ESP32Serial
+                """
+
+                self._esp32 = esp32
+
+                # from this point, the class effectively OWNS the
+                # connection...
+
+                self._esp32.lock.acquire()
+
+                self._previous_timeout = self._esp32.connection.timeout
+                self._esp32.connection.timeout = 2
+                self._esp32.connection.write("get leakage_test\r\n".encode())
+
+            def data(self):
+                """
+                This function is a generator. It yields data as they come
+                out and returns when the work is finished.
+
+                Use it like:
+
+                ```
+                for data in data():
+                    #work on a chunk of data
+                ```
+
+                yields a list of (3) floats:
+                1. completed percentage
+                2. internal pressure
+                3. pressure at the patient mouth
+                """
+
+                while True:
+                    bresult = self._esp32.connection.read_until(
+                        terminator=self._esp32.term)
+
+                    result = bresult.decode().strip()
+                    if result == '':
+                        raise ESP32Exception("get", "get leakage_test", "timeout")
+                    elif result == 'valore=OK':
+                        return
+                    yield [float(datum) for datum in result.split(',')]
+
+            def __del__(self):
+                """
+                Destructor
+
+                this puts the connection back in normal operation
+                """
+
+                # read any possibly remaining data.
+                # For example if the generator has not been called till
+                # the end of the procedure.
+                while self._esp32.connection.read():
+                    pass
+                # restore the timeout to the previously using value
+                self._esp32.connection.timeout = self._previous_timeout
+                self._esp32.lock.release()
+                # ...and from here it finally releases its ownership
+
+        return LeakTestRetriever(self)

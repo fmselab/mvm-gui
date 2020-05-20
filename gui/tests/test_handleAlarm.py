@@ -27,7 +27,7 @@ def test_objectCreation(qtbot):
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     bar = AlarmsBar()
-    handler = AlarmHandler(config, esp32, window.alarmbar)
+    handler = AlarmHandler(config, esp32, window.alarmbar, None)
 
     assert handler is not None
 

@@ -25,8 +25,6 @@ def test_cursorShow(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-        
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -55,8 +53,6 @@ def test_cursorDrawLabel(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
@@ -90,8 +86,6 @@ def test_frozenPlotY(qtbot):
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
 
-    print(esp32)
-
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
     qtbot.mouseClick(window.button_menu, QtCore.Qt.LeftButton)
@@ -100,6 +94,8 @@ def test_frozenPlotY(qtbot):
     # Special Operations
     qtbot.mouseClick(window.button_specialops, QtCore.Qt.LeftButton)
     assert window.bottombar.currentWidget() == window.specialbar
+
+    assert window.esp32.get_all() != ""
 
     # Freeze plots
     qtbot.mouseClick(window.specialbar.button_freeze, QtCore.Qt.LeftButton)
@@ -140,8 +136,6 @@ def test_frozenPlotX(qtbot):
 
     esp32 = FakeESP32Serial(config)
     qtbot.addWidget(esp32)
-
-    print(esp32)
 
     window = MainWindow(config, esp32)
     qtbot.addWidget(window)
