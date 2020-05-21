@@ -34,7 +34,7 @@ deploy:
   github_token: $GITHUB_TOKEN
   keep_history: true
   on:
-    branch: master
+    branch: Andrea_UnitTest
   verbose: false
   
 # command to run tests
